@@ -35,7 +35,7 @@ function Setup() {
       {bg && <img class="setup-photo" src={bg.url} alt="" />}
       <div class="setup-card">
         <div class="setup-bismillah">
-          {findArt('bismillah') ? <Phrase id="bismillah" text="" /> : 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ'}
+          {findArt('bismillah') ? <Phrase id="bismillah" text="" scale={2} /> : 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ'}
         </div>
         <h1>Adhan Clock</h1>
         <p>Prayer times are calculated on this tablet from its location. Choose where this clock lives.</p>

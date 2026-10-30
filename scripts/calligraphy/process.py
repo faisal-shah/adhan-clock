@@ -18,15 +18,17 @@ CSS ``mask-image``. Per manifest word this script:
    the set, so over many previews the per-pixel median is the watermark
    composited over white (``M``) and a low order statistic is the watermark
    composited over black calligraphy (``m``). The underlying ink is then
-   ``255 * (O - m) / (M - m)``. Templates are first narrowed to the ones whose
-   watermark contrast matches the target (the sets mix two watermark
-   variants);
+   ``255 * (O - m) / (M - m)``. Only the ``templateCount`` templates whose
+   faint watermark looks most like the target's are used (the sets mix
+   watermark variants);
 4. denoises (3x3 median; ``overlayMedian`` under the watermark, where
    un-blending amplifies JPEG noise), thresholds at ``threshold`` and edits
    the bitmap:
    ``stripVertical`` boxes keep only pixels on vertical runs of at least
    ``stripLength`` px (removes a mark that crosses an alif while keeping the
-   alif), ``erase`` polygons are cleared, and only connected components of at
+   alif), ``closeVertical`` boxes bridge gaps up to ``stripLength`` px in
+   vertical strokes (a thin stroke cut by a watermark line), ``erase``
+   polygons are cleared, and only connected components of at
    least ``minArea`` px whose centroid lies inside the ``keep`` polygon
    survive. Holes up to ``holeMax`` px (JPEG pinholes) are filled;
 5. upsamples the masked greyscale by ``upscale`` (Lanczos), blurs it by
@@ -36,8 +38,13 @@ CSS ``mask-image``. Per manifest word this script:
    cropped to the glyph with ``padding`` (fraction of the long side) and the
    long side normalised to 1000 units.
 
-It then writes ``index.json`` (consumed by the app). Words absent from the
-manifest fall back to the app's font.
+It then writes ``index.json`` (consumed by the app) and ``CREDITS.md``.
+Every entry has a ``kind``: ``prayer`` (a period name; periods absent from the
+manifest fall back to the app's font), ``phrase`` (a greeting or dhikr cut to
+its text) or ``gallery`` (a whole composition shown full screen with a
+caption, which also needs ``english``, ``ref`` and ``transliteration``).
+``arabic`` is the exact text the artwork shows. ``keep`` may be omitted to
+keep every component inside ``crop``.
 
 ``sheet OUT.png`` renders all built SVGs gold-on-navy, as the app shows them,
 for visual review (needs Inkscape).
@@ -46,7 +53,8 @@ Usage (from the repo root)::
 
     uv run scripts/calligraphy/process.py build
     uv run scripts/calligraphy/process.py build --only fajr asr --debug-dir /tmp/callig-debug
-    uv run scripts/calligraphy/process.py sheet /tmp/calligraphy-sheet.png
+    uv run scripts/calligraphy/process.py index      # captions/credits only, no rebuild
+    uv run scripts/calligraphy/process.py sheet /tmp/calligraphy-sheet.png --kind gallery
 """
 from __future__ import annotations
 
@@ -75,10 +83,12 @@ DEFAULT_OUT = REPO / "public" / "calligraphy"
 DEFAULT_CACHE = Path(tempfile.gettempdir()) / "adhan-clock-calligraphy-src"
 USER_AGENT = "adhan-clock-calligraphy-build/1.0 (https://github.com/faisal-shah/adhan-clock; faisal.shah@gmail.com)"
 
-ID_RE = re.compile(r"^[a-z]+$")
+ID_RE = re.compile(r"^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$")
+KINDS = ("prayer", "phrase", "gallery")
+GALLERY_KEYS = ("english", "ref", "transliteration")
 PARAM_KEYS = (
     "threshold", "minArea", "holeMax", "stripLength", "upscale", "blur",
-    "turdsize", "alphamax", "opttolerance", "padding", "templateRank", "overlayMedian",
+    "turdsize", "alphamax", "opttolerance", "padding", "templateRank", "templateCount", "overlayMedian",
 )
 VIEWBOX_LONG_SIDE = 1000.0
 SHEET_BG = (11, 22, 44)
@@ -102,19 +112,23 @@ class Params:
     opttolerance: float
     padding: float
     templateRank: int
+    templateCount: int
     overlayMedian: int
 
 
 @dataclass(frozen=True)
 class Word:
     id: str
+    kind: str
     arabic: str
+    caption: dict[str, str]
     source: dict
     watermark: str | None
     crop: tuple[int, int, int, int]
-    keep: list[tuple[float, float]]
+    keep: list[tuple[float, float]] | None
     erase: list[list[tuple[float, float]]]
     strip_vertical: list[tuple[int, int, int, int]]
+    close_vertical: list[tuple[int, int, int, int]]
     params: Params
 
 
@@ -151,13 +165,25 @@ def load_manifest(path: Path) -> tuple[dict[str, list[str]], list[Word]]:
         where = f"words[{i}]"
         wid = w.get("id")
         if not isinstance(wid, str) or not ID_RE.match(wid):
-            raise ManifestError(f"{where}: id must be lowercase letters")
+            raise ManifestError(f"{where}: id must be lowercase letters/digits joined by single hyphens")
         if wid in seen:
             raise ManifestError(f"{where}: duplicate id {wid!r}")
         seen.add(wid)
         where = f"words[{wid}]"
+        kind = w.get("kind")
+        if kind not in KINDS:
+            raise ManifestError(f"{where}.kind: one of {KINDS}")
+        if not isinstance(w.get("arabic"), str) or not w["arabic"].strip():
+            raise ManifestError(f"{where}.arabic: required (the exact text of the artwork)")
+        caption = {k: w.get(k) for k in GALLERY_KEYS if k in w}
+        if kind == "gallery":
+            bad = [k for k in GALLERY_KEYS if not isinstance(caption.get(k), str) or not caption[k].strip()]
+            if bad:
+                raise ManifestError(f"{where}: gallery entries need {bad}")
+        elif caption:
+            raise ManifestError(f"{where}: {sorted(caption)} only apply to gallery entries")
         src = w.get("source", {})
-        for key in ("url", "sha256", "title", "author", "page"):
+        for key in ("url", "sha256", "title", "author", "page", "terms"):
             if not isinstance(src.get(key), str) or not src[key]:
                 raise ManifestError(f"{where}.source.{key}: required string")
         if src["url"].lower().endswith(".svg") and not (
@@ -180,13 +206,16 @@ def load_manifest(path: Path) -> tuple[dict[str, list[str]], list[Word]]:
             raise ManifestError(f"{where}.crop: width and height must be positive")
         words.append(Word(
             id=wid,
-            arabic=w.get("arabic", ""),
+            kind=kind,
+            arabic=w["arabic"],
+            caption=caption,
             source=src,
             watermark=wm,
             crop=crop,
-            keep=_poly(w.get("keep"), f"{where}.keep"),
+            keep=_poly(w["keep"], f"{where}.keep") if "keep" in w else None,
             erase=[_poly(p, f"{where}.erase[{j}]") for j, p in enumerate(w.get("erase", []))],
             strip_vertical=[_box(b, f"{where}.stripVertical[{j}]") for j, b in enumerate(w.get("stripVertical", []))],
+            close_vertical=[_box(b, f"{where}.closeVertical[{j}]") for j, b in enumerate(w.get("closeVertical", []))],
             params=params,
         ))
     return template_urls, words
@@ -255,47 +284,61 @@ def run_inkscape(args: list[str]) -> None:
 # -------------------------------------------------------------- watermark
 
 
-def outline_contrast(a: np.ndarray, outline: np.ndarray, clean: np.ndarray) -> float:
-    """Mean brightness of clean white minus watermark outline, on light pixels."""
-    a = a.astype(np.float32)
-    light = a > 120
-    return float(a[clean & light].mean() - a[outline & light].mean())
+def template_stats(obs: np.ndarray, size: tuple[int, int], box: tuple[int, int, int, int], urls: list[str],
+                   cache: Path, rank: int, count: int) -> tuple[np.ndarray, np.ndarray, int]:
+    """Watermark over black and over white for ``box``, from the ``count`` templates closest to ``obs``.
+
+    The sets mix watermark variants (opacity, layout), so templates are ranked
+    by their mean absolute difference to the target over pixels that are light
+    in both, where only the faint watermark shows; the target's own preview
+    (difference ~0) is skipped. Ranking runs on a 4x subsampled crop; only the
+    chosen templates are decoded at full resolution, and order statistics are
+    taken in row bands to bound memory.
+    """
+    key = hashlib.sha256(json.dumps([urls, size, box, rank, count]).encode() + obs.tobytes()).hexdigest()[:24]
+    cached = cache / f"stats-{key}.npz"
+    if cached.exists():
+        z = np.load(cached)
+        return z["over_black"], z["over_white"], int(z["n"])
+
+    def load(url: str, step: int) -> np.ndarray | None:
+        im = Image.open(fetch(url, cache))
+        if im.size != size:
+            return None
+        return np.asarray(im.convert("L").crop(box), dtype=np.uint8)[::step, ::step]
+
+    with concurrent.futures.ThreadPoolExecutor(4) as pool:
+        pairs = [(u, a) for u, a in zip(urls, pool.map(lambda u: load(u, 4), urls)) if a is not None]
+    small_obs = obs[::4, ::4]
+    light = small_obs > 200
+    dist = np.array([np.abs(a.astype(np.float32) - small_obs)[light & (a > 200)].mean() for _, a in pairs])
+    order = [i for i in np.argsort(dist) if dist[i] > 0.5][:count]
+    matched = [pairs[i][0] for i in order]
+    del pairs  # free the subsampled stack before decoding full-resolution crops
+    if len(matched) < 4 * rank:
+        raise SystemExit(f"only {len(matched)} templates available")
+    n = len(matched)
+    stack = np.empty((n, box[3] - box[1], box[2] - box[0]), np.uint8)
+    for i, u in enumerate(matched):
+        stack[i] = load(u, 1)
+    over_black = np.empty(stack.shape[1:], np.float32)
+    over_white = np.empty(stack.shape[1:], np.float32)
+    for r in range(0, stack.shape[1], 64):
+        part = np.partition(stack[:, r:r + 64], [rank, n // 2], axis=0)
+        over_black[r:r + 64], over_white[r:r + 64] = part[rank], part[n // 2]
+    np.savez_compressed(cached, over_black=over_black, over_white=over_white, n=n)
+    return over_black, over_white, n
 
 
 def unblend(target: Image.Image, crop: tuple[int, int, int, int], urls: list[str], cache: Path,
-            rank: int) -> tuple[np.ndarray, np.ndarray]:
+            rank: int, count: int) -> tuple[np.ndarray, np.ndarray]:
     """Returns (ink estimate, mask of pixels under the watermark)."""
     x, y, w, h = crop
     box = (x, y, x + w, y + h)
-    with concurrent.futures.ThreadPoolExecutor(8) as pool:
-        files = list(pool.map(lambda u: fetch(u, cache), urls))
-    size = target.size
-    stack = []
-    for f in files:
-        im = Image.open(f)
-        if im.size != size:
-            continue
-        stack.append(np.asarray(im.convert("L").crop(box), dtype=np.uint8))
-    stack = np.stack(stack)
     obs = np.asarray(target.convert("L").crop(box), dtype=np.float32)
-    # Narrow to the watermark variant of the target: compare the contrast of
-    # the watermark outline against clean white, measured on light pixels.
-    for _ in range(2):
-        n = len(stack)
-        part = np.partition(stack, [rank, n // 2], axis=0)
-        over_white = part[n // 2].astype(np.float32)
-        outline = over_white < 235
-        clean = (~outline) & (over_white > 250)
-        target_c = outline_contrast(obs, outline, clean)
-        scores = np.array([outline_contrast(a, outline, clean) for a in stack])
-        stack = stack[np.abs(scores - target_c) < 4]
-    if len(stack) < 4 * rank:
-        raise SystemExit(f"only {len(stack)} templates match the target watermark")
-    n = len(stack)
-    part = np.partition(stack, [rank, n // 2], axis=0)
-    over_black, over_white = part[rank].astype(np.float32), part[n // 2].astype(np.float32)
+    over_black, over_white, n = template_stats(obs, target.size, box, urls, cache, rank, count)
     span = over_white - over_black
-    print(f"  watermark: {n}/{len(urls)} templates match the target's variant")
+    print(f"  watermark: {n} closest of {len(urls)} templates")
     ink = np.where(span > 40, 255 * (obs - over_black) / np.maximum(span, 1), obs)
     # Under the watermark: visible over white, or never seen as clean black
     # (which also covers spots no template had ink on).
@@ -329,13 +372,16 @@ def select(gray: np.ndarray, overlay: np.ndarray | None, word: Word) -> tuple[np
     for bx, by, bw, bh in word.strip_vertical:
         ys, xs = slice(by - origin[1], by - origin[1] + bh), slice(bx - origin[0], bx - origin[0] + bw)
         ink[ys, xs] = ndi.binary_opening(ink[ys, xs], structure=np.ones((p.stripLength, 1), bool))
+    for bx, by, bw, bh in word.close_vertical:
+        ys, xs = slice(by - origin[1], by - origin[1] + bh), slice(bx - origin[0], bx - origin[0] + bw)
+        ink[ys, xs] |= ndi.binary_closing(ink[ys, xs], structure=np.ones((p.stripLength, 1), bool), border_value=0)
     for poly in word.erase:
         ink &= ~poly_mask(ink.shape, poly, origin)
     labels, n = ndi.label(ink, structure=np.ones((3, 3), bool))
     idx = np.arange(1, n + 1)
     areas = ndi.sum_labels(ink, labels, idx)
     cents = ndi.center_of_mass(ink, labels, idx)
-    keep_mask = poly_mask(ink.shape, word.keep, origin)
+    keep_mask = poly_mask(ink.shape, word.keep, origin) if word.keep else np.ones(ink.shape, bool)
     kept = [i for i, a, (cy, cx) in zip(idx, areas, cents)
             if a >= p.minArea and keep_mask[min(round(cy), ink.shape[0] - 1), min(round(cx), ink.shape[1] - 1)]]
     sel = np.isin(labels, kept)
@@ -381,19 +427,42 @@ def trace_svg(bitmap: np.ndarray, p: Params) -> tuple[str, float, float]:
     vw, vh = gx1 - gx0 + 2 * pad, gy1 - gy0 + 2 * pad
     s = VIEWBOX_LONG_SIDE / max(vw, vh)
 
-    def pt(q) -> str:
-        return f"{(q.x - gx0 + pad) * s:.1f} {(q.y - gy0 + pad) * s:.1f}"
+    def q10(pnt) -> tuple[int, int]:
+        """Point in tenths of a viewBox unit."""
+        return round((pnt.x - gx0 + pad) * s * 10), round((pnt.y - gy0 + pad) * s * 10)
 
+    def num(v: int) -> str:
+        t = f"{v / 10:g}"
+        return t.replace("0.", ".", 1) if t.startswith(("0.", "-0.")) else t
+
+    def nums(vals: list[int]) -> str:
+        """Join numbers, omitting separators the path grammar does not need."""
+        out, prev = [], ""
+        for v in vals:
+            t = num(v)
+            if out and not (t[0] == "-" or (t[0] == "." and "." in prev)):
+                out.append(" ")
+            out.append(t)
+            prev = t
+        return "".join(out)
+
+    # Relative commands between already-rounded points: same precision as
+    # absolute coordinates, no drift, much shorter.
     parts = []
     for c in curves:
-        seg = [f"M{pt(c.start_point)}"]
+        cur = q10(c.start_point)
+        seg = ["M" + nums(list(cur))]
         for g in c.segments:
             if g.is_corner:
-                seg.append(f"L{pt(g.c)}L{pt(g.end_point)}")
+                a, b = q10(g.c), q10(g.end_point)
+                seg.append("l" + nums([a[0] - cur[0], a[1] - cur[1], b[0] - a[0], b[1] - a[1]]))
+                cur = b
             else:
-                seg.append(f"C{pt(g.c1)} {pt(g.c2)} {pt(g.end_point)}")
-        parts.append("".join(seg) + "Z")
-    d = re.sub(r"\.0(?!\d)", "", "".join(parts))
+                a, b, e = q10(g.c1), q10(g.c2), q10(g.end_point)
+                seg.append("c" + nums([a[0] - cur[0], a[1] - cur[1], b[0] - cur[0], b[1] - cur[1], e[0] - cur[0], e[1] - cur[1]]))
+                cur = e
+        parts.append("".join(seg) + "z")
+    d = "".join(parts)
     W, H = round(vw * s, 1), round(vh * s, 1)
     svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W:g} {H:g}" width="{W:g}" height="{H:g}">'
            f'<path fill="#000" fill-rule="evenodd" d="{d}"/></svg>\n')
@@ -425,7 +494,9 @@ def debug_images(word: Word, gray: np.ndarray, sel: np.ndarray, labels: np.ndarr
         Y = (gy - oy) * scale
         d.line([(0, Y), (im.width, Y)], fill=(150, 150, 255) if gy % (4 * step) else (60, 60, 255))
         d.text((2, Y + 2), str(gy), fill=(0, 0, 180))
-    for poly, colour in [(word.keep, (0, 160, 0))] + [(e, (220, 0, 0)) for e in word.erase]:
+    for poly, colour in [(word.keep or [], (0, 160, 0))] + [(e, (220, 0, 0)) for e in word.erase]:
+        if not poly:
+            continue
         d.line([((x - ox) * scale, (y - oy) * scale) for x, y in poly + poly[:1]], fill=colour, width=2)
     for bx, by, bw, bh in word.strip_vertical:
         d.rectangle([(bx - ox) * scale, (by - oy) * scale, (bx - ox + bw) * scale, (by - oy + bh) * scale], outline=(255, 120, 0), width=2)
@@ -454,7 +525,7 @@ def build(args: argparse.Namespace) -> None:
         if word.watermark:
             target = Image.fromarray(gray_full.astype(np.uint8))
             gray, overlay = unblend(target, word.crop, template_urls[word.watermark], args.cache,
-                                    word.params.templateRank)
+                                    word.params.templateRank, word.params.templateCount)
         else:
             gray, overlay = gray_full[y:y + h, x:x + w], None
         smooth, sel, labels = select(gray, overlay, word)
@@ -469,24 +540,51 @@ def build(args: argparse.Namespace) -> None:
     if args.only:
         print("index.json not rewritten (--only)")
         return
-    # index.json lists every manifest word, in manifest order.
+    write_index(words, args.out)
+
+
+def write_index(words: list[Word], out: Path) -> None:
+    """Write index.json (manifest order) and CREDITS.md from the built SVGs."""
     index = []
     for word in words:
-        path = args.out / f"{word.id}.svg"
+        path = out / f"{word.id}.svg"
         if not path.exists():
-            raise SystemExit(f"{path} missing; run without --only")
+            raise SystemExit(f"{path} missing; build it first")
         W, H = (float(v) for v in re.search(r'viewBox="0 0 ([\d.]+) ([\d.]+)"', path.read_text()).groups())
         index.append({
             "id": word.id,
+            "kind": word.kind,
+            "arabic": word.arabic,
+            **word.caption,
             "file": path.name,
             "aspect": round(W / H, 4),
             "source": {"url": word.source["page"], "title": word.source["title"], "author": word.source["author"]},
         })
-    stale = sorted(p.name for p in args.out.glob("*.svg") if p.stem not in {w.id for w in words})
+    stale = sorted(p.name for p in out.glob("*.svg") if p.stem not in {w.id for w in words})
     if stale:
-        raise SystemExit(f"stale files in {args.out}: {stale}")
-    (args.out / "index.json").write_text(json.dumps(index, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"wrote {args.out / 'index.json'} ({len(index)} words)")
+        raise SystemExit(f"stale files in {out}: {stale}")
+    (out / "index.json").write_text(json.dumps(index, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (out / "CREDITS.md").write_text(credits(words), encoding="utf-8")
+    print(f"wrote {out / 'index.json'} and CREDITS.md ({len(index)} entries)")
+
+
+def credits(words: list[Word]) -> str:
+    def cell(text: str) -> str:
+        return text.replace("|", "\\|")
+
+    rows = [
+        f"| {w.id}.svg | {w.kind} | {cell(w.arabic)} | {cell(w.source['author'])} | "
+        f"[{cell(w.source['title'])}]({w.source['page']}) | {cell(w.source['terms'])} |"
+        for w in words
+    ]
+    return (
+        "# Calligraphy credits\n\n"
+        "Generated by `scripts/calligraphy/process.py` from `scripts/calligraphy/manifest.json`.\n"
+        "Each file is vectorized from the artist's image (cropped to the text, cleaned,\n"
+        "traced to an SVG path).\n\n"
+        "| File | Kind | Text | Artist | Source | Terms |\n|---|---|---|---|---|---|\n"
+        + "\n".join(rows) + "\n"
+    )
 
 
 # ------------------------------------------------------------------ sheet
@@ -501,10 +599,14 @@ def gold(width: int, height: int) -> Image.Image:
 
 def sheet(args: argparse.Namespace) -> None:
     index = json.loads((args.out / "index.json").read_text(encoding="utf-8"))
+    if args.kind:
+        index = [e for e in index if e["kind"] in args.kind]
     if not index:
-        raise SystemExit("index.json is empty")
+        raise SystemExit("nothing to render")
     if args.height < 50:
         raise SystemExit("--height must be at least 50")
+    if args.columns < 1:
+        raise SystemExit("--columns must be at least 1")
     tiles = []
     size = max(14, args.height // 9)
     font = ImageFont.load_default(size=size)
@@ -514,9 +616,11 @@ def sheet(args: argparse.Namespace) -> None:
             run_inkscape([str(args.out / entry["file"]), "--export-type=png", f"--export-height={args.height}",
                           f"--export-filename={png}"])
             alpha = Image.open(png).getchannel("A")
-            tile = Image.new("RGB", (alpha.width + 40, alpha.height + 40 + 2 * size), SHEET_BG)
-            tile.paste(gold(*alpha.size), (20, 20), alpha)
-            ImageDraw.Draw(tile).text((20, alpha.height + 30), f"{entry['id']}  ({entry['aspect']})", fill=(170, 185, 210), font=font)
+            label = f"{entry['id']}  ({entry['aspect']})"
+            width = max(alpha.width, round(font.getlength(label)))
+            tile = Image.new("RGB", (width + 40, alpha.height + 40 + 2 * size), SHEET_BG)
+            tile.paste(gold(*alpha.size), (20 + (width - alpha.width) // 2, 20), alpha)
+            ImageDraw.Draw(tile).text((20, alpha.height + 30), label, fill=(170, 185, 210), font=font)
             tiles.append(tile)
     cols = min(args.columns, len(tiles))
     rows = -(-len(tiles) // cols)
@@ -538,13 +642,20 @@ def main(argv: list[str] | None = None) -> None:
     b.add_argument("--only", nargs="+", metavar="ID")
     b.add_argument("--cache", type=Path, default=DEFAULT_CACHE)
     b.add_argument("--debug-dir", type=Path, help="write per-word ink/component maps here")
+    sub.add_parser("index", help="write index.json and CREDITS.md from the built SVGs")
     s = sub.add_parser("sheet", help="render a gold-on-navy contact sheet PNG")
     s.add_argument("png", type=Path)
     s.add_argument("--height", type=int, default=260, help="glyph height in px")
     s.add_argument("--columns", type=int, default=3)
+    s.add_argument("--kind", nargs="+", choices=KINDS, help="only these kinds")
     args = ap.parse_args(argv)
     try:
-        build(args) if args.cmd == "build" else sheet(args)
+        if args.cmd == "build":
+            build(args)
+        elif args.cmd == "index":
+            write_index(load_manifest(args.manifest)[1], args.out)
+        else:
+            sheet(args)
     except ManifestError as e:
         sys.exit(f"manifest error: {e}")
 

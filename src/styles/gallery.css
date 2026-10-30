@@ -183,8 +183,8 @@
   transform: translate(-50%, -50%);
   display: flex;
   justify-content: center;
-  font-size: 46rem;
-  --art-max-w: 110rem;
+  font-size: 52rem;
+  --art-max-w: 112rem;
 }
 
 .gl.art .gl-caption {

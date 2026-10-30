@@ -73,11 +73,12 @@ function ArtPiece({ art }: { art: CalligraphyArt }) {
 function caption(p: Piece): { cat: string; title: string; sub: string } {
   if (p.kind === 'photo') return { cat: GALLERY_CATEGORIES[p.item.category], title: p.item.title, sub: p.item.subtitle };
   const a = p.art;
-  const english = a.english && a.english.length <= 150 ? a.english : '';
+  const clean = a.english?.replace(/[[\]]/g, '');
+  const english = clean && clean.length <= 150 ? clean : '';
   return {
     cat: GALLERY_CATEGORIES.calligraphy,
     title: a.transliteration ?? a.ref ?? '',
-    sub: [english && `“${english}”`, a.ref].filter(Boolean).join(' · '),
+    sub: [english && (/["“]/.test(english) ? english : `“${english}”`), a.ref].filter(Boolean).join(' · '),
   };
 }
 

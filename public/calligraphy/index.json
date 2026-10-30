@@ -1,8 +1,10 @@
 [
   {
     "id": "fajr",
+    "kind": "prayer",
+    "arabic": "الفجر",
     "file": "fajr.svg",
-    "aspect": 0.981,
+    "aspect": 0.9817,
     "source": {
       "url": "https://khattaatt.com/products/islamic-prayer-fajr-arabic-calligraphy-t011",
       "title": "Fajr Prayer (صلاة الفجر) Arabic Calligraphy, Thuluth T011",
@@ -11,8 +13,10 @@
   },
   {
     "id": "dhuhr",
+    "kind": "prayer",
+    "arabic": "الظهر",
     "file": "dhuhr.svg",
-    "aspect": 1.2115,
+    "aspect": 1.2133,
     "source": {
       "url": "https://khattaatt.com/products/islamic-prayer-dhuhr-arabic-calligraphy-t011",
       "title": "Dhuhr Prayer (صلاة الظهر) Arabic Calligraphy, Thuluth T011",
@@ -21,8 +25,10 @@
   },
   {
     "id": "asr",
+    "kind": "prayer",
+    "arabic": "العصر",
     "file": "asr.svg",
-    "aspect": 1.4112,
+    "aspect": 1.4116,
     "source": {
       "url": "https://khattaatt.com/products/islamic-prayer-asr-arabic-calligraphy-t011",
       "title": "Asr Prayer (صلاة العصر) Arabic Calligraphy, Thuluth T011",
@@ -31,8 +37,10 @@
   },
   {
     "id": "maghrib",
+    "kind": "prayer",
+    "arabic": "المغرب",
     "file": "maghrib.svg",
-    "aspect": 1.3736,
+    "aspect": 1.3761,
     "source": {
       "url": "https://khattaatt.com/products/islamic-prayer-maghrib-arabic-calligraphy-t011",
       "title": "Maghrib Prayer (صلاة المغرب) Arabic Calligraphy, Thuluth T011",
@@ -41,8 +49,10 @@
   },
   {
     "id": "isha",
+    "kind": "prayer",
+    "arabic": "العشاء",
     "file": "isha.svg",
-    "aspect": 1.3678,
+    "aspect": 1.3656,
     "source": {
       "url": "https://khattaatt.com/products/islamic-prayer-isha-arabic-calligraphy-t011",
       "title": "Isha Prayer (صلاة العشاء) Arabic Calligraphy, Thuluth T011",
@@ -51,8 +61,10 @@
   },
   {
     "id": "jumuah",
+    "kind": "prayer",
+    "arabic": "الجمعة",
     "file": "jumuah.svg",
-    "aspect": 1.1869,
+    "aspect": 1.1864,
     "source": {
       "url": "https://khattaatt.com/products/khair-ayamkom-t-01",
       "title": "خير أيامكم يوم الجمعة, Thuluth T-01",
@@ -61,12 +73,401 @@
   },
   {
     "id": "duha",
+    "kind": "prayer",
+    "arabic": "الضحى",
     "file": "duha.svg",
     "aspect": 0.9445,
     "source": {
       "url": "https://commons.wikimedia.org/wiki/File:Ad-Dhuha.svg",
       "title": "Ad-Dhuha.svg (surah title seal), CC BY-SA 4.0",
       "author": "Ahmad252 (Wikimedia Commons)"
+    }
+  },
+  {
+    "id": "bismillah",
+    "kind": "phrase",
+    "arabic": "بسم الله الرحمن الرحيم",
+    "file": "bismillah.svg",
+    "aspect": 3.1124,
+    "source": {
+      "url": "https://khattaatt.com/products/bismillah-t-031",
+      "title": "بسم الله الرحمن الرحيم - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "ramadan",
+    "kind": "phrase",
+    "arabic": "رمضان كريم",
+    "file": "ramadan.svg",
+    "aspect": 2.1925,
+    "source": {
+      "url": "https://khattaatt.com/products/ramadan-kareem-t-02",
+      "title": "رمضان كريم - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "jumuah-mubarak",
+    "kind": "phrase",
+    "arabic": "جمعة مباركة",
+    "file": "jumuah-mubarak.svg",
+    "aspect": 2.9568,
+    "source": {
+      "url": "https://khattaatt.com/products/jomaa-mubaraka-t-03",
+      "title": "جمعة مباركة - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "eid",
+    "kind": "phrase",
+    "arabic": "عيدكم مبارك",
+    "file": "eid.svg",
+    "aspect": 2.2391,
+    "source": {
+      "url": "https://khattaatt.com/products/eidkom-mubarak-t-011",
+      "title": "عيدكم مبارك - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "subhanallah",
+    "kind": "phrase",
+    "arabic": "سبحان الله وبحمده",
+    "file": "subhanallah.svg",
+    "aspect": 0.9253,
+    "source": {
+      "url": "https://khattaatt.com/products/subhanallah-wa-bihamdihi-t-01",
+      "title": "سبحان الله وبحمده - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "allahu-akbar",
+    "kind": "phrase",
+    "arabic": "الله أكبر",
+    "file": "allahu-akbar.svg",
+    "aspect": 1.3348,
+    "source": {
+      "url": "https://khattaatt.com/products/allahu-akbar-t-034",
+      "title": "الله أكبر - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "g-ayat-al-kursi",
+    "kind": "gallery",
+    "arabic": "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ ٱللَّهُ لَآ إِلَٰهَ إِلَّا هُوَ ٱلْحَىُّ ٱلْقَيُّومُ ۚ لَا تَأْخُذُهُۥ سِنَةٌۭ وَلَا نَوْمٌۭ ۚ لَّهُۥ مَا فِى ٱلسَّمَٰوَٰتِ وَمَا فِى ٱلْأَرْضِ ۗ مَن ذَا ٱلَّذِى يَشْفَعُ عِندَهُۥٓ إِلَّا بِإِذْنِهِۦ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَىْءٍۢ مِّنْ عِلْمِهِۦٓ إِلَّا بِمَا شَآءَ ۚ وَسِعَ كُرْسِيُّهُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضَ ۖ وَلَا يَـُٔودُهُۥ حِفْظُهُمَا ۚ وَهُوَ ٱلْعَلِىُّ ٱلْعَظِيمُ",
+    "english": "In the name of Allah, the Entirely Merciful, the Especially Merciful. Allah - there is no deity except Him, the Ever-Living, the Sustainer of [all] existence. Neither drowsiness overtakes Him nor sleep. To Him belongs whatever is in the heavens and whatever is on the earth. Who is it that can intercede with Him except by His permission? He knows what is [presently] before them and what will be after them, and they encompass not a thing of His knowledge except for what He wills. His Kursi extends over the heavens and the earth, and their preservation tires Him not. And He is the Most High, the Most Great.",
+    "ref": "Al-Baqarah 2:255 (Ayat al-Kursi)",
+    "transliteration": "Allahu la ilaha illa huwa al-Hayyul-Qayyum...",
+    "file": "g-ayat-al-kursi.svg",
+    "aspect": 1.2661,
+    "source": {
+      "url": "https://khattaatt.com/products/ayatul-kursi-arabic-calligraphy",
+      "title": "Ayatul Kursi - Thuluth Script - Five-Line Design with the Basmalah",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "g-al-fatiha",
+    "kind": "gallery",
+    "arabic": "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ مَٰلِكِ يَوْمِ ٱلدِّينِ إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ",
+    "english": "In the name of Allah, the Entirely Merciful, the Especially Merciful. [All] praise is [due] to Allah, Lord of the worlds - The Entirely Merciful, the Especially Merciful, Sovereign of the Day of Recompense. It is You we worship and You we ask for help. Guide us to the straight path - The path of those upon whom You have bestowed favor, not of those who have evoked [Your] anger or of those who are astray.",
+    "ref": "Al-Fatihah 1:1-7",
+    "transliteration": "Bismillahir-Rahmanir-Rahim. Al-hamdu lillahi Rabbil-'alamin...",
+    "file": "g-al-fatiha.svg",
+    "aspect": 1.0,
+    "source": {
+      "url": "https://khattaatt.com/products/al-fatiha-t0723",
+      "title": "سورة الفاتحة - خط الثلث3",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "g-al-ikhlas",
+    "kind": "gallery",
+    "arabic": "قُلْ هُوَ ٱللَّهُ أَحَدٌ ٱللَّهُ ٱلصَّمَدُ لَمْ يَلِدْ وَلَمْ يُولَدْ وَلَمْ يَكُن لَّهُۥ كُفُوًا أَحَدٌۢ",
+    "english": "Say, \"He is Allah, [who is] One, Allah, the Eternal Refuge. He neither begets nor is born, Nor is there to Him any equivalent.\"",
+    "ref": "Al-Ikhlas 112:1-4",
+    "transliteration": "Qul huwa Allahu ahad...",
+    "file": "g-al-ikhlas.svg",
+    "aspect": 3.5186,
+    "source": {
+      "url": "https://khattaatt.com/products/al-ikhlas-t-071",
+      "title": "سورة الإخلاص - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "g-al-falaq",
+    "kind": "gallery",
+    "arabic": "قُلْ أَعُوذُ بِرَبِّ ٱلْفَلَقِ مِن شَرِّ مَا خَلَقَ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ وَمِن شَرِّ ٱلنَّفَّٰثَٰتِ فِى ٱلْعُقَدِ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ",
+    "english": "Say, \"I seek refuge in the Lord of daybreak From the evil of that which He created And from the evil of darkness when it settles And from the evil of the blowers in knots And from the evil of an envier when he envies.\"",
+    "ref": "Al-Falaq 113:1-5",
+    "transliteration": "Qul a'udhu bi-Rabbil-falaq...",
+    "file": "g-al-falaq.svg",
+    "aspect": 1.5635,
+    "source": {
+      "url": "https://khattaatt.com/products/al-falaq-t-071",
+      "title": "سورة الفلق - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "g-an-nas",
+    "kind": "gallery",
+    "arabic": "قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ مَلِكِ ٱلنَّاسِ إِلَٰهِ ٱلنَّاسِ مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ",
+    "english": "Say, \"I seek refuge in the Lord of mankind, The Sovereign of mankind. The God of mankind, From the evil of the retreating whisperer - Who whispers [evil] into the breasts of mankind - From among the jinn and mankind.\"",
+    "ref": "An-Nas 114:1-6",
+    "transliteration": "Qul a'udhu bi-Rabbin-nas...",
+    "file": "g-an-nas.svg",
+    "aspect": 1.6469,
+    "source": {
+      "url": "https://khattaatt.com/products/an-naas-t-071",
+      "title": "سورة الناس - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "g-shahada",
+    "kind": "gallery",
+    "arabic": "لا إله إلا الله محمد رسول الله",
+    "english": "There is no god but Allah; Muhammad is the Messenger of Allah.",
+    "ref": "Shahada",
+    "transliteration": "La ilaha illa Allah, Muhammadun Rasulullah",
+    "file": "g-shahada.svg",
+    "aspect": 0.9814,
+    "source": {
+      "url": "https://khattaatt.com/products/shahadah-2-t-031",
+      "title": "لا إله إلا الله محمد رسول الله - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "g-allah",
+    "kind": "gallery",
+    "arabic": "الله جل جلاله",
+    "english": "Allah, exalted is His majesty.",
+    "ref": "The Divine Name",
+    "transliteration": "Allah jalla jalaluh",
+    "file": "g-allah.svg",
+    "aspect": 1.0,
+    "source": {
+      "url": "https://khattaatt.com/products/allah-t-041",
+      "title": "لفظ الجلالة [الله] - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "g-muhammad",
+    "kind": "gallery",
+    "arabic": "محمد عليه السلام",
+    "english": "Muhammad, peace be upon him.",
+    "ref": "The Prophet",
+    "transliteration": "Muhammad 'alayhis-salam",
+    "file": "g-muhammad.svg",
+    "aspect": 1.0,
+    "source": {
+      "url": "https://khattaatt.com/products/muhammad-t071",
+      "title": "محمد ﷺ - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "g-bismillah",
+    "kind": "gallery",
+    "arabic": "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+    "english": "In the name of Allah, the Entirely Merciful, the Especially Merciful.",
+    "ref": "Al-Fatihah 1:1",
+    "transliteration": "Bismillahir-Rahmanir-Rahim",
+    "file": "g-bismillah.svg",
+    "aspect": 1.0173,
+    "source": {
+      "url": "https://khattaatt.com/products/bismillah-t-131",
+      "title": "بسم الله الرحمن الرحيم - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "g-alhamdulillah",
+    "kind": "gallery",
+    "arabic": "الحمد لله",
+    "english": "All praise is due to Allah.",
+    "ref": "Dhikr",
+    "transliteration": "Al-hamdu lillah",
+    "file": "g-alhamdulillah.svg",
+    "aspect": 1.4288,
+    "source": {
+      "url": "https://khattaatt.com/products/alhamdulillah-t-011",
+      "title": "الحمد لله - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "g-subhanallah-al-azim",
+    "kind": "gallery",
+    "arabic": "سبحان الله وبحمده سبحان الله العظيم",
+    "english": "Glory be to Allah and praise be to Him; glory be to Allah, the Most Great.",
+    "ref": "Dhikr",
+    "transliteration": "Subhanallahi wa bihamdihi, subhanallahil-'azim",
+    "file": "g-subhanallah-al-azim.svg",
+    "aspect": 2.3463,
+    "source": {
+      "url": "https://khattaatt.com/products/subhanallahi-wa-bihamdihi-subhanallahil-azeem-t-011",
+      "title": "سبحان الله وبحمده سبحان الله العظيم - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "g-hawqala",
+    "kind": "gallery",
+    "arabic": "لا حول ولا قوة إلا بالله",
+    "english": "There is no power and no strength except with Allah.",
+    "ref": "Dhikr",
+    "transliteration": "La hawla wa la quwwata illa billah",
+    "file": "g-hawqala.svg",
+    "aspect": 1.3631,
+    "source": {
+      "url": "https://khattaatt.com/products/hawqala-t041",
+      "title": "لا حول ولا قوة إلا بالله - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "g-mashallah",
+    "kind": "gallery",
+    "arabic": "ما شاء الله",
+    "english": "What Allah has willed.",
+    "ref": "Dhikr",
+    "transliteration": "Ma sha' Allah",
+    "file": "g-mashallah.svg",
+    "aspect": 1.01,
+    "source": {
+      "url": "https://khattaatt.com/products/mashaallah-t-011",
+      "title": "ما شاء الله - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "g-tabarakallah",
+    "kind": "gallery",
+    "arabic": "تبارك الله",
+    "english": "Blessed is Allah.",
+    "ref": "Dhikr",
+    "transliteration": "Tabarak Allah",
+    "file": "g-tabarakallah.svg",
+    "aspect": 0.3672,
+    "source": {
+      "url": "https://khattaatt.com/products/tabarak-allahu-t011",
+      "title": "تبارك الله - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "g-ya-qayyum",
+    "kind": "gallery",
+    "arabic": "يا قيوم",
+    "english": "O Sustainer of all existence.",
+    "ref": "Names of Allah: Al-Qayyum",
+    "transliteration": "Ya Qayyum",
+    "file": "g-ya-qayyum.svg",
+    "aspect": 1.0,
+    "source": {
+      "url": "https://khattaatt.com/products/ya-qayoum-t-011",
+      "title": "يا قيوم - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "g-ya-fattah",
+    "kind": "gallery",
+    "arabic": "يا فتاح",
+    "english": "O Opener, Giver of victory.",
+    "ref": "Names of Allah: Al-Fattah",
+    "transliteration": "Ya Fattah",
+    "file": "g-ya-fattah.svg",
+    "aspect": 0.4849,
+    "source": {
+      "url": "https://khattaatt.com/products/ya-fattah-t-02",
+      "title": "يا فتاح - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "g-laylat-al-qadr",
+    "kind": "gallery",
+    "arabic": "لَيْلَةُ ٱلْقَدْرِ خَيْرٌۭ مِّنْ أَلْفِ شَهْرٍۢ",
+    "english": "The Night of Decree is better than a thousand months.",
+    "ref": "Al-Qadr 97:3",
+    "transliteration": "Laylatul-qadri khayrun min alfi shahr",
+    "file": "g-laylat-al-qadr.svg",
+    "aspect": 1.3486,
+    "source": {
+      "url": "https://khattaatt.com/products/laylat-alqadr-khair-t-011",
+      "title": "ليلة القدر خير من ألف شهر - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "g-wa-ma-bikum",
+    "kind": "gallery",
+    "arabic": "وَمَا بِكُم مِّن نِّعْمَةٍۢ فَمِنَ ٱللَّهِ",
+    "english": "And whatever you have of favor - it is from Allah.",
+    "ref": "An-Nahl 16:53 (first part)",
+    "transliteration": "Wa ma bikum min ni'matin fa-minallah",
+    "file": "g-wa-ma-bikum.svg",
+    "aspect": 1.3439,
+    "source": {
+      "url": "https://khattaatt.com/products/wa-ma-bekom-mn-neema-fa-mn-allah-t-011",
+      "title": "وما بكم من نعمة فمن الله - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "g-qalil-min-al-layl",
+    "kind": "gallery",
+    "arabic": "كَانُوا۟ قَلِيلًۭا مِّنَ ٱلَّيْلِ مَا يَهْجَعُونَ وَبِٱلْأَسْحَارِ هُمْ يَسْتَغْفِرُونَ",
+    "english": "They used to sleep but little of the night, And in the hours before dawn they would ask forgiveness,",
+    "ref": "Adh-Dhariyat 51:17-18",
+    "transliteration": "Kanu qalilan minal-layli ma yahja'un, wa bil-as-hari hum yastaghfirun",
+    "file": "g-qalil-min-al-layl.svg",
+    "aspect": 2.3552,
+    "source": {
+      "url": "https://khattaatt.com/products/surah-adh-dhariyat-17-18-t012",
+      "title": "كانوا قليلا من الليل ما يهجعون وبالأسحار هم يستغفرون - خط الثلث",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "g-al-isra-79",
+    "kind": "gallery",
+    "arabic": "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ وَمِنَ ٱلَّيْلِ فَتَهَجَّدْ بِهِۦ نَافِلَةًۭ لَّكَ عَسَىٰٓ أَن يَبْعَثَكَ رَبُّكَ مَقَامًۭا مَّحْمُودًۭا",
+    "english": "In the name of Allah, the Entirely Merciful, the Especially Merciful. And from [part of] the night, pray with it as additional [worship] for you; it is expected that your Lord will resurrect you to a praised station.",
+    "ref": "Al-Isra 17:79",
+    "transliteration": "Wa minal-layli fa-tahajjad bihi nafilatan lak...",
+    "file": "g-al-isra-79.svg",
+    "aspect": 0.5326,
+    "source": {
+      "url": "https://khattaatt.com/products/al-israa-79-f-011",
+      "title": "ومن الليل فتهجد به نافلة لك عسى أن يبعثك ربك مقاما محمودا - الخط الفارسي",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "g-yusra",
+    "kind": "gallery",
+    "arabic": "فَإِنَّ مَعَ ٱلْعُسْرِ يُسْرًا إِنَّ مَعَ ٱلْعُسْرِ يُسْرًۭا",
+    "english": "For indeed, with hardship [will be] ease. Indeed, with hardship [will be] ease.",
+    "ref": "Ash-Sharh 94:5-6",
+    "transliteration": "Fa inna ma'al-'usri yusra, inna ma'al-'usri yusra",
+    "file": "g-yusra.svg",
+    "aspect": 2.4795,
+    "source": {
+      "url": "https://khattaatt.com/products/fena-maa-aluser-yusra-t-012",
+      "title": "فإن مع العسر يسرًا إن مع العسر يسرًا - خط الثلث",
+      "author": "KHATTAATT"
     }
   }
 ]
