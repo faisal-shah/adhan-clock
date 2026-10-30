@@ -12,14 +12,25 @@ export async function searchPlaces(query: string): Promise<Place[]> {
     const p = x as Record<string, unknown>;
     if (typeof p.latitude !== 'number' || typeof p.longitude !== 'number' || typeof p.name !== 'string') return [];
     const parts = [p.name, p.admin1, p.country].filter((v): v is string => typeof v === 'string' && v.length > 0);
-    return [{ name: parts.join(', '), latitude: p.latitude, longitude: p.longitude, timezone: typeof p.timezone === 'string' ? p.timezone : null }];
+    return [
+      {
+        name: parts.join(', '),
+        latitude: p.latitude,
+        longitude: p.longitude,
+        timezone: typeof p.timezone === 'string' ? p.timezone : null,
+      },
+    ];
   });
 }
 
 /** Device location, named via BigDataCloud's free client-side reverse geocoder. */
 export async function locateDevice(): Promise<Place> {
   const pos = await new Promise<GeolocationPosition>((resolve, reject) =>
-    navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: false, timeout: 20000, maximumAge: 3600_000 }),
+    navigator.geolocation.getCurrentPosition(resolve, reject, {
+      enableHighAccuracy: false,
+      timeout: 20000,
+      maximumAge: 3600_000,
+    }),
   );
   const { latitude, longitude } = pos.coords;
   let name = `${latitude.toFixed(3)}, ${longitude.toFixed(3)}`;

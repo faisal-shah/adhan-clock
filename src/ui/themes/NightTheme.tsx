@@ -6,7 +6,7 @@ import { Clock, T, dateLine } from '../parts';
 
 /** Fixed star positions (deterministic) for a quiet sky. */
 const STARS = Array.from({ length: 70 }, (_, i) => {
-  const r = (n: number) => ((Math.sin(i * 91.17 + n * 12.345) * 24634.6345) % 1 + 1) % 1;
+  const r = (n: number) => (((Math.sin(i * 91.17 + n * 12.345) * 24634.6345) % 1) + 1) % 1;
   return { x: r(1) * 100, y: r(2) * 70, s: 0.12 + r(3) * 0.28, d: r(4) * 8, o: 0.25 + r(5) * 0.55 };
 });
 
@@ -20,13 +20,23 @@ export function NightTheme({ st }: { st: ClockState }) {
   const c = st.countdown;
   const f = countdownFace(c.target.getTime() - st.now.getTime());
   const dua = s.showDaily ? dailyItem(st.now, 10, 'dua', 160) : null;
-  const nextLabel = c.kind === 'suhoor' ? 'Suhoor ends' : c.kind === 'iqamah' ? `${PERIOD_NAMES[c.slot.name]} iqamah` : PERIOD_NAMES[c.slot.name];
+  const nextLabel =
+    c.kind === 'suhoor' ? 'Suhoor ends' : c.kind === 'iqamah' ? `${PERIOD_NAMES[c.slot.name]} iqamah` : PERIOD_NAMES[c.slot.name];
   return (
     <div class="nt">
       {bg && <img class="nt-photo" src={bg.url} alt="" />}
       <div class="nt-sky">
         {STARS.map((x) => (
-          <i style={{ left: `${x.x}%`, top: `${x.y}%`, width: `${x.s}rem`, height: `${x.s}rem`, opacity: x.o, animationDelay: `${-x.d}s` }} />
+          <i
+            style={{
+              left: `${x.x}%`,
+              top: `${x.y}%`,
+              width: `${x.s}rem`,
+              height: `${x.s}rem`,
+              opacity: x.o,
+              animationDelay: `${-x.d}s`,
+            }}
+          />
         ))}
       </div>
       <svg class="nt-moon" viewBox="0 0 100 100">
@@ -41,7 +51,10 @@ export function NightTheme({ st }: { st: ClockState }) {
           <div>
             <span class="nt-k">{nextLabel}</span>
             <T d={c.target} />
-            <span class="nt-in">in {f.value}{f.unit === 'HRS' ? ' h' : ' min'}</span>
+            <span class="nt-in">
+              in {f.value}
+              {f.unit === 'HRS' ? ' h' : ' min'}
+            </span>
           </div>
           <div>
             <span class="nt-k">Last third of the night</span>

@@ -14,7 +14,11 @@ export function LocationPicker({ onPick }: { onPick: (p: Place) => void }) {
     try {
       await f();
     } catch (e) {
-      setError(e instanceof GeolocationPositionError ? 'Location permission was denied or timed out. Search for your city instead.' : String((e as Error).message ?? e));
+      setError(
+        e instanceof GeolocationPositionError
+          ? 'Location permission was denied or timed out. Search for your city instead.'
+          : String((e as Error).message ?? e),
+      );
     } finally {
       setBusy(false);
     }

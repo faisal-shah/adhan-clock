@@ -12,13 +12,27 @@
 }
 
 /* Fallback skies while photos load (or if none are bundled for a slot). */
-.ct.p-fajr { background: linear-gradient(180deg, #1d2d5c 0%, #5b5d8f 55%, #e59c6c 100%); }
-.ct.p-sunrise { background: linear-gradient(180deg, #8fb3d9 0%, #f3d3a6 70%, #f7b77a 100%); }
-.ct.p-dhuhr { background: linear-gradient(180deg, #bcd8f0 0%, #f2ece0 70%); }
-.ct.p-asr { background: linear-gradient(180deg, #d9b98a 0%, #f0cf97 60%, #c98b4e 100%); }
-.ct.p-maghrib { background: linear-gradient(180deg, #3b2a5e 0%, #c25b54 60%, #f4a259 100%); }
-.ct.p-isha { background: linear-gradient(180deg, #050b1d 0%, #13234a 70%, #2b3f6e 100%); }
-.ct.p-night { background: linear-gradient(180deg, #02040a 0%, #0a1430 100%); }
+.ct.p-fajr {
+  background: linear-gradient(180deg, #1d2d5c 0%, #5b5d8f 55%, #e59c6c 100%);
+}
+.ct.p-sunrise {
+  background: linear-gradient(180deg, #8fb3d9 0%, #f3d3a6 70%, #f7b77a 100%);
+}
+.ct.p-dhuhr {
+  background: linear-gradient(180deg, #bcd8f0 0%, #f2ece0 70%);
+}
+.ct.p-asr {
+  background: linear-gradient(180deg, #d9b98a 0%, #f0cf97 60%, #c98b4e 100%);
+}
+.ct.p-maghrib {
+  background: linear-gradient(180deg, #3b2a5e 0%, #c25b54 60%, #f4a259 100%);
+}
+.ct.p-isha {
+  background: linear-gradient(180deg, #050b1d 0%, #13234a 70%, #2b3f6e 100%);
+}
+.ct.p-night {
+  background: linear-gradient(180deg, #02040a 0%, #0a1430 100%);
+}
 
 .ct-photo {
   position: absolute;
@@ -138,7 +152,9 @@
   height: 5.8rem;
   border-radius: 99rem;
   overflow: hidden;
-  box-shadow: 0 0.8rem 2.4rem rgba(5, 12, 30, 0.28), 0 0 0 0.15rem rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 0.8rem 2.4rem rgba(5, 12, 30, 0.28),
+    0 0 0 0.15rem rgba(255, 255, 255, 0.5);
 }
 
 .cd-label {
@@ -253,7 +269,9 @@
   border-radius: 50%;
   padding: 1rem;
   background: linear-gradient(160deg, #f8edd2, #d6b984 45%, #f3e3bd 70%, #b8925a);
-  box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.45), inset 0 0 0 0.2rem rgba(255, 255, 255, 0.4);
+  box-shadow:
+    0 2rem 5rem rgba(0, 0, 0, 0.45),
+    inset 0 0 0 0.2rem rgba(255, 255, 255, 0.4);
 }
 
 .dial-face {
@@ -261,7 +279,9 @@
   height: 100%;
   border-radius: 50%;
   background: radial-gradient(circle at 50% 30%, #1f3463 0%, #12224a 45%, #0b1633 100%);
-  box-shadow: inset 0 0 0 0.25rem rgba(227, 181, 94, 0.35), inset 0 1.5rem 3rem rgba(0, 0, 0, 0.4);
+  box-shadow:
+    inset 0 0 0 0.25rem rgba(227, 181, 94, 0.35),
+    inset 0 1.5rem 3rem rgba(0, 0, 0, 0.4);
   color: #fff;
   text-align: center;
   padding-top: 3.2rem;
@@ -289,7 +309,9 @@
   padding: 0.4rem 2.4rem 0.2rem;
   border-radius: 1.4rem;
   background: linear-gradient(180deg, var(--bronze-1), var(--bronze-2));
-  box-shadow: inset 0 0.15rem 0 rgba(255, 255, 255, 0.25), 0 0.4rem 1rem rgba(0, 0, 0, 0.3);
+  box-shadow:
+    inset 0 0.15rem 0 rgba(255, 255, 255, 0.25),
+    0 0.4rem 1rem rgba(0, 0, 0, 0.3);
   font: 500 4rem var(--sans);
 }
 
@@ -321,7 +343,9 @@
   flex-direction: column;
   align-items: center;
   background: radial-gradient(circle at 50% 30%, #1f3463, #0b1633);
-  box-shadow: 0 1.2rem 3rem rgba(0, 0, 0, 0.4), inset 0 0 0 0.2rem rgba(227, 181, 94, 0.45);
+  box-shadow:
+    0 1.2rem 3rem rgba(0, 0, 0, 0.4),
+    inset 0 0 0 0.2rem rgba(227, 181, 94, 0.45);
   color: #fff;
   font: 400 3rem/1.15 var(--serif-display);
 }

@@ -79,7 +79,7 @@ describe('clockState', () => {
     expect(state(at('23:00')).period.key).toBe('isha');
   });
 
-  it('wraps across midnight: after Isha the next prayer is tomorrow\'s Fajr', () => {
+  it("wraps across midnight: after Isha the next prayer is tomorrow's Fajr", () => {
     const st = state(at('23:30'));
     expect(st.current.prayer).toBe('isha');
     expect(st.next.prayer).toBe('fajr');

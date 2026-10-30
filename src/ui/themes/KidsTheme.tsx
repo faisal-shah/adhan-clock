@@ -85,7 +85,11 @@ const FLOWERS: [number, number, string][] = [
 
 function Flower({ x, k, color }: { x: number; k: number; color: string }) {
   return (
-    <svg class="kd-flower" viewBox="-20 -20 40 70" style={{ left: `${x / 10}rem`, width: `${5.6 * k}rem`, height: `${9.8 * k}rem` }}>
+    <svg
+      class="kd-flower"
+      viewBox="-20 -20 40 70"
+      style={{ left: `${x / 10}rem`, width: `${5.6 * k}rem`, height: `${9.8 * k}rem` }}
+    >
       <path d="M0 6V46" stroke="#2f9e44" stroke-width="3" />
       <path d="M0 30c6-8 14-8 16-4-4 5-10 7-16 4Z" fill="#2f9e44" />
       {[0, 72, 144, 216, 288].map((a) => (
@@ -122,7 +126,14 @@ export function KidsTheme({ st }: { st: ClockState }) {
   const f = clockFace(st.now, settings.value.clock24h);
   const c = st.countdown;
   const mins = minutesLeft(c.target.getTime() - st.now.getTime());
-  const what = c.kind === 'iqamah' ? `${PERIOD_NAMES[c.slot.name]} iqamah` : c.kind === 'iftar' ? 'Iftar' : c.kind === 'suhoor' ? 'Suhoor ends' : PERIOD_NAMES[c.slot.name];
+  const what =
+    c.kind === 'iqamah'
+      ? `${PERIOD_NAMES[c.slot.name]} iqamah`
+      : c.kind === 'iftar'
+        ? 'Iftar'
+        : c.kind === 'suhoor'
+          ? 'Suhoor ends'
+          : PERIOD_NAMES[c.slot.name];
   const inText = mins >= 60 ? `${Math.floor(mins / 60)} hr ${mins % 60} min` : `${mins} min`;
   const reminder = kidReminder(st.now, st.next, st.current);
   return (
@@ -164,32 +175,34 @@ export function KidsTheme({ st }: { st: ClockState }) {
         </div>
       </Cloud>
 
-      <div class="kd-clock">
-        <span class="kd-hm">{f.hm}</span>
-        {f.ampm && (
-          <span class="kd-ampm">
-            <span>{f.ampm[0]}</span>
-            <span>{f.ampm[1]}</span>
-          </span>
-        )}
-      </div>
-      <div class="kd-date">{dateLine(st.now, st.hijri)}</div>
+      <div class="canvas">
+        <div class="kd-clock">
+          <span class="kd-hm">{f.hm}</span>
+          {f.ampm && (
+            <span class="kd-ampm">
+              <span>{f.ampm[0]}</span>
+              <span>{f.ampm[1]}</span>
+            </span>
+          )}
+        </div>
+        <div class="kd-date">{dateLine(st.now, st.hijri)}</div>
 
-      <div class="kd-cards">
-        {st.slots.map((slot) => (
-          <div class={`kd-card ${slot.id === st.current.id ? 'current' : ''}`}>
-            {slot.id === st.current.id && <Star />}
-            <div class="kd-card-name">{PERIOD_NAMES[slot.name].toUpperCase()}</div>
-            <div class="kd-card-time">
-              <T d={slot.athan} />
+        <div class="kd-cards">
+          {st.slots.map((slot) => (
+            <div class={`kd-card ${slot.id === st.current.id ? 'current' : ''}`}>
+              {slot.id === st.current.id && <Star />}
+              <div class="kd-card-name">{PERIOD_NAMES[slot.name].toUpperCase()}</div>
+              <div class="kd-card-time">
+                <T d={slot.athan} />
+              </div>
+              <div class="kd-card-label">{st.ramadan && slot.prayer === 'maghrib' ? 'Iftar' : 'Athan'}</div>
+              <div class="kd-card-time">
+                <T d={slot.iqamah} />
+              </div>
+              <div class="kd-card-label">{slot.name === 'jumuah' ? 'Jumu’ah' : 'Iqamah'}</div>
             </div>
-            <div class="kd-card-label">{st.ramadan && slot.prayer === 'maghrib' ? 'Iftar' : 'Athan'}</div>
-            <div class="kd-card-time">
-              <T d={slot.iqamah} />
-            </div>
-            <div class="kd-card-label">{slot.name === 'jumuah' ? 'Jumu’ah' : 'Iqamah'}</div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       <div class="kd-ground">

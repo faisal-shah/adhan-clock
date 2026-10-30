@@ -318,11 +318,12 @@ export function clockState(
   else if (n < current.athan.getTime() + s.calligraphyMinutes * MIN) theme = 'calligraphy';
 
   const friday = upcomingFriday(now);
-  const tahajjud = n < days.today.lastThird.getTime() && n >= days.today.fajr.getTime()
-    ? days.today.lastThird
-    : n < days.today.fajr.getTime() && n < days.yesterday.lastThird.getTime()
-      ? days.yesterday.lastThird
-      : days.today.lastThird;
+  const tahajjud =
+    n < days.today.lastThird.getTime() && n >= days.today.fajr.getTime()
+      ? days.today.lastThird
+      : n < days.today.fajr.getTime() && n < days.yesterday.lastThird.getTime()
+        ? days.yesterday.lastThird
+        : days.today.lastThird;
 
   return {
     now,

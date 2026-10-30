@@ -58,67 +58,69 @@ export function ClassicTheme({ st }: { st: ClockState }) {
       <div class="cl-pattern" />
       <div class="cl-band" />
 
-      <div class="cl-pills left">
-        {st.jumuah.map((d, i) => (
-          <div class="cl-pill">
-            <div class="cl-pill-label">{st.jumuah.length > 1 ? `JUMU’AH ${i + 1}` : 'JUMU’AH'}</div>
-            <T d={d} />
-          </div>
-        ))}
-      </div>
-      <div class="cl-pills right">
-        <div class="cl-pill">
-          <div class="cl-pill-label">SUNRISE</div>
-          <T d={st.today.sunrise} />
-        </div>
-        <div class="cl-pill">
-          <div class="cl-pill-label">SUNSET</div>
-          <T d={st.today.maghrib} />
-        </div>
-      </div>
-
-      <div class="cl-card">
-        <WeatherChip />
-        <div class="cl-clock">
-          <Clock d={st.now} />
-        </div>
-        <div class="cl-date">{dateLine(st.now, st.hijri)}</div>
-        <MakruhBadge st={st} />
-      </div>
-
-      <div class="cl-row">
-        {st.slots.map((slot) => {
-          const current = slot.id === st.current.id;
-          const iftar = st.ramadan && slot.prayer === 'maghrib';
-          return (
-            <div class={`cl-prayer ${current ? 'current' : ''}`}>
-              <div class="cl-tiny">{iftar ? 'IFTAR' : 'ATHAN'}</div>
-              <div class="cl-time">
-                <T d={slot.athan} />
-              </div>
-              <div class="cl-name">{PERIOD_NAMES[slot.name].toUpperCase()}</div>
-              <div class="cl-time iq">
-                <T d={slot.iqamah} />
-              </div>
-              <div class="cl-tiny">{slot.name === 'jumuah' ? 'JUMU’AH' : 'IQAMAH'}</div>
+      <div class="canvas">
+        <div class="cl-pills left">
+          {st.jumuah.map((d, i) => (
+            <div class="cl-pill">
+              <div class="cl-pill-label">{st.jumuah.length > 1 ? `JUMU’AH ${i + 1}` : 'JUMU’AH'}</div>
+              <T d={d} />
             </div>
-          );
-        })}
-        <Medallion st={st} />
-      </div>
-
-      <div class="cl-foot">
-        {item ? (
-          <div class="cl-daily" key={item.id}>
-            <span class="cl-daily-label">{DAILY_LABEL[item.type]}</span>
-            <span class={`cl-daily-ar ${isUthmani(item.arabic) ? 'quranic' : ''}`}>{item.arabic}</span>
-            <span class="cl-daily-en">
-              “{item.english}” <i>{item.ref}</i>
-            </span>
+          ))}
+        </div>
+        <div class="cl-pills right">
+          <div class="cl-pill">
+            <div class="cl-pill-label">SUNRISE</div>
+            <T d={st.today.sunrise} />
           </div>
-        ) : (
-          <div class="cl-daily-en">Prayer times for {s.title || s.place?.name}</div>
-        )}
+          <div class="cl-pill">
+            <div class="cl-pill-label">SUNSET</div>
+            <T d={st.today.maghrib} />
+          </div>
+        </div>
+
+        <div class="cl-card">
+          <WeatherChip />
+          <div class="cl-clock">
+            <Clock d={st.now} />
+          </div>
+          <div class="cl-date">{dateLine(st.now, st.hijri)}</div>
+          <MakruhBadge st={st} />
+        </div>
+
+        <div class="cl-row">
+          {st.slots.map((slot) => {
+            const current = slot.id === st.current.id;
+            const iftar = st.ramadan && slot.prayer === 'maghrib';
+            return (
+              <div class={`cl-prayer ${current ? 'current' : ''}`}>
+                <div class="cl-tiny">{iftar ? 'IFTAR' : 'ATHAN'}</div>
+                <div class="cl-time">
+                  <T d={slot.athan} />
+                </div>
+                <div class="cl-name">{PERIOD_NAMES[slot.name].toUpperCase()}</div>
+                <div class="cl-time iq">
+                  <T d={slot.iqamah} />
+                </div>
+                <div class="cl-tiny">{slot.name === 'jumuah' ? 'JUMU’AH' : 'IQAMAH'}</div>
+              </div>
+            );
+          })}
+          <Medallion st={st} />
+        </div>
+
+        <div class="cl-foot">
+          {item ? (
+            <div class="cl-daily" key={item.id}>
+              <span class="cl-daily-label">{DAILY_LABEL[item.type]}</span>
+              <span class={`cl-daily-ar ${isUthmani(item.arabic) ? 'quranic' : ''}`}>{item.arabic}</span>
+              <span class="cl-daily-en">
+                “{item.english}” <i>{item.ref}</i>
+              </span>
+            </div>
+          ) : (
+            <div class="cl-daily-en">Prayer times for {s.title || s.place?.name}</div>
+          )}
+        </div>
       </div>
     </div>
   );

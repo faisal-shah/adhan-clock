@@ -6,8 +6,7 @@
   display: grid;
   place-items: center;
   background:
-    radial-gradient(80rem 60rem at 50% 0%, rgba(227, 181, 94, 0.16), transparent 70%),
-    linear-gradient(180deg, #0b1530, #050a17);
+    radial-gradient(80rem 60rem at 50% 0%, rgba(227, 181, 94, 0.16), transparent 70%), linear-gradient(180deg, #0b1530, #050a17);
   color: #f4ecdc;
 }
 

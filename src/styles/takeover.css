@@ -24,13 +24,27 @@
   inset: 0;
 }
 
-.tk-bg.p-fajr { background: linear-gradient(180deg, #1d2d5c, #5b5d8f 55%, #e59c6c); }
-.tk-bg.p-sunrise { background: linear-gradient(180deg, #8fb3d9, #f3d3a6 70%, #f7b77a); }
-.tk-bg.p-dhuhr { background: linear-gradient(180deg, #7fa9d6, #e9dcc4 75%); }
-.tk-bg.p-asr { background: linear-gradient(180deg, #b48a57, #e7bb7b 60%, #a8683a); }
-.tk-bg.p-maghrib { background: linear-gradient(180deg, #3b2a5e, #c25b54 60%, #f4a259); }
-.tk-bg.p-isha { background: linear-gradient(180deg, #050b1d, #13234a 70%, #2b3f6e); }
-.tk-bg.p-night { background: linear-gradient(180deg, #02040a, #0a1430); }
+.tk-bg.p-fajr {
+  background: linear-gradient(180deg, #1d2d5c, #5b5d8f 55%, #e59c6c);
+}
+.tk-bg.p-sunrise {
+  background: linear-gradient(180deg, #8fb3d9, #f3d3a6 70%, #f7b77a);
+}
+.tk-bg.p-dhuhr {
+  background: linear-gradient(180deg, #7fa9d6, #e9dcc4 75%);
+}
+.tk-bg.p-asr {
+  background: linear-gradient(180deg, #b48a57, #e7bb7b 60%, #a8683a);
+}
+.tk-bg.p-maghrib {
+  background: linear-gradient(180deg, #3b2a5e, #c25b54 60%, #f4a259);
+}
+.tk-bg.p-isha {
+  background: linear-gradient(180deg, #050b1d, #13234a 70%, #2b3f6e);
+}
+.tk-bg.p-night {
+  background: linear-gradient(180deg, #02040a, #0a1430);
+}
 
 .tk-bg img {
   position: absolute;
@@ -92,7 +106,9 @@
   -webkit-mask-image: radial-gradient(circle, rgba(0, 0, 0, 0.9) 4%, rgba(0, 0, 0, 0.35) 20%, transparent 40%);
   mask-image: radial-gradient(circle, rgba(0, 0, 0, 0.9) 4%, rgba(0, 0, 0, 0.35) 20%, transparent 40%);
   mix-blend-mode: screen;
-  animation: rays 200s linear infinite, xf-in 4s ease both;
+  animation:
+    rays 200s linear infinite,
+    xf-in 4s ease both;
 }
 
 .tk-motes span {
@@ -153,7 +169,9 @@
   height: 60rem;
   margin: -30rem 0 0 -45rem;
   background: radial-gradient(closest-side, rgba(255, 214, 140, 0.32), rgba(255, 214, 140, 0.08) 60%, transparent);
-  animation: breathe 7s ease-in-out infinite alternate, xf-in 3s ease both;
+  animation:
+    breathe 7s ease-in-out infinite alternate,
+    xf-in 3s ease both;
 }
 
 @keyframes breathe {

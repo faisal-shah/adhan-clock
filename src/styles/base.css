@@ -50,6 +50,20 @@ button {
   color: inherit;
 }
 
+/*
+ * The 1600x1000 content canvas, centred in the viewport. Decoration anchored
+ * to screen edges stays outside it; on 4:3 screens the canvas floats in the
+ * middle instead of hugging the top.
+ */
+.canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 160rem;
+  height: 100rem;
+  transform: translate(-50%, -50%);
+}
+
 .stage {
   position: fixed;
   inset: 0;
@@ -138,15 +152,15 @@ button {
 
 /* Gold leaf: layered gradient clipped to the glyphs, a slow sheen, a soft shadow. */
 .callig.gold {
-  background: linear-gradient(
-      100deg,
-      transparent 40%,
-      rgba(255, 252, 235, 0.85) 50%,
-      transparent 60%
-    ),
+  background:
+    linear-gradient(100deg, transparent 40%, rgba(255, 252, 235, 0.85) 50%, transparent 60%),
     linear-gradient(172deg, #fff3cf 0%, #f2cf84 28%, #c99540 52%, #f5dc9c 70%, #b5832f 100%);
-  background-size: 300% 100%, 100% 100%;
-  background-position: 120% 0, 0 0;
+  background-size:
+    300% 100%,
+    100% 100%;
+  background-position:
+    120% 0,
+    0 0;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -166,10 +180,14 @@ button {
 @keyframes sheen {
   0%,
   55% {
-    background-position: 120% 0, 0 0;
+    background-position:
+      120% 0,
+      0 0;
   }
   100% {
-    background-position: -40% 0, 0 0;
+    background-position:
+      -40% 0,
+      0 0;
   }
 }
 

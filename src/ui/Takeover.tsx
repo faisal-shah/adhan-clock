@@ -20,7 +20,7 @@ const BG_OF: Record<PeriodKey, BgSlot> = {
 
 /** Deterministic dust motes drifting up through the light. */
 const MOTES = Array.from({ length: 18 }, (_, i) => {
-  const r = (n: number) => ((Math.sin(i * 12.9898 + n * 78.233) * 43758.5453) % 1 + 1) % 1;
+  const r = (n: number) => (((Math.sin(i * 12.9898 + n * 78.233) * 43758.5453) % 1) + 1) % 1;
   return {
     left: `${8 + r(1) * 84}%`,
     size: `${0.3 + r(2) * 0.7}rem`,
@@ -32,11 +32,7 @@ const MOTES = Array.from({ length: 18 }, (_, i) => {
 
 function Backdrop({ slot, now, blur }: { slot: BgSlot; now: Date; blur: boolean }) {
   const bg = backgroundFor(slot, now);
-  return (
-    <div class={`tk-bg p-${slot} ${blur ? 'blur' : ''}`}>
-      {bg && <img src={bg.url} alt="" />}
-    </div>
-  );
+  return <div class={`tk-bg p-${slot} ${blur ? 'blur' : ''}`}>{bg && <img src={bg.url} alt="" />}</div>;
 }
 
 function Ring({ t, now, label, sub }: { t: TakeoverState; now: Date; label: string; sub: string }) {
@@ -133,7 +129,14 @@ export function TakeoverLayer({ st }: { st: ClockState }) {
       <div class="tk-motes">
         {MOTES.map((m) => (
           <span
-            style={{ left: m.left, width: m.size, height: m.size, animationDelay: m.delay, animationDuration: m.duration, opacity: m.opacity }}
+            style={{
+              left: m.left,
+              width: m.size,
+              height: m.size,
+              animationDelay: m.delay,
+              animationDuration: m.duration,
+              opacity: m.opacity,
+            }}
           />
         ))}
       </div>

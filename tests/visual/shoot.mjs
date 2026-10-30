@@ -14,7 +14,11 @@ for (const spec of specs) {
   const [name, rest] = spec.split(/=(.*)/s);
   const [query, json] = rest.split(';');
   const settings = { place: CHICAGO, ...(json ? JSON.parse(json) : {}) };
-  const ctx = await browser.newContext({ viewport: { width, height }, timezoneId: 'America/Chicago', deviceScaleFactor: Number(process.env.DPR ?? 1) });
+  const ctx = await browser.newContext({
+    viewport: { width, height },
+    timezoneId: 'America/Chicago',
+    deviceScaleFactor: Number(process.env.DPR ?? 1),
+  });
   await ctx.addInitScript((s) => localStorage.setItem('adhan-clock:settings', JSON.stringify(s)), settings);
   const page = await ctx.newPage();
   const errors = [];

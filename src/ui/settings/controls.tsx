@@ -110,7 +110,5 @@ export function Slider({ value, onChange }: { value: number; onChange: (v: numbe
 }
 
 export function TimeInput({ value, onChange }: { value: string; onChange: (v: string) => void }) {
-  return (
-    <input class="time-input" type="time" value={value} onChange={(e) => onChange((e.target as HTMLInputElement).value)} />
-  );
+  return <input class="time-input" type="time" value={value} onChange={(e) => onChange((e.target as HTMLInputElement).value)} />;
 }

@@ -223,13 +223,24 @@ function DisplaySection() {
         />
       </Row>
       <Row label="Calligraphy style">
-        <Segmented value={s.calligraphyFont} options={CALLIGRAPHY_FONTS} onChange={(calligraphyFont) => set(() => ({ calligraphyFont }))} />
+        <Segmented
+          value={s.calligraphyFont}
+          options={CALLIGRAPHY_FONTS}
+          onChange={(calligraphyFont) => set(() => ({ calligraphyFont }))}
+        />
       </Row>
       <Row label="24-hour clock">
         <Toggle value={s.clock24h} onChange={(clock24h) => set(() => ({ clock24h }))} />
       </Row>
       <Row label="Hijri date adjustment" hint="Shift to match local moonsighting.">
-        <Stepper value={s.hijriOffset} min={-2} max={2} unit="days" signed onChange={(hijriOffset) => set(() => ({ hijriOffset }))} />
+        <Stepper
+          value={s.hijriOffset}
+          min={-2}
+          max={2}
+          unit="days"
+          signed
+          onChange={(hijriOffset) => set(() => ({ hijriOffset }))}
+        />
       </Row>
       <Row label="Ramadan mode" hint="Suhoor and iftar countdowns and the iftar dua.">
         <Segmented
@@ -264,7 +275,12 @@ function DisplaySection() {
         <Toggle value={s.makruhBadge} onChange={(makruhBadge) => set(() => ({ makruhBadge }))} />
       </Row>
       <Row label="Name" hint="Shown at the foot of the classic theme.">
-        <input class="text-input" value={s.title} maxLength={40} onInput={(e) => set(() => ({ title: (e.target as HTMLInputElement).value }))} />
+        <input
+          class="text-input"
+          value={s.title}
+          maxLength={40}
+          onInput={(e) => set(() => ({ title: (e.target as HTMLInputElement).value }))}
+        />
       </Row>
     </>
   );
@@ -282,10 +298,24 @@ function NightSection() {
       {n.enabled && (
         <>
           <Row label="Starts after Isha">
-            <Stepper value={n.startAfterIsha} min={0} max={240} step={15} unit="min" onChange={(startAfterIsha) => setNight({ startAfterIsha })} />
+            <Stepper
+              value={n.startAfterIsha}
+              min={0}
+              max={240}
+              step={15}
+              unit="min"
+              onChange={(startAfterIsha) => setNight({ startAfterIsha })}
+            />
           </Row>
           <Row label="Ends before Fajr" hint="0 keeps it dark until the Fajr athan.">
-            <Stepper value={n.endBeforeFajr} min={0} max={120} step={5} unit="min" onChange={(endBeforeFajr) => setNight({ endBeforeFajr })} />
+            <Stepper
+              value={n.endBeforeFajr}
+              min={0}
+              max={120}
+              step={5}
+              unit="min"
+              onChange={(endBeforeFajr) => setNight({ endBeforeFajr })}
+            />
           </Row>
         </>
       )}
@@ -306,7 +336,15 @@ function shortLabel(label: string): string {
   return `${kind.startsWith('Fajr') ? 'Fajr · ' : ''}${who.replace(/\s*\(.*\)$/, '')}`;
 }
 
-function SoundPicker({ choice, kind, onChange }: { choice: SoundChoice; kind: 'athan' | 'fajr'; onChange: (c: SoundChoice) => void }) {
+function SoundPicker({
+  choice,
+  kind,
+  onChange,
+}: {
+  choice: SoundChoice;
+  kind: 'athan' | 'fajr';
+  onChange: (c: SoundChoice) => void;
+}) {
   const [playing, setPlaying] = useState(false);
   const stopRef = useRef<(() => void) | null>(null);
   useEffect(() => () => stopRef.current?.(), []);
@@ -362,7 +400,9 @@ async function removeUpload(id: string) {
       PRAYERS.map((p) => [p, x.sounds[p].audioId === ref ? DEFAULT_SETTINGS.sounds[p] : x.sounds[p]]),
     ) as Settings['sounds'],
     tahajjud: x.tahajjud.audioId === ref ? { ...x.tahajjud, audioId: DEFAULT_SETTINGS.tahajjud.audioId } : x.tahajjud,
-    backgrounds: Object.fromEntries(BG_SLOTS.map((b) => [b, x.backgrounds[b] === ref ? 'auto' : x.backgrounds[b]])) as Settings['backgrounds'],
+    backgrounds: Object.fromEntries(
+      BG_SLOTS.map((b) => [b, x.backgrounds[b] === ref ? 'auto' : x.backgrounds[b]]),
+    ) as Settings['backgrounds'],
   }));
 }
 
@@ -386,7 +426,9 @@ function SoundSection() {
       <Row label="Chime before the athan">
         <div class="sound">
           <Toggle value={s.chime.enabled} onChange={(enabled) => set((x) => ({ chime: { ...x.chime, enabled } }))} />
-          {s.chime.enabled && <Slider value={s.chime.volume} onChange={(volume) => set((x) => ({ chime: { ...x.chime, volume } }))} />}
+          {s.chime.enabled && (
+            <Slider value={s.chime.volume} onChange={(volume) => set((x) => ({ chime: { ...x.chime, volume } }))} />
+          )}
         </div>
       </Row>
       <div class="panel-sub">Athan</div>
@@ -454,8 +496,12 @@ function BackgroundsSection() {
         const choice = s.backgrounds[slot];
         const showing = backgroundFor(slot, day);
         const items = [
-          ...bundledBackgrounds.value.filter((b) => b.slot === slot).map((b) => ({ id: b.id, url: `/backgrounds/${b.fileSm}`, upload: null as Upload | null })),
-          ...uploads.value.filter((u) => u.kind === 'image' && u.slot === slot).map((u) => ({ id: `upload:${u.id}`, url: uploadUrl(u), upload: u })),
+          ...bundledBackgrounds.value
+            .filter((b) => b.slot === slot)
+            .map((b) => ({ id: b.id, url: `/backgrounds/${b.fileSm}`, upload: null as Upload | null })),
+          ...uploads.value
+            .filter((u) => u.kind === 'image' && u.slot === slot)
+            .map((u) => ({ id: `upload:${u.id}`, url: uploadUrl(u), upload: u })),
         ];
         const pick = (id: string) => set((x) => ({ backgrounds: { ...x.backgrounds, [slot]: id } }));
         return (
@@ -541,7 +587,10 @@ function PreviewSection() {
         >
           Jumu'ah
         </button>
-        <button class="btn" onClick={() => go(new Date(st.today.isha.getTime() + (settings.value.night.startAfterIsha + 5) * 60 * sec))}>
+        <button
+          class="btn"
+          onClick={() => go(new Date(st.today.isha.getTime() + (settings.value.night.startAfterIsha + 5) * 60 * sec))}
+        >
           Night theme
         </button>
         <button class="btn" onClick={() => go(new Date(st.today.sunrise.getTime() + 5 * 60 * sec))}>
@@ -578,8 +627,8 @@ function TabletSection() {
       </div>
       <p class="panel-note">
         For a wall-mounted tablet, open this page in <b>Fully Kiosk Browser</b> (Android): set it as the start URL, enable
-        "Autoplay audio" and "Enable JavaScript Interface" (for night brightness), "Keep screen on" and "Launch on boot".
-        In plain Chrome, use "Add to Home screen"; the athan sound then needs one tap after each restart.
+        "Autoplay audio" and "Enable JavaScript Interface" (for night brightness), "Keep screen on" and "Launch on boot". In plain
+        Chrome, use "Add to Home screen"; the athan sound then needs one tap after each restart.
       </p>
       <p class="panel-note">
         Prayer times are calculated on this tablet. Settings, photos and recordings are stored only in this browser.
@@ -587,11 +636,20 @@ function TabletSection() {
       </p>
       <div class="panel-sub">Sources</div>
       <p class="panel-note">
-        Quran text from <a href="https://tanzil.net" target="_blank" rel="noreferrer">Tanzil.net</a> (Uthmani), English
-        translation Saheeh International. Hadith from the hadith-api collection, numbered as on sunnah.com; only sahih
-        and hasan narrations. Prayer times by adhan-js. Weather by Open-Meteo. Photo and recording credits:{' '}
-        <a href="/backgrounds/CREDITS.md" target="_blank" rel="noreferrer">photos</a>,{' '}
-        <a href="/audio/CREDITS.md" target="_blank" rel="noreferrer">athans</a>.
+        Quran text from{' '}
+        <a href="https://tanzil.net" target="_blank" rel="noreferrer">
+          Tanzil.net
+        </a>{' '}
+        (Uthmani), English translation Saheeh International. Hadith from the hadith-api collection, numbered as on sunnah.com;
+        only sahih and hasan narrations. Prayer times by adhan-js. Weather by Open-Meteo. Photo and recording credits:{' '}
+        <a href="/backgrounds/CREDITS.md" target="_blank" rel="noreferrer">
+          photos
+        </a>
+        ,{' '}
+        <a href="/audio/CREDITS.md" target="_blank" rel="noreferrer">
+          athans
+        </a>
+        .
       </p>
     </>
   );
@@ -640,5 +698,3 @@ export function SettingsPanel() {
     </div>
   );
 }
-
-

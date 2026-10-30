@@ -52,7 +52,9 @@
   stroke-width: 2.4;
   stroke-linecap: round;
   stroke-linejoin: round;
-  animation: glide 60s linear infinite, flap 0.9s ease-in-out infinite alternate;
+  animation:
+    glide 60s linear infinite,
+    flap 0.9s ease-in-out infinite alternate;
 }
 
 .kd-bird.b0 {
@@ -63,13 +65,17 @@
 .kd-bird.b1 {
   top: 24rem;
   width: 2.8rem;
-  animation-delay: -12s, -0.4s;
+  animation-delay:
+    -12s,
+    -0.4s;
 }
 
 .kd-bird.b2 {
   top: 19rem;
   width: 2.4rem;
-  animation-delay: -40s, -0.2s;
+  animation-delay:
+    -40s,
+    -0.2s;
   animation-duration: 75s, 0.8s;
 }
 
@@ -259,14 +265,18 @@
   padding: 2rem 0 1.8rem;
   border-radius: 2.4rem;
   background: linear-gradient(180deg, #2bc4e3 0%, #12a6c9 100%);
-  box-shadow: 0 0.8rem 0 #0c87a6, 0 1.6rem 2.4rem rgba(18, 120, 150, 0.3);
+  box-shadow:
+    0 0.8rem 0 #0c87a6,
+    0 1.6rem 2.4rem rgba(18, 120, 150, 0.3);
   text-align: center;
   color: #fff;
 }
 
 .kd-card.current {
   background: linear-gradient(180deg, #ffe36e 0%, #ffcc29 100%);
-  box-shadow: 0 0.8rem 0 #e2a90c, 0 1.6rem 2.4rem rgba(200, 140, 10, 0.35);
+  box-shadow:
+    0 0.8rem 0 #e2a90c,
+    0 1.6rem 2.4rem rgba(200, 140, 10, 0.35);
   color: #1a2340;
   animation: bounce 2.4s ease-in-out infinite;
 }
@@ -389,7 +399,9 @@
   gap: 1.4rem;
   font: 600 3rem var(--sans);
   color: #fff;
-  text-shadow: 0 0.2rem 0 #237a36, 0 0.4rem 1rem rgba(0, 0, 0, 0.2);
+  text-shadow:
+    0 0.2rem 0 #237a36,
+    0 0.4rem 1rem rgba(0, 0, 0, 0.2);
   animation: rise 0.9s var(--ease-out) both;
 }
 

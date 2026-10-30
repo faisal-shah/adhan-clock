@@ -6,7 +6,10 @@ async function open(page: Page, now: string, settings: Record<string, unknown> =
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(String(e)));
   page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
-  await page.addInitScript((s) => localStorage.setItem('adhan-clock:settings', JSON.stringify(s)), { place: CHICAGO, ...settings });
+  await page.addInitScript((s) => localStorage.setItem('adhan-clock:settings', JSON.stringify(s)), {
+    place: CHICAGO,
+    ...settings,
+  });
   await page.goto(`/?now=${now}`);
   return errors;
 }

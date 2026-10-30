@@ -92,8 +92,7 @@ export interface Settings {
   title: string;
 }
 
-const perPrayer = <T>(f: (p: PrayerKey) => T) =>
-  Object.fromEntries(PRAYERS.map((p) => [p, f(p)])) as Record<PrayerKey, T>;
+const perPrayer = <T>(f: (p: PrayerKey) => T) => Object.fromEntries(PRAYERS.map((p) => [p, f(p)])) as Record<PrayerKey, T>;
 
 export const DEFAULT_SETTINGS: Settings = {
   place: null,
@@ -156,7 +155,8 @@ function overlay<T>(defaults: T, raw: unknown, key = ''): T {
 function parsePlace(raw: unknown): Place | null {
   if (!raw || typeof raw !== 'object') return null;
   const p = raw as Record<string, unknown>;
-  const lat = p.latitude, lon = p.longitude;
+  const lat = p.latitude,
+    lon = p.longitude;
   if (typeof lat !== 'number' || typeof lon !== 'number' || Math.abs(lat) > 90 || Math.abs(lon) > 180) return null;
   return {
     name: typeof p.name === 'string' ? p.name : `${lat.toFixed(3)}, ${lon.toFixed(3)}`,

@@ -8,8 +8,7 @@ export interface Weather {
 /** Current conditions from Open-Meteo (free, no key, CORS-enabled). */
 export async function fetchWeather(lat: number, lon: number): Promise<Weather> {
   const url =
-    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
-    '&current=temperature_2m,weather_code,is_day';
+    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` + '&current=temperature_2m,weather_code,is_day';
   const r = await fetch(url);
   if (!r.ok) throw new Error(`weather: HTTP ${r.status}`);
   const j = await r.json();

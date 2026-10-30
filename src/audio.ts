@@ -37,7 +37,12 @@ function playable(url: string): Promise<string> {
 /** Warms the blobs for every sound the settings currently use. */
 export function preloadSounds(): void {
   const s = settings.value;
-  const ids = new Set([...Object.values(s.sounds).filter((c) => c.enabled).map((c) => c.audioId), 'chime']);
+  const ids = new Set([
+    ...Object.values(s.sounds)
+      .filter((c) => c.enabled)
+      .map((c) => c.audioId),
+    'chime',
+  ]);
   if (s.tahajjud.enabled) ids.add(s.tahajjud.audioId);
   for (const id of ids) {
     const a = resolveAudio(id);
