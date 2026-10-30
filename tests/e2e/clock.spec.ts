@@ -102,3 +102,22 @@ test('Fajr uses the Fajr athan', async ({ page }) => {
   await open(page, '2026-10-29T06:02:10');
   await expect.poll(() => urls.some((u) => u.endsWith('athan-fajr-1.mp3'))).toBe(true);
 });
+
+test('gallery rotates captioned photos by the configured interval', async ({ page }) => {
+  const items = ['a', 'b', 'c'].map((id) => ({
+    id,
+    file: '../backgrounds/isha-1.webp',
+    category: 'mosques',
+    title: `Title ${id}`,
+    subtitle: 'Somewhere',
+    fit: 'cover',
+    textTone: 'light',
+    credit: {},
+  }));
+  await page.route('**/gallery/index.json', (r) => r.fulfill({ json: items }));
+  const errors = await open(page, '2026-10-29T14:53:00', { dayTheme: 'gallery' });
+  await expect(page.locator('.gl-title')).toHaveText(/Title [abc]/);
+  await expect(page.locator('.gl-cat')).toHaveText('Mosques of the World');
+  await expect(page.locator('.gl-p')).toHaveCount(5);
+  expect(errors).toEqual([]);
+});

@@ -1,4 +1,4 @@
-import type { BgSlot } from './settings';
+import type { BgSlot, GalleryCategory } from './settings';
 
 export interface Credit {
   title: string;
@@ -27,6 +27,18 @@ export interface BundledAudio {
   credit: Credit;
 }
 
+export interface GalleryItem {
+  id: string;
+  file: string;
+  category: GalleryCategory;
+  title: string;
+  subtitle: string;
+  fit: 'cover' | 'contain';
+  textTone: 'light' | 'dark';
+  focus?: string;
+  credit: Credit;
+}
+
 /** A user upload. The blob lives in IndexedDB; this metadata mirrors it in memory. */
 export interface Upload {
   id: string;
@@ -52,6 +64,7 @@ async function fetchJson<T>(path: string): Promise<T> {
 
 export const loadBundledBackgrounds = () => fetchJson<BundledBackground[]>('/backgrounds/index.json');
 export const loadBundledAudio = () => fetchJson<BundledAudio[]>('/audio/index.json');
+export const loadGallery = () => fetchJson<GalleryItem[]>('/gallery/index.json');
 
 // --- IndexedDB upload store -------------------------------------------------
 

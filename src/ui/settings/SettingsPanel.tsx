@@ -10,6 +10,8 @@ import {
   CALC_METHODS,
   CALLIGRAPHY_FONTS,
   DEFAULT_SETTINGS,
+  GALLERY_CATEGORIES,
+  type GalleryCategory,
   HIGH_LAT_RULES,
   PRAYERS,
   type BgSlot,
@@ -208,10 +210,32 @@ function DisplaySection() {
             ['calligraphy', 'Calligraphy'],
             ['classic', 'Classic'],
             ['kids', 'Kids'],
+            ['gallery', 'Gallery'],
           ]}
           onChange={(dayTheme) => set(() => ({ dayTheme }))}
         />
       </Row>
+      {s.dayTheme === 'gallery' && (
+        <>
+          <Row label="Change the photo every">
+            <Stepper
+              value={s.gallery.minutes}
+              min={1}
+              max={60}
+              unit="min"
+              onChange={(minutes) => set((x) => ({ gallery: { ...x.gallery, minutes } }))}
+            />
+          </Row>
+          {(Object.keys(GALLERY_CATEGORIES) as GalleryCategory[]).map((c) => (
+            <Row label={GALLERY_CATEGORIES[c]}>
+              <Toggle
+                value={s.gallery.categories[c]}
+                onChange={(v) => set((x) => ({ gallery: { ...x.gallery, categories: { ...x.gallery.categories, [c]: v } } }))}
+              />
+            </Row>
+          ))}
+        </>
+      )}
       <Row label="Calligraphy after each athan" hint="How long the calligraphy theme stays after the athan.">
         <Stepper
           value={s.calligraphyMinutes}

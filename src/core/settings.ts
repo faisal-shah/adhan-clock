@@ -1,7 +1,7 @@
 export const PRAYERS = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'] as const;
 export type PrayerKey = (typeof PRAYERS)[number];
 
-export const DAY_THEMES = ['calligraphy', 'classic', 'kids'] as const;
+export const DAY_THEMES = ['calligraphy', 'classic', 'kids', 'gallery'] as const;
 export type DayTheme = (typeof DAY_THEMES)[number];
 export type ThemeKey = DayTheme | 'night';
 
@@ -35,6 +35,14 @@ export const CALLIGRAPHY_FONTS = {
   kufi: 'Kufi',
 } as const;
 export type CalligraphyFont = keyof typeof CALLIGRAPHY_FONTS;
+
+export const GALLERY_CATEGORIES = {
+  mosques: 'Mosques of the World',
+  learning: 'Seekers of Knowledge',
+  treasures: 'Treasures of Islamic Civilization',
+  landscapes: 'Lands of Islam',
+} as const;
+export type GalleryCategory = keyof typeof GALLERY_CATEGORIES;
 
 /** Background slots: each prayer period maps to one (see schedule.ts). */
 export const BG_SLOTS = ['fajr', 'sunrise', 'dhuhr', 'asr', 'maghrib', 'isha', 'night'] as const;
@@ -89,6 +97,7 @@ export interface Settings {
   ramadan: 'auto' | 'on' | 'off';
   showDaily: boolean;
   makruhBadge: boolean;
+  gallery: { minutes: number; categories: Record<GalleryCategory, boolean> };
   title: string;
 }
 
@@ -117,6 +126,7 @@ export const DEFAULT_SETTINGS: Settings = {
   ramadan: 'auto',
   showDaily: true,
   makruhBadge: true,
+  gallery: { minutes: 5, categories: { mosques: true, learning: true, treasures: true, landscapes: true } },
   title: 'Home',
 };
 

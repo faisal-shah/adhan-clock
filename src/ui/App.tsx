@@ -8,6 +8,7 @@ import { LocationPicker } from './settings/LocationPicker';
 import { SettingsPanel } from './settings/SettingsPanel';
 import { CalligraphyTheme } from './themes/CalligraphyTheme';
 import { ClassicTheme } from './themes/ClassicTheme';
+import { GalleryTheme } from './themes/GalleryTheme';
 import { KidsTheme } from './themes/KidsTheme';
 import { NightTheme } from './themes/NightTheme';
 import { TakeoverLayer } from './Takeover';
@@ -20,6 +21,8 @@ function Theme({ theme, st }: { theme: ThemeKey; st: ClockState }) {
       return <KidsTheme st={st} />;
     case 'night':
       return <NightTheme st={st} />;
+    case 'gallery':
+      return <GalleryTheme st={st} />;
     default:
       return <CalligraphyTheme st={st} />;
   }

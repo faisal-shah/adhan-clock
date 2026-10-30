@@ -2,6 +2,8 @@ import { computed, effect, signal } from '@preact/signals';
 import { now } from './core/clock';
 import {
   loadBundledAudio,
+  loadGallery,
+  type GalleryItem,
   loadBundledBackgrounds,
   listUploads,
   type Background,
@@ -35,13 +37,20 @@ setInterval(() => {
 
 export const bundledBackgrounds = signal<BundledBackground[]>([]);
 export const bundledAudio = signal<BundledAudio[]>([]);
+export const gallery = signal<GalleryItem[]>([]);
 export const uploads = signal<Upload[]>([]);
 export const dismissed = signal<ReadonlySet<string>>(new Set());
 export const settingsOpen = signal(false);
 export const audioBlocked = signal(false);
 
 export async function loadMedia(): Promise<void> {
-  const [bgs, audio, ups] = await Promise.allSettled([loadBundledBackgrounds(), loadBundledAudio(), listUploads()]);
+  const [bgs, audio, ups, gal] = await Promise.allSettled([
+    loadBundledBackgrounds(),
+    loadBundledAudio(),
+    listUploads(),
+    loadGallery(),
+  ]);
+  if (gal.status === 'fulfilled') gallery.value = gal.value;
   if (bgs.status === 'fulfilled') bundledBackgrounds.value = bgs.value;
   if (audio.status === 'fulfilled') bundledAudio.value = audio.value;
   if (ups.status === 'fulfilled') uploads.value = ups.value;

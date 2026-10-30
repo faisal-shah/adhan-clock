@@ -17,6 +17,7 @@ import './styles/base.css';
 import './styles/calligraphy.css';
 import './styles/classic.css';
 import './styles/kids.css';
+import './styles/gallery.css';
 import './styles/night.css';
 import './styles/takeover.css';
 import './styles/settings.css';
