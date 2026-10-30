@@ -80,28 +80,19 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  mix-blend-mode: screen;
+  overflow: hidden;
   background: radial-gradient(70rem 50rem at 100% 0%, rgba(255, 238, 200, 0.5), rgba(255, 238, 200, 0.12) 45%, transparent 70%);
 }
 
 .ct-flare::after {
   content: '';
   position: absolute;
-  right: -80rem;
-  top: -80rem;
-  width: 160rem;
-  height: 160rem;
-  background: repeating-conic-gradient(
-    from 0deg,
-    rgba(255, 255, 255, 0) 0deg,
-    rgba(255, 255, 255, 0.15) 1.4deg,
-    rgba(255, 255, 255, 0) 2.8deg,
-    rgba(255, 255, 255, 0) 5deg,
-    rgba(255, 255, 255, 0.07) 6deg,
-    rgba(255, 255, 255, 0) 7deg
-  );
-  -webkit-mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.5) 25%, transparent 55%);
-  mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.5) 25%, transparent 55%);
+  right: -60rem;
+  top: -60rem;
+  width: 120rem;
+  height: 120rem;
+  background: url('/art/rays.webp') center / contain no-repeat;
+  opacity: 0.55;
   animation: rays 240s linear infinite;
 }
 

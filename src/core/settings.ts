@@ -99,6 +99,8 @@ export interface Settings {
   makruhBadge: boolean;
   gallery: { minutes: number; categories: Record<GalleryCategory, boolean> };
   title: string;
+  /** 'calm' stops decorative motion for slower tablets. */
+  motion: 'full' | 'calm';
 }
 
 const perPrayer = <T>(f: (p: PrayerKey) => T) => Object.fromEntries(PRAYERS.map((p) => [p, f(p)])) as Record<PrayerKey, T>;
@@ -128,6 +130,7 @@ export const DEFAULT_SETTINGS: Settings = {
   makruhBadge: true,
   gallery: { minutes: 5, categories: { mosques: true, learning: true, treasures: true, landscapes: true } },
   title: 'Home',
+  motion: 'full',
 };
 
 const ENUMS: Record<string, readonly string[]> = {
@@ -138,6 +141,7 @@ const ENUMS: Record<string, readonly string[]> = {
   calligraphyFont: Object.keys(CALLIGRAPHY_FONTS),
   unit: ['f', 'c'],
   ramadan: ['auto', 'on', 'off'],
+  motion: ['full', 'calm'],
 };
 
 /**

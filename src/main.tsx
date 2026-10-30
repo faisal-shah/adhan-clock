@@ -26,8 +26,13 @@ import { render } from 'preact';
 import { registerSW } from 'virtual:pwa-register';
 import { startAudioController } from './audio';
 import { holdWakeLock } from './core/kiosk';
-import { clock, loadMedia, startWeather } from './store';
+import { effect } from '@preact/signals';
+import { clock, loadMedia, settings, startWeather } from './store';
 import { App } from './ui/App';
+
+effect(() => {
+  document.documentElement.dataset.motion = settings.value.motion;
+});
 
 void loadMedia();
 startWeather();

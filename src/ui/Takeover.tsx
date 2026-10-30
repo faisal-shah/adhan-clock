@@ -121,8 +121,9 @@ export function TakeoverLayer({ st }: { st: ClockState }) {
   }
 
   const tagline = taglineFor(t.name);
+  const bright = backgroundFor(slot, st.now)?.textTone === 'dark';
   return (
-    <div class={`tk tk-athan ${t.kind === 'tahajjud' ? 'night' : ''}`}>
+    <div class={`tk tk-athan ${t.kind === 'tahajjud' ? 'night' : ''} ${bright ? 'bright' : ''}`}>
       <Backdrop slot={slot} now={st.now} blur={false} />
       <div class="tk-veil radial" />
       <div class="tk-rays" />

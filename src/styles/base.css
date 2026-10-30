@@ -225,10 +225,9 @@ button {
 /* Film grain, layered over photographic themes. */
 .grain {
   position: absolute;
-  inset: -50%;
+  inset: 0;
   pointer-events: none;
-  opacity: 0.07;
-  mix-blend-mode: overlay;
+  opacity: 0.045;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 1.2 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -326,6 +325,28 @@ button {
   background: var(--gold);
   color: var(--navy);
   font-weight: 600;
+}
+
+/* Calm motion: keep the look, drop the continuous animation. */
+[data-motion='calm'] .ct-photo img,
+[data-motion='calm'] .gl-cover,
+[data-motion='calm'] .tk-bg img,
+[data-motion='calm'] .ct-flare::after,
+[data-motion='calm'] .tk-rays,
+[data-motion='calm'] .tk-halo,
+[data-motion='calm'] .callig.gold,
+[data-motion='calm'] .kd-cloud,
+[data-motion='calm'] .kd-rays,
+[data-motion='calm'] .kd-flower,
+[data-motion='calm'] .kd-card.current,
+[data-motion='calm'] .cl-medal-ring,
+[data-motion='calm'] .nt-sky i {
+  animation: none !important;
+}
+
+[data-motion='calm'] .tk-motes,
+[data-motion='calm'] .kd-birds {
+  display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

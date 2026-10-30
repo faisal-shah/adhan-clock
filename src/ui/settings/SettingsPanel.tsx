@@ -298,6 +298,16 @@ function DisplaySection() {
       <Row label="Makruh-time notice" hint="During sunrise, zenith and sunset.">
         <Toggle value={s.makruhBadge} onChange={(makruhBadge) => set(() => ({ makruhBadge }))} />
       </Row>
+      <Row label="Motion" hint="Calm stops the slow zoom, light rays and drifting clouds (for slower tablets).">
+        <Segmented
+          value={s.motion}
+          options={[
+            ['full', 'Full'],
+            ['calm', 'Calm'],
+          ]}
+          onChange={(motion) => set(() => ({ motion }))}
+        />
+      </Row>
       <Row label="Name" hint="Shown at the foot of the classic theme.">
         <input
           class="text-input"
