@@ -17,6 +17,9 @@ export interface DailyItem extends TextItem {
 
 export const DAILY = daily as DailyItem[];
 
+/** Uthmani script (alef wasla, Quranic annotation marks) needs the Quran font. */
+export const isUthmani = (arabic: string) => /[\u0671\u06D6-\u06ED]/.test(arabic);
+
 interface Events {
   duaAfterAthan: TextItem;
   iftarDua: TextItem;
@@ -33,9 +36,13 @@ export const DAILY_LABEL: Record<DailyItem['type'], string> = {
   dua: 'Dua of the day',
 };
 
-/** Rotates through the daily set every `minutes`, starting at a different item each day. */
-export function dailyItem(now: Date, minutes = 4, filter?: DailyItem['type']): DailyItem {
-  const pool = filter ? DAILY.filter((d) => d.type === filter) : DAILY;
+/**
+ * Rotates through the daily set every `minutes`, starting at a different item
+ * each day. `maxEnglish` keeps long texts out of tight layouts.
+ */
+export function dailyItem(now: Date, minutes = 4, type?: DailyItem['type'], maxEnglish = Infinity): DailyItem | null {
+  const pool = DAILY.filter((d) => (!type || d.type === type) && d.english.length <= maxEnglish);
+  if (!pool.length) return null;
   const day = Math.floor(new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime() / 86_400_000);
   const slot = Math.floor((now.getHours() * 60 + now.getMinutes()) / minutes);
   return pool[(day * 7 + slot) % pool.length];

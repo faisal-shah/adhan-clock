@@ -6,3 +6,4 @@ playwright-report/
 tests/e2e/__screenshots__/
 .firebase/
 *.log
+__pycache__/

@@ -5,8 +5,12 @@ import { Calligraphy, Clock, CountdownPill, Crossfade, MakruhBadge, T, WeatherGl
 
 const DAYLIT = new Set(['sunrise', 'duha', 'dhuhr', 'jumuah', 'asr']);
 
-/** Splits a tagline into one or two balanced pills, like Masjidal's stacked banners. */
-export function splitTagline(text: string): string[] {
+/**
+ * Splits a tagline into one or two balanced pills, like Masjidal's stacked
+ * banners. Translator's brackets and the closing stop are dropped for display.
+ */
+export function splitTagline(raw: string): string[] {
+  const text = raw.replace(/[[\]]/g, '').replace(/[.,;:]+$/, '');
   if (text.length <= 30) return [text];
   const words = text.split(' ');
   let best = 1;
@@ -46,7 +50,7 @@ function DialRow({ slot, top, ramadan }: { slot: Slot; top: boolean; ramadan: bo
         </div>
         <div>
           <T d={slot.iqamah} />
-          <div class="dial-label">{slot.name === 'jumuah' ? "JUMU'AH" : 'IQAMAH'}</div>
+          <div class="dial-label">{slot.name === 'jumuah' ? 'JUMU’AH' : 'IQAMAH'}</div>
         </div>
       </div>
     </div>

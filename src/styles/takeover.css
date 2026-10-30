@@ -1,0 +1,399 @@
+/* --- Athan takeover --------------------------------------------------------------- */
+
+.tk {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  overflow: hidden;
+  color: #fff;
+  background: #060a14;
+}
+
+.xf-out {
+  animation: xf-out var(--xf-ms, 1200ms) ease both;
+}
+
+@keyframes xf-out {
+  to {
+    opacity: 0;
+  }
+}
+
+.tk-bg {
+  position: absolute;
+  inset: 0;
+}
+
+.tk-bg.p-fajr { background: linear-gradient(180deg, #1d2d5c, #5b5d8f 55%, #e59c6c); }
+.tk-bg.p-sunrise { background: linear-gradient(180deg, #8fb3d9, #f3d3a6 70%, #f7b77a); }
+.tk-bg.p-dhuhr { background: linear-gradient(180deg, #7fa9d6, #e9dcc4 75%); }
+.tk-bg.p-asr { background: linear-gradient(180deg, #b48a57, #e7bb7b 60%, #a8683a); }
+.tk-bg.p-maghrib { background: linear-gradient(180deg, #3b2a5e, #c25b54 60%, #f4a259); }
+.tk-bg.p-isha { background: linear-gradient(180deg, #050b1d, #13234a 70%, #2b3f6e); }
+.tk-bg.p-night { background: linear-gradient(180deg, #02040a, #0a1430); }
+
+.tk-bg img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: tk-zoom 40s ease-out both;
+}
+
+.tk-bg.blur img {
+  filter: blur(1.6rem) saturate(1.1);
+  transform: scale(1.12);
+  animation: none;
+}
+
+@keyframes tk-zoom {
+  from {
+    transform: scale(1.18);
+  }
+  to {
+    transform: scale(1.04);
+  }
+}
+
+.tk-veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 8, 20, 0.5);
+}
+
+.tk-veil.deep {
+  background: rgba(4, 8, 20, 0.62);
+}
+
+.tk-veil.radial {
+  background:
+    radial-gradient(75rem 50rem at 50% 50%, rgba(4, 8, 20, 0.55) 0%, rgba(4, 8, 20, 0.2) 60%, rgba(4, 8, 20, 0.05) 100%),
+    linear-gradient(180deg, rgba(4, 8, 20, 0.45) 0%, transparent 25%, transparent 70%, rgba(4, 8, 20, 0.6) 100%);
+}
+
+/* Slow god-rays behind the calligraphy. */
+.tk-rays {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 220rem;
+  height: 220rem;
+  margin: -110rem 0 0 -110rem;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 226, 160, 0.13) 0deg 2.2deg, transparent 2.2deg 10deg);
+  -webkit-mask-image: radial-gradient(circle, rgba(0, 0, 0, 0.9) 4%, rgba(0, 0, 0, 0.35) 20%, transparent 40%);
+  mask-image: radial-gradient(circle, rgba(0, 0, 0, 0.9) 4%, rgba(0, 0, 0, 0.35) 20%, transparent 40%);
+  mix-blend-mode: screen;
+  animation: rays 200s linear infinite, xf-in 4s ease both;
+}
+
+.tk-motes span {
+  position: absolute;
+  bottom: -2rem;
+  border-radius: 50%;
+  background: #ffe9b8;
+  box-shadow: 0 0 1.2rem #ffd98a;
+  animation: mote linear infinite;
+}
+
+@keyframes mote {
+  from {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(3rem, -55vh);
+  }
+  to {
+    transform: translate(-2rem, -110vh);
+  }
+}
+
+.tk-top {
+  position: absolute;
+  top: 3.4rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  font-size: 5.4rem;
+  text-shadow: 0 0.2rem 1.4rem rgba(0, 0, 0, 0.5);
+}
+
+.tk-top-date {
+  font: 500 1.8rem var(--sans);
+  letter-spacing: 0.08em;
+  opacity: 0.85;
+}
+
+.tk-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 6rem;
+}
+
+.tk-halo {
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  width: 90rem;
+  height: 60rem;
+  margin: -30rem 0 0 -45rem;
+  background: radial-gradient(closest-side, rgba(255, 214, 140, 0.32), rgba(255, 214, 140, 0.08) 60%, transparent);
+  animation: breathe 7s ease-in-out infinite alternate, xf-in 3s ease both;
+}
+
+@keyframes breathe {
+  to {
+    transform: scale(1.12);
+    opacity: 0.7;
+  }
+}
+
+.tk-word {
+  position: relative;
+  font-size: 30rem;
+  height: 42rem;
+  display: flex;
+  align-items: center;
+}
+
+.tk-headline {
+  position: relative;
+  margin-top: -3rem;
+  display: flex;
+  align-items: baseline;
+  gap: 1.8rem;
+  font-family: var(--serif-caps);
+  text-shadow: 0 0.3rem 2rem rgba(0, 0, 0, 0.55);
+}
+
+.tk-headline .small {
+  font-size: 4.6rem;
+}
+
+.tk-headline .big {
+  font-size: 8rem;
+  letter-spacing: 0.04em;
+}
+
+.tk-tags {
+  position: relative;
+  margin-top: 2.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tk-tag {
+  padding: 1rem 3.2rem 0.9rem;
+  border-radius: 99rem;
+  border: 1px solid rgba(255, 233, 184, 0.35);
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  font: 400 2.5rem var(--serif-caps);
+  letter-spacing: 0.08em;
+}
+
+.tk-stop {
+  position: absolute;
+  left: 50%;
+  bottom: 3.4rem;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 2.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 99rem;
+  background: rgba(8, 12, 24, 0.45);
+  backdrop-filter: blur(8px);
+  font: 500 1.8rem var(--sans);
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+}
+
+.tk-stop svg {
+  width: 2.4rem;
+  height: 2.4rem;
+}
+
+.tk-close {
+  position: absolute;
+  right: 3rem;
+  top: 3rem;
+  width: 5.6rem;
+  height: 5.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  background: rgba(8, 12, 24, 0.35);
+  font-size: 3.4rem;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+}
+
+/* Countdown screens (pre-athan, pre-iqamah) */
+
+.tk-count {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.tk-count > * {
+  position: relative;
+}
+
+.tk-count > .tk-bg,
+.tk-count > .tk-veil,
+.tk-count > .tk-close {
+  position: absolute;
+}
+
+.tk-count-arabic {
+  font-size: 11rem;
+  height: 15rem;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.tk-ring-wrap {
+  position: relative;
+  width: 50rem;
+  height: 50rem;
+}
+
+.tk-ring {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+  filter: drop-shadow(0 0 1.2rem rgba(255, 210, 130, 0.4));
+}
+
+.tk-ring circle {
+  fill: none;
+  stroke-width: 1.4;
+}
+
+.tk-ring .track {
+  stroke: rgba(255, 255, 255, 0.14);
+}
+
+.tk-ring .arc {
+  stroke: url(#gold) #f0cd85;
+  stroke: #f0cd85;
+  stroke-linecap: round;
+  transition: stroke-dasharray 1s linear;
+}
+
+.tk-ring-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.tk-ring-label {
+  font: 400 4.6rem var(--serif-caps);
+  letter-spacing: 0.1em;
+  color: var(--gold-soft);
+}
+
+.tk-ring-sub {
+  margin-top: 0.4rem;
+  font: 600 1.7rem var(--sans);
+  letter-spacing: 0.24em;
+  opacity: 0.8;
+}
+
+.tk-ring-num {
+  margin-top: 1rem;
+  font: 400 15rem/1 var(--serif-display);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.tk-count-foot {
+  margin-top: 3.4rem;
+  font: italic 500 3rem var(--serif-text);
+  color: rgba(255, 255, 255, 0.82);
+}
+
+/* Dua */
+
+.tk-dua {
+  display: grid;
+  place-items: center;
+}
+
+.tk-dua-card {
+  position: relative;
+  width: 116rem;
+  max-width: 88vw;
+  padding: 5rem 7rem 4.4rem;
+  border-radius: 4rem;
+  border: 1px solid rgba(255, 233, 184, 0.22);
+  background: linear-gradient(180deg, rgba(20, 28, 52, 0.62), rgba(10, 16, 32, 0.55));
+  backdrop-filter: blur(14px);
+  box-shadow: 0 3rem 8rem rgba(0, 0, 0, 0.45);
+  text-align: center;
+}
+
+.tk-dua-head {
+  font: 600 1.7rem var(--sans);
+  letter-spacing: 0.3em;
+  color: var(--gold);
+}
+
+.tk-dua-ar {
+  margin-top: 2.6rem;
+  direction: rtl;
+  font: 400 4.4rem/2.05 var(--arabic-text);
+}
+
+.tk-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6rem;
+  margin: 2.4rem 0;
+}
+
+.tk-ornament span {
+  width: 14rem;
+  height: 0.15rem;
+  background: linear-gradient(90deg, transparent, var(--gold));
+}
+
+.tk-ornament span:last-child {
+  transform: scaleX(-1);
+}
+
+.tk-ornament i {
+  width: 1.1rem;
+  height: 1.1rem;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+
+.tk-dua-en {
+  font: italic 500 3rem/1.45 var(--serif-text);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.tk-dua-ref {
+  margin-top: 1.8rem;
+  font: 500 1.6rem var(--sans);
+  letter-spacing: 0.08em;
+  color: var(--gold-soft);
+}

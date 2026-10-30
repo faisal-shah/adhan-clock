@@ -1,0 +1,59 @@
+{
+  "duaAfterAthan": {
+    "arabic": "اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ وَالصَّلاَةِ الْقَائِمَةِ آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ",
+    "english": "O Allah! Lord of this perfect call (perfect by not ascribing partners to You) and of the regular prayer which is going to be established, give Muhammad the right of intercession and illustriousness, and resurrect him to the best and the highest place in Paradise that You promised him.",
+    "ref": "From Sahih al-Bukhari 614"
+  },
+  "iftarDua": {
+    "arabic": "ذَهَبَ الظَّمَأُ وَابْتَلَّتِ الْعُرُوقُ وَثَبَتَ الأَجْرُ إِنْ شَاءَ اللَّهُ",
+    "english": "Thirst has gone, the arteries are moist, and the reward is sure, if Allah wills.",
+    "ref": "Sunan Abi Dawud 2357 (hasan)"
+  },
+  "suhoorReminder": {
+    "arabic": "تَسَحَّرُوا فَإِنَّ فِي السَّحُورِ بَرَكَةً",
+    "english": "Take Suhur as there is a blessing in it.",
+    "ref": "Sahih al-Bukhari 1923"
+  },
+  "fajrTagline": {
+    "arabic": "الصَّلاَةُ خَيْرٌ مِنَ النَّوْمِ",
+    "english": "Prayer is better than sleep.",
+    "ref": "From the Fajr athan"
+  },
+  "prayerTaglines": {
+    "dhuhr": {
+      "arabic": "حَٰفِظُوا۟ عَلَى ٱلصَّلَوَٰتِ",
+      "english": "Maintain with care the [obligatory] prayers.",
+      "ref": "From Al-Baqara 2:238"
+    },
+    "asr": {
+      "arabic": "وَسَبِّحُوهُ بُكْرَةًۭ وَأَصِيلًا",
+      "english": "And exalt Him morning and afternoon.",
+      "ref": "Al-Ahzaab 33:42"
+    },
+    "maghrib": {
+      "arabic": "فَسُبْحَٰنَ ٱللَّهِ حِينَ تُمْسُونَ",
+      "english": "So exalted is Allah when you reach the evening.",
+      "ref": "From Ar-Room 30:17"
+    },
+    "isha": {
+      "arabic": "إِنَّ ٱلْحَسَنَٰتِ يُذْهِبْنَ ٱلسَّيِّـَٔاتِ",
+      "english": "Indeed, good deeds do away with misdeeds.",
+      "ref": "From Hud 11:114"
+    },
+    "jumuah": {
+      "arabic": "فَٱسْعَوْا۟ إِلَىٰ ذِكْرِ ٱللَّهِ وَذَرُوا۟ ٱلْبَيْعَ",
+      "english": "Proceed to the remembrance of Allah and leave trade.",
+      "ref": "From Al-Jumu'a 62:9"
+    },
+    "tahajjud": {
+      "arabic": "وَبِٱلْأَسْحَارِ هُمْ يَسْتَغْفِرُونَ",
+      "english": "And in the hours before dawn they would ask forgiveness.",
+      "ref": "Adh-Dhaariyat 51:18"
+    },
+    "duha": {
+      "arabic": "وَيُجْزِئُ مِنْ ذَلِكَ رَكْعَتَانِ يَرْكَعُهُمَا مِنَ الضُّحَى",
+      "english": "Two rak'ahs which one prays in the forenoon will suffice.",
+      "ref": "From Sahih Muslim 720"
+    }
+  }
+}

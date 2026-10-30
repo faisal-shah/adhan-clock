@@ -1,0 +1,308 @@
+/* --- Kids theme ---------------------------------------------------------------- */
+
+.kd {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  color: #111;
+  background: linear-gradient(180deg, #fffbe6 0%, #fff4c4 100%);
+}
+
+/* Sun */
+.kd-sun {
+  position: absolute;
+  right: -7rem;
+  top: -9rem;
+  width: 36rem;
+  height: 36rem;
+}
+
+.kd-sun-disc {
+  position: absolute;
+  inset: 8rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #ffe066, #f6c90e 70%);
+  box-shadow: 0 0 6rem rgba(246, 201, 14, 0.45);
+}
+
+.kd-rays {
+  position: absolute;
+  inset: -4rem;
+  width: calc(100% + 8rem);
+  height: calc(100% + 8rem);
+  stroke: #f2c40f;
+  stroke-width: 4;
+  stroke-linecap: round;
+  animation: rays 90s linear infinite;
+}
+
+/* Clouds */
+.kd-cloud {
+  position: absolute;
+  animation: drift 14s ease-in-out infinite alternate;
+}
+
+.kd-cloud svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.kd-cloud path {
+  fill: #e9f8fe;
+  stroke: #7fd3ee;
+  stroke-width: 3;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.kd-cloud-text {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 3rem 2rem 0;
+  box-sizing: border-box;
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(-1.2rem);
+  }
+  to {
+    transform: translateX(1.2rem);
+  }
+}
+
+.kd-cloud.c-a {
+  left: 3rem;
+  top: 3rem;
+  width: 30rem;
+  height: 16rem;
+}
+
+.kd-cloud.c-b {
+  left: 6rem;
+  top: 26rem;
+  width: 28rem;
+  height: 15rem;
+  animation-duration: 17s;
+  animation-delay: -6s;
+}
+
+.kd-cloud.c-c {
+  left: 42rem;
+  top: 4rem;
+  width: 18rem;
+  height: 8rem;
+  animation-duration: 20s;
+}
+
+.kd-cloud.c-d {
+  right: 34rem;
+  top: 6rem;
+  width: 15rem;
+  height: 7rem;
+  animation-duration: 19s;
+  animation-delay: -4s;
+}
+
+.kd-cloud.c-e {
+  right: 3rem;
+  top: 24rem;
+  width: 31rem;
+  height: 17rem;
+  animation-duration: 16s;
+  animation-delay: -9s;
+}
+
+.kd-cl-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  font: 600 2.9rem/1.1 var(--sans);
+}
+
+.kd-cl-row span:last-child {
+  font: 500 1.6rem var(--sans);
+  color: #4a6b78;
+}
+
+.kd-next {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  line-height: 1.15;
+}
+
+.kd-next span {
+  font: 600 2rem var(--sans);
+  color: #3d6170;
+}
+
+.kd-next b {
+  font: 700 3.6rem var(--sans);
+  color: #0d6e8a;
+}
+
+/* Clock */
+.kd-clock {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  line-height: 0.85;
+  color: #121212;
+}
+
+.kd-hm {
+  font-size: 27rem;
+  letter-spacing: -0.01em;
+}
+
+.kd-ampm {
+  display: flex;
+  flex-direction: column;
+  font-size: 6.4rem;
+  line-height: 1;
+  margin-top: 6rem;
+}
+
+.kd-date {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 41rem;
+  text-align: center;
+  font: 500 2.6rem var(--sans);
+  letter-spacing: 0.04em;
+}
+
+/* Prayer cards */
+.kd-cards {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 48rem;
+  display: flex;
+  justify-content: center;
+  gap: 3.6rem;
+}
+
+.kd-card {
+  position: relative;
+  width: 17.6rem;
+  padding: 1.6rem 0 1.4rem;
+  border-radius: 2.4rem;
+  background: linear-gradient(180deg, #2bc4e3 0%, #12a6c9 100%);
+  box-shadow: 0 0.8rem 0 #0c87a6, 0 1.6rem 2.4rem rgba(18, 120, 150, 0.3);
+  text-align: center;
+  color: #fff;
+}
+
+.kd-card.current {
+  background: linear-gradient(180deg, #ffe36e 0%, #ffcc29 100%);
+  box-shadow: 0 0.8rem 0 #e2a90c, 0 1.6rem 2.4rem rgba(200, 140, 10, 0.35);
+  color: #1a2340;
+  animation: bounce 2.4s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  50% {
+    transform: translateY(-1rem);
+  }
+}
+
+.kd-card-name {
+  font: 700 2.3rem var(--sans);
+  letter-spacing: 0.04em;
+  color: #0b3d52;
+}
+
+.current .kd-card-name {
+  color: #1a2340;
+}
+
+.kd-card-time {
+  margin-top: 0.6rem;
+  font: 600 3.8rem/1.05 var(--sans);
+}
+
+.kd-card-label {
+  font: 500 1.5rem var(--sans);
+  opacity: 0.85;
+}
+
+.kd-star {
+  width: 3.4rem;
+  height: 3.4rem;
+  fill: #ff8a00;
+  stroke: #fff;
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+
+.kd-card .kd-star {
+  position: absolute;
+  top: -1.6rem;
+  right: -1.4rem;
+  width: 4.4rem;
+  height: 4.4rem;
+  animation: rays 12s linear infinite;
+}
+
+/* Ground */
+.kd-ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 16rem;
+}
+
+.kd-ground > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.kd-mosque {
+  position: absolute;
+  right: 6rem;
+  bottom: 5.5rem;
+  width: 17rem;
+  height: 15.5rem;
+}
+
+.kd-reminder {
+  position: absolute;
+  left: 6rem;
+  right: 28rem;
+  bottom: 3.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  font: 600 3rem var(--sans);
+  color: #fff;
+  text-shadow: 0 0.2rem 0 #237a36, 0 0.4rem 1rem rgba(0, 0, 0, 0.2);
+  animation: rise 0.9s var(--ease-out) both;
+}
+
+.kd-reminder .kd-star {
+  flex: none;
+  fill: #ffd23f;
+  stroke: #237a36;
+}

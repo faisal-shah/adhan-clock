@@ -104,6 +104,7 @@
 
 .ct-clock {
   font-size: 15.5rem;
+  line-height: 0.9;
   text-shadow: 0 0.3rem 2rem rgba(0, 0, 0, 0.35);
 }
 
@@ -183,7 +184,7 @@
 }
 
 .ct-word {
-  margin-top: -1.5rem;
+  margin-top: 0.5rem;
   font-size: 23rem;
   height: 34rem;
   display: flex;

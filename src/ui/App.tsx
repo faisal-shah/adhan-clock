@@ -7,9 +7,19 @@ import { Crossfade, GearIcon, SpeakerIcon } from './parts';
 import { LocationPicker } from './settings/LocationPicker';
 import { SettingsPanel } from './settings/SettingsPanel';
 import { CalligraphyTheme } from './themes/CalligraphyTheme';
+import { ClassicTheme } from './themes/ClassicTheme';
+import { KidsTheme } from './themes/KidsTheme';
+import { NightTheme } from './themes/NightTheme';
+import { TakeoverLayer } from './Takeover';
 
 function Theme({ theme, st }: { theme: ThemeKey; st: ClockState }) {
   switch (theme) {
+    case 'classic':
+      return <ClassicTheme st={st} />;
+    case 'kids':
+      return <KidsTheme st={st} />;
+    case 'night':
+      return <NightTheme st={st} />;
     default:
       return <CalligraphyTheme st={st} />;
   }
@@ -36,6 +46,9 @@ export function App() {
     <div class={`stage theme-${st.theme}`} onPointerDown={() => audioBlocked.value && unlockAudio()}>
       <Crossfade k={st.theme} ms={1600}>
         <Theme theme={st.theme} st={st} />
+      </Crossfade>
+      <Crossfade k={st.takeover ? `${st.takeover.id}:${st.takeover.phase}` : 'none'} ms={1000} fadeOut={!st.takeover}>
+        {st.takeover && <TakeoverLayer st={st} />}
       </Crossfade>
       <button class="gear" aria-label="Settings" onClick={() => (settingsOpen.value = true)}>
         <GearIcon />

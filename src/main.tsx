@@ -1,4 +1,4 @@
-import '@fontsource/prata/latin-400.css';
+import '@fontsource/noto-serif-display/latin-400.css';
 import '@fontsource/marcellus/latin-400.css';
 import '@fontsource/poppins/latin-400.css';
 import '@fontsource/poppins/latin-500.css';
@@ -11,6 +11,7 @@ import '@fontsource/aref-ruqaa/arabic-700.css';
 import '@fontsource/noto-nastaliq-urdu/arabic-700.css';
 import '@fontsource/reem-kufi/arabic-700.css';
 import '@fontsource/amiri/arabic-400.css';
+import '@fontsource/amiri-quran/arabic-400.css';
 import '@fontsource/amiri/arabic-700.css';
 import './styles/base.css';
 import './styles/calligraphy.css';

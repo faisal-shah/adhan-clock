@@ -88,8 +88,21 @@ export function MakruhBadge({ st }: { st: ClockState }) {
   );
 }
 
-/** Keeps the outgoing child mounted underneath while the incoming one fades in. */
-export function Crossfade({ k, ms = 1200, children }: { k: string; ms?: number; children: ComponentChildren }) {
+/**
+ * Keeps the outgoing child mounted underneath while the incoming one fades in.
+ * With `fadeOut`, the outgoing layer also fades (for overlays that disappear).
+ */
+export function Crossfade({
+  k,
+  ms = 1200,
+  fadeOut = false,
+  children,
+}: {
+  k: string;
+  ms?: number;
+  fadeOut?: boolean;
+  children: ComponentChildren;
+}) {
   const live = useRef<{ k: string; node: ComponentChildren }>({ k, node: children });
   const outgoing = useRef<{ k: string; node: ComponentChildren } | null>(null);
   const [, bump] = useState(0);
@@ -106,7 +119,7 @@ export function Crossfade({ k, ms = 1200, children }: { k: string; ms?: number; 
   return (
     <>
       {outgoing.current && (
-        <div class="xf" key={outgoing.current.k}>
+        <div class={`xf ${fadeOut ? 'xf-out' : ''}`} key={outgoing.current.k} style={{ '--xf-ms': `${ms}ms` }}>
           {outgoing.current.node}
         </div>
       )}

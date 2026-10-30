@@ -1,0 +1,113 @@
+/* --- Night theme ------------------------------------------------------------------ */
+
+.nt {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: radial-gradient(120rem 80rem at 70% 0%, #0c1530 0%, #050913 55%, #020308 100%);
+  color: #cdbb96;
+}
+
+.nt-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.16;
+  filter: saturate(0.6) brightness(0.7);
+}
+
+.nt-sky i {
+  position: absolute;
+  border-radius: 50%;
+  background: #f4ead2;
+  animation: twinkle 6s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  to {
+    opacity: 0.08;
+  }
+}
+
+.nt-moon {
+  position: absolute;
+  right: 12rem;
+  top: 9rem;
+  width: 11rem;
+  height: 11rem;
+  fill: #e9dcb8;
+  opacity: 0.55;
+  filter: drop-shadow(0 0 2.4rem rgba(233, 220, 184, 0.35));
+}
+
+.nt-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 20s linear;
+}
+
+.nt-clock {
+  font-size: 21rem;
+  line-height: 0.9;
+  color: #d8c49b;
+  opacity: 0.62;
+}
+
+.nt-date {
+  margin-top: 2.4rem;
+  font: 500 2.2rem var(--sans);
+  letter-spacing: 0.08em;
+  opacity: 0.5;
+}
+
+.nt-info {
+  margin-top: 4.4rem;
+  display: flex;
+  gap: 6rem;
+  font: 400 3.4rem var(--serif-display);
+  opacity: 0.6;
+}
+
+.nt-info > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.nt-k {
+  font: 600 1.4rem var(--sans);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #9d8a63;
+}
+
+.nt-in {
+  font: 500 1.6rem var(--sans);
+  color: #9d8a63;
+}
+
+.nt-dua {
+  position: absolute;
+  bottom: 6rem;
+  left: 20rem;
+  right: 20rem;
+  text-align: center;
+  opacity: 0.42;
+}
+
+.nt-dua-ar {
+  direction: rtl;
+  font: 400 2.8rem/1.7 var(--arabic-text);
+}
+
+.nt-dua-en {
+  margin-top: 0.4rem;
+  font: italic 500 2.1rem/1.4 var(--serif-text);
+}

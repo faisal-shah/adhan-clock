@@ -1,0 +1,348 @@
+/* --- Classic theme ------------------------------------------------------------ */
+
+.cl {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  color: #2b2620;
+  background:
+    radial-gradient(90rem 60rem at 50% 28%, #fffdf8 0%, rgba(255, 253, 248, 0) 70%),
+    linear-gradient(180deg, #f3ede2 0%, #ebe2d1 100%);
+}
+
+/* Star lattice fading in from the top-right corner. */
+.cl-pattern {
+  position: absolute;
+  inset: 0;
+  background: url('../assets/star-lattice.svg') 0 0 / 12rem 12rem;
+  opacity: 0.22;
+  -webkit-mask-image: radial-gradient(110rem 80rem at 100% 0%, #000 0%, rgba(0, 0, 0, 0.35) 40%, transparent 75%);
+  mask-image: radial-gradient(110rem 80rem at 100% 0%, #000 0%, rgba(0, 0, 0, 0.35) 40%, transparent 75%);
+}
+
+.cl-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 8.3rem;
+  background: url('../assets/flower-band.svg') 0 0 / 4.8rem 8.314rem;
+  opacity: 0.32;
+  border-top: 0.2rem solid rgba(160, 124, 60, 0.45);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+}
+
+/* --- Clock card --- */
+
+.cl-card {
+  position: absolute;
+  left: 25.6rem;
+  right: 25.6rem;
+  top: 6rem;
+  height: 40rem;
+  border-radius: 3.6rem;
+  background: linear-gradient(180deg, #ffffff 0%, #fdfbf7 100%);
+  box-shadow:
+    0 0.2rem 0.4rem rgba(70, 50, 20, 0.05),
+    0 2.4rem 6rem rgba(70, 50, 20, 0.16),
+    inset 0 -0.3rem 0 rgba(160, 124, 60, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.cl-clock {
+  font-size: 24rem;
+  line-height: 0.9;
+  color: #141210;
+  margin-top: 1.4rem;
+}
+
+.cl-clock .clock-ampm {
+  font-size: 0.34em;
+}
+
+.cl-date {
+  margin-top: 2.6rem;
+  font: 500 2.6rem var(--sans);
+  letter-spacing: 0.05em;
+  color: #3b352c;
+}
+
+.cl-card .makruh {
+  margin-top: 1.4rem;
+  background: rgba(150, 40, 25, 0.1);
+  color: #8a2a1a;
+  backdrop-filter: none;
+}
+
+.cl-weather {
+  position: absolute;
+  right: 2.6rem;
+  top: 2.6rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1rem 1.4rem 1rem 1.8rem;
+  border-radius: 1.6rem;
+  background: #fff;
+  box-shadow: 0 0.6rem 1.8rem rgba(70, 50, 20, 0.12);
+  text-align: right;
+}
+
+.cl-weather svg {
+  width: 4.6rem;
+  height: 4.6rem;
+  color: #e09a2c;
+}
+
+.cl-weather-temp {
+  font: 600 2.2rem/1.1 var(--sans);
+}
+
+.cl-weather-label {
+  font: 500 1.3rem var(--sans);
+  color: #8a8073;
+}
+
+/* --- Orange pills --- */
+
+.cl-pills {
+  position: absolute;
+  top: 6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.cl-pills.left {
+  left: 4.4rem;
+}
+
+.cl-pills.right {
+  right: 4.4rem;
+}
+
+.cl-pill {
+  min-width: 15rem;
+  padding: 1rem 2rem 1.1rem;
+  border-radius: 2rem;
+  background: linear-gradient(180deg, #f8a74a 0%, #ec7c22 100%);
+  box-shadow: 0 0.8rem 2rem rgba(220, 110, 20, 0.35), inset 0 0.2rem 0 rgba(255, 255, 255, 0.35);
+  color: #fff;
+  text-align: center;
+  font: 500 3.2rem var(--sans);
+}
+
+.cl-pill-label {
+  font: 600 1.25rem var(--sans);
+  letter-spacing: 0.14em;
+  opacity: 0.92;
+}
+
+/* --- Prayer row --- */
+
+.cl-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 51rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+}
+
+.cl-prayer {
+  width: 18rem;
+  padding: 2rem 0 1.8rem;
+  border-radius: 2.6rem;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 1.2rem 3rem rgba(70, 50, 20, 0.12);
+  text-align: center;
+  color: #2b2620;
+  transition: transform 0.6s var(--ease-out);
+}
+
+.cl-prayer.current {
+  background: linear-gradient(170deg, #35b9ad 0%, #1a8f86 100%);
+  box-shadow: 0 1.8rem 4rem rgba(20, 130, 120, 0.42), inset 0 0.2rem 0 rgba(255, 255, 255, 0.3);
+  color: #fff;
+  transform: translateY(-1.2rem) scale(1.06);
+}
+
+.cl-tiny {
+  font: 600 1.25rem var(--sans);
+  letter-spacing: 0.12em;
+  font-kerning: none;
+  color: #9a8f80;
+}
+
+.current .cl-tiny {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.cl-time {
+  margin: 0.2rem 0 0.4rem;
+  font: 400 4.6rem/1.15 var(--serif-display);
+}
+
+.cl-time.iq {
+  margin: 0.4rem 0 0.2rem;
+  font-size: 3.6rem;
+  color: #5b5348;
+}
+
+.current .cl-time.iq {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.cl-name {
+  font: 600 1.9rem var(--sans);
+  letter-spacing: 0.22em;
+  padding-left: 0.22em;
+  color: #6d6457;
+}
+
+.current .cl-name {
+  color: #fff;
+}
+
+/* --- Countdown medallion --- */
+
+.cl-medal {
+  position: relative;
+  width: 30rem;
+  height: 30rem;
+  margin-left: 1rem;
+  flex: none;
+}
+
+.cl-medal-ring {
+  position: absolute;
+  inset: 0;
+  animation: rays 180s linear infinite;
+}
+
+.cl-medal-ring .dots {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.cl-medal-ring .outer {
+  stroke: #f2a640;
+  stroke-width: 1.3;
+  stroke-dasharray: 0 2.4;
+}
+
+.cl-medal-ring .inner {
+  stroke: #f6c95e;
+  stroke-width: 0.9;
+  stroke-dasharray: 0 1.85;
+}
+
+.cl-medal-face {
+  position: absolute;
+  inset: 3.1rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 30%, #e8343a 0%, #c11d24 55%, #96121a 100%);
+  box-shadow: 0 1.6rem 3.6rem rgba(150, 20, 25, 0.45), inset 0 0.3rem 0 rgba(255, 255, 255, 0.25), inset 0 -1rem 2rem rgba(0, 0, 0, 0.18);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.cl-medal-arc {
+  position: absolute;
+  inset: 0.8rem;
+  transform: rotate(-90deg);
+}
+
+.cl-medal-arc circle {
+  fill: none;
+  stroke-width: 1.2;
+}
+
+.cl-medal-arc .track {
+  stroke: rgba(255, 255, 255, 0.18);
+}
+
+.cl-medal-arc .arc {
+  stroke: #ffd98a;
+  stroke-linecap: round;
+  transition: stroke-dasharray 1s linear;
+}
+
+.cl-medal-name {
+  font: 600 2.6rem var(--sans);
+  letter-spacing: 0.12em;
+  padding-left: 0.12em;
+}
+
+.cl-medal-sub {
+  font: 500 1.3rem var(--sans);
+  letter-spacing: 0.18em;
+  opacity: 0.85;
+}
+
+.cl-medal-num {
+  font: 400 8.4rem/1 var(--serif-display);
+  margin: 0.4rem 0 0.2rem;
+}
+
+.cl-medal-unit {
+  font: 600 1.1rem var(--sans);
+  letter-spacing: 0.2em;
+  opacity: 0.8;
+}
+
+/* --- Foot: daily text --- */
+
+.cl-foot {
+  position: absolute;
+  left: 10rem;
+  right: 10rem;
+  bottom: 9.4rem;
+  height: 12rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.cl-daily {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  animation: xf-in 1.2s ease both;
+}
+
+.cl-daily-label {
+  font: 600 1.15rem var(--sans);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #a07c3c;
+}
+
+.cl-daily-ar {
+  direction: rtl;
+  font: 400 2.6rem/1.6 var(--arabic-text);
+  color: #3b352c;
+}
+
+.cl-daily-en {
+  font: 500 2rem/1.35 var(--serif-text);
+  color: #5b5348;
+}
+
+.cl-daily-en i {
+  margin-left: 0.6rem;
+  font-size: 0.8em;
+  color: #a07c3c;
+}

@@ -9,7 +9,7 @@ export const PERIOD_NAMES: Record<PeriodKey, string> = {
   sunrise: 'Sunrise',
   duha: 'Duha',
   dhuhr: 'Dhuhr',
-  jumuah: "Jumu'ah",
+  jumuah: 'Jumu’ah',
   asr: 'Asr',
   maghrib: 'Maghrib',
   isha: 'Isha',
