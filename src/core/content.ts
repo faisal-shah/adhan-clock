@@ -1,7 +1,5 @@
-// Eager glob instead of static imports while the content build is in progress.
-const files = import.meta.glob<{ default: unknown }>('../content/*.json', { eager: true });
-const daily = (files['../content/daily.json']?.default ?? []) as unknown[];
-const events = (files['../content/events.json']?.default ?? { prayerTaglines: {} }) as unknown;
+import daily from '../content/daily.json';
+import events from '../content/events.json';
 import { PERIOD_NAMES, type PeriodKey, type Slot } from './schedule';
 
 export interface TextItem {

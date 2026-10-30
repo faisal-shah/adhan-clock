@@ -80,7 +80,15 @@
   width: 220rem;
   height: 220rem;
   margin: -110rem 0 0 -110rem;
-  background: repeating-conic-gradient(from 0deg, rgba(255, 226, 160, 0.13) 0deg 2.2deg, transparent 2.2deg 10deg);
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(255, 226, 160, 0) 0deg,
+    rgba(255, 226, 160, 0.16) 2deg,
+    rgba(255, 226, 160, 0) 4deg,
+    rgba(255, 226, 160, 0) 7deg,
+    rgba(255, 226, 160, 0.08) 8.5deg,
+    rgba(255, 226, 160, 0) 10deg
+  );
   -webkit-mask-image: radial-gradient(circle, rgba(0, 0, 0, 0.9) 4%, rgba(0, 0, 0, 0.35) 20%, transparent 40%);
   mask-image: radial-gradient(circle, rgba(0, 0, 0, 0.9) 4%, rgba(0, 0, 0, 0.35) 20%, transparent 40%);
   mix-blend-mode: screen;

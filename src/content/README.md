@@ -58,9 +58,10 @@ Surah names in references are the API's `englishName`.
 names Muhsin Khan (Bukhari) and Abdul Hamid Siddiqui (Muslim) as translators
 and lists the others as unknown.
 
-- Only Sahih al-Bukhari and Sahih Muslim, or Sunan Abi Dawud / Jami'
-  at-Tirmidhi hadith that every grader recorded by hadith-api grades sahih or
-  hasan. The grade shown in the reference is Al-Albani's.
+- Only Sahih al-Bukhari and Sahih Muslim, or hadith from the Sunan (Abi
+  Dawud, at-Tirmidhi, an-Nasa'i, Ibn Majah) that every grader recorded by
+  hadith-api grades sahih or hasan. The grade shown in the reference is
+  Al-Albani's.
 - References use sunnah.com numbering. For Sahih Muslim that is the Abd
   al-Baqi number plus variant letter (`2564c`); hadith-api numbers Muslim
   sequentially and keeps the Abd al-Baqi number as `arabicnumber` (`2564.03`).
@@ -108,5 +109,6 @@ The selection names a source and, where needed, the passage:
   translations it collects keep the rights of their translators and
   publishers.
 
-The app must show the references and credit Tanzil, Saheeh International and
-hadith-api / sunnah.com where it displays these texts.
+Attribution the app has to display: each item's reference, the Tanzil Project
+with a link to https://tanzil.net, Saheeh International, and hadith-api /
+sunnah.com for the hadith texts.

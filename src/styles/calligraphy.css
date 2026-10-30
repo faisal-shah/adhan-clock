@@ -77,7 +77,15 @@
   top: -80rem;
   width: 160rem;
   height: 160rem;
-  background: repeating-conic-gradient(from 0deg, rgba(255, 255, 255, 0.16) 0deg 1.6deg, transparent 1.6deg 7deg);
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(255, 255, 255, 0) 0deg,
+    rgba(255, 255, 255, 0.15) 1.4deg,
+    rgba(255, 255, 255, 0) 2.8deg,
+    rgba(255, 255, 255, 0) 5deg,
+    rgba(255, 255, 255, 0.07) 6deg,
+    rgba(255, 255, 255, 0) 7deg
+  );
   -webkit-mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.5) 25%, transparent 55%);
   mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.5) 25%, transparent 55%);
   animation: rays 240s linear infinite;
