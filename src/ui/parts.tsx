@@ -5,7 +5,7 @@ import { PERIOD_ARABIC, type ClockState, type Countdown, type PeriodKey } from '
 import { PERIOD_NAMES } from '../core/schedule';
 import type { CalligraphyFont } from '../core/settings';
 import { describeWeather, toUnit, type WeatherKind } from '../core/weather';
-import { settings, weather } from '../store';
+import { calligraphyArt, settings, weather } from '../store';
 
 export function Clock({ d }: { d: Date }) {
   const f = clockFace(d, settings.value.clock24h);
@@ -70,9 +70,24 @@ export function Calligraphy({
   tone: 'gold' | 'ink';
   reveal?: boolean;
 }) {
+  const art = font === 'art' ? calligraphyArt.value.find((a) => a.id === word) : undefined;
   return (
     <div class={reveal ? 'callig-reveal' : undefined} key={word}>
-      <div class={`callig f-${font} ${tone}`}>{PERIOD_ARABIC[word]}</div>
+      {art ? (
+        <div class={`callig-art-shadow ${tone}`}>
+          <div
+            class={`callig-art ${tone}`}
+            style={{
+              maskImage: `url(/calligraphy/${art.file})`,
+              WebkitMaskImage: `url(/calligraphy/${art.file})`,
+              width: `min(var(--art-max-w, 100rem), ${(1.25 * art.aspect).toFixed(3)}em)`,
+              aspectRatio: String(art.aspect),
+            }}
+          />
+        </div>
+      ) : (
+        <div class={`callig f-${font === 'art' ? 'ruqaa' : font} ${tone}`}>{PERIOD_ARABIC[word]}</div>
+      )}
     </div>
   );
 }

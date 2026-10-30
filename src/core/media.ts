@@ -39,6 +39,14 @@ export interface GalleryItem {
   credit: Credit;
 }
 
+/** Vectorized calligraphy artwork, used as a CSS mask. */
+export interface CalligraphyArt {
+  id: string;
+  file: string;
+  /** width / height of the artwork's viewBox */
+  aspect: number;
+}
+
 /** A user upload. The blob lives in IndexedDB; this metadata mirrors it in memory. */
 export interface Upload {
   id: string;
@@ -65,6 +73,7 @@ async function fetchJson<T>(path: string): Promise<T> {
 export const loadBundledBackgrounds = () => fetchJson<BundledBackground[]>('/backgrounds/index.json');
 export const loadBundledAudio = () => fetchJson<BundledAudio[]>('/audio/index.json');
 export const loadGallery = () => fetchJson<GalleryItem[]>('/gallery/index.json');
+export const loadCalligraphyArt = () => fetchJson<CalligraphyArt[]>('/calligraphy/index.json');
 
 // --- IndexedDB upload store -------------------------------------------------
 

@@ -3,6 +3,8 @@ import { now } from './core/clock';
 import {
   loadBundledAudio,
   loadGallery,
+  loadCalligraphyArt,
+  type CalligraphyArt,
   type GalleryItem,
   loadBundledBackgrounds,
   listUploads,
@@ -38,18 +40,21 @@ setInterval(() => {
 export const bundledBackgrounds = signal<BundledBackground[]>([]);
 export const bundledAudio = signal<BundledAudio[]>([]);
 export const gallery = signal<GalleryItem[]>([]);
+export const calligraphyArt = signal<CalligraphyArt[]>([]);
 export const uploads = signal<Upload[]>([]);
 export const dismissed = signal<ReadonlySet<string>>(new Set());
 export const settingsOpen = signal(false);
 export const audioBlocked = signal(false);
 
 export async function loadMedia(): Promise<void> {
-  const [bgs, audio, ups, gal] = await Promise.allSettled([
+  const [bgs, audio, ups, gal, art] = await Promise.allSettled([
     loadBundledBackgrounds(),
     loadBundledAudio(),
     listUploads(),
     loadGallery(),
+    loadCalligraphyArt(),
   ]);
+  if (art.status === 'fulfilled') calligraphyArt.value = art.value;
   if (gal.status === 'fulfilled') gallery.value = gal.value;
   if (bgs.status === 'fulfilled') bundledBackgrounds.value = bgs.value;
   if (audio.status === 'fulfilled') bundledAudio.value = audio.value;

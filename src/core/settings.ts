@@ -30,6 +30,7 @@ export const HIGH_LAT_RULES = {
 export type HighLatRule = keyof typeof HIGH_LAT_RULES;
 
 export const CALLIGRAPHY_FONTS = {
+  art: 'Thuluth art',
   ruqaa: 'Ruqaa',
   nastaliq: 'Nastaliq',
   kufi: 'Kufi',
@@ -115,7 +116,7 @@ export const DEFAULT_SETTINGS: Settings = {
   jumuah: { enabled: true, times: ['13:30'] },
   dayTheme: 'classic',
   calligraphyMinutes: 45,
-  calligraphyFont: 'ruqaa',
+  calligraphyFont: 'art',
   night: { enabled: true, startAfterIsha: 60, endBeforeFajr: 0, brightness: 8, dayBrightness: 70 },
   sequence: { preCountdown: true, dua: true, iqamahCountdown: true },
   sounds: perPrayer((p) => ({ enabled: true, audioId: p === 'fajr' ? 'fajr-1' : 'athan-1', volume: p === 'fajr' ? 0.6 : 0.8 })),

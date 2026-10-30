@@ -1,0 +1,226 @@
+[
+  {
+    "id": "fajr-1",
+    "slot": "fajr",
+    "file": "fajr-1.webp",
+    "fileSm": "fajr-1-sm.webp",
+    "textTone": "light",
+    "accent": "#5e92c9",
+    "credit": {
+      "title": "a building with towers by a body of water",
+      "author": "Osman Özavcı",
+      "sourceUrl": "https://unsplash.com/photos/a-building-with-towers-by-a-body-of-water-1o-GiUs-6x4",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license",
+      "modified": "Cropped to 16:10 (4216x2635 px of the 4216x3162 px original), resized to 2560x1600 and 1280x800, encoded as WebP."
+    }
+  },
+  {
+    "id": "fajr-2",
+    "slot": "fajr",
+    "file": "fajr-2.webp",
+    "fileSm": "fajr-2-sm.webp",
+    "textTone": "light",
+    "accent": "#3c61b2",
+    "credit": {
+      "title": "white dome building near body of water during sunset",
+      "author": "Esmonde Yong",
+      "sourceUrl": "https://unsplash.com/photos/white-dome-building-near-body-of-water-during-sunset-7_COgbItdkQ",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license",
+      "modified": "Cropped to 16:10 (5327x3329 px of the 5327x3552 px original), mirrored horizontally, resized to 2560x1600 and 1280x800, encoded as WebP."
+    }
+  },
+  {
+    "id": "sunrise-1",
+    "slot": "sunrise",
+    "file": "sunrise-1.webp",
+    "fileSm": "sunrise-1-sm.webp",
+    "textTone": "dark",
+    "accent": "#d18056",
+    "credit": {
+      "title": "Taj mahal monument emerges from morning mist",
+      "author": "qin liu",
+      "sourceUrl": "https://unsplash.com/photos/taj-mahal-monument-emerges-from-morning-mist-fU_RObkfzSs",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license",
+      "modified": "Cropped to 16:10 (3456x2160 px of the 3840x2160 px original), resized to 2560x1600 and 1280x800, encoded as WebP."
+    }
+  },
+  {
+    "id": "sunrise-2",
+    "slot": "sunrise",
+    "file": "sunrise-2.webp",
+    "fileSm": "sunrise-2-sm.webp",
+    "textTone": "light",
+    "accent": "#b2793c",
+    "credit": {
+      "title": "Beautiful scene of Putra Mosque reflecting on calm lake waters under a vibrant morning sky.",
+      "author": "Zukiman Mohamad",
+      "sourceUrl": "https://www.pexels.com/photo/reflection-of-building-in-lake-338416/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "modified": "Cropped to 16:10 (6000x3750 px of the 6000x4000 px original), resized to 2560x1600 and 1280x800, encoded as WebP."
+    }
+  },
+  {
+    "id": "dhuhr-1",
+    "slot": "dhuhr",
+    "file": "dhuhr-1.webp",
+    "fileSm": "dhuhr-1-sm.webp",
+    "textTone": "dark",
+    "accent": "#19adcd",
+    "credit": {
+      "title": "A white mosque with blue domes and minarets",
+      "author": "ekrem osmanoglu",
+      "sourceUrl": "https://unsplash.com/photos/a-white-mosque-with-blue-domes-and-minarets-Xg5Y-X2yQVk",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license",
+      "modified": "Cropped to 16:10 (6000x3750 px of the 6000x4000 px original), mirrored horizontally, resized to 2560x1600 and 1280x800, encoded as WebP."
+    }
+  },
+  {
+    "id": "dhuhr-2",
+    "slot": "dhuhr",
+    "file": "dhuhr-2.webp",
+    "fileSm": "dhuhr-2-sm.webp",
+    "textTone": "dark",
+    "accent": "#ac5639",
+    "credit": {
+      "title": "Captivating view of a historic minaret tower in Mardin, Turkey surrounded by fog. A serene architectural marvel.",
+      "author": "Caner Cankisi",
+      "sourceUrl": "https://www.pexels.com/photo/concrete-tower-3999933/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "modified": "Cropped to 16:10 (2545x1591 px of the 2545x1696 px original), mirrored horizontally, upscaled to 2560x1600 and 1280x800, encoded as WebP."
+    }
+  },
+  {
+    "id": "asr-1",
+    "slot": "asr",
+    "file": "asr-1.webp",
+    "fileSm": "asr-1-sm.webp",
+    "textTone": "light",
+    "accent": "#c68553",
+    "credit": {
+      "title": "Captivating aerial shot of a historic minaret in Mardin, Türkiye, set against a vast golden landscape at sunset.",
+      "author": "burcubyzt_85",
+      "sourceUrl": "https://www.pexels.com/photo/aerial-view-of-historic-mardin-minaret-at-sunset-38981896/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "modified": "Cropped to 16:10 (7220x4512 px of the 7220x4816 px original), resized to 2560x1600 and 1280x800, encoded as WebP."
+    }
+  },
+  {
+    "id": "asr-2",
+    "slot": "asr",
+    "file": "asr-2.webp",
+    "fileSm": "asr-2-sm.webp",
+    "textTone": "dark",
+    "accent": "#ac7d39",
+    "credit": {
+      "title": "brown and white dome building",
+      "author": "Aryan Ghauri",
+      "sourceUrl": "https://unsplash.com/photos/brown-and-white-dome-building-5F98r2fRgJE",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license",
+      "modified": "Cropped to 16:10 (4096x2560 px of the 4096x2720 px original), mirrored horizontally, resized to 2560x1600 and 1280x800, encoded as WebP."
+    }
+  },
+  {
+    "id": "maghrib-1",
+    "slot": "maghrib",
+    "file": "maghrib-1.webp",
+    "fileSm": "maghrib-1-sm.webp",
+    "textTone": "light",
+    "accent": "#dc654b",
+    "credit": {
+      "title": "A stunning silhouette of a mosque tower against a vibrant sunset with mountain silhouettes in the background.",
+      "author": "i.am.anatolia",
+      "sourceUrl": "https://www.pexels.com/photo/silhouette-of-a-tall-building-8062986/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "modified": "Cropped to 16:10 (6000x3750 px of the 6000x4000 px original), resized to 2560x1600 and 1280x800, encoded as WebP."
+    }
+  },
+  {
+    "id": "maghrib-2",
+    "slot": "maghrib",
+    "file": "maghrib-2.webp",
+    "fileSm": "maghrib-2-sm.webp",
+    "textTone": "light",
+    "accent": "#ac3959",
+    "credit": {
+      "title": "silhouette of town buildings",
+      "author": "nurhan",
+      "sourceUrl": "https://unsplash.com/photos/silhouette-of-town-buildings-yC70QqvrPRk",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license",
+      "modified": "Cropped to 16:10 (4896x3060 px of the 4896x3264 px original), mirrored horizontally, resized to 2560x1600 and 1280x800, encoded as WebP."
+    }
+  },
+  {
+    "id": "isha-1",
+    "slot": "isha",
+    "file": "isha-1.webp",
+    "fileSm": "isha-1-sm.webp",
+    "textTone": "light",
+    "accent": "#1769cf",
+    "credit": {
+      "title": "Beautiful night view of Suleymaniye Mosque with illuminated crescent moon in Istanbul, Turkey.",
+      "author": "Vitaly Gariev",
+      "sourceUrl": "https://www.pexels.com/photo/view-of-illuminated-mosque-in-istanbul-at-night-23227976/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "modified": "Cropped to 16:10 (2700x1688 px of the 3840x2160 px original), resized to 2560x1600 and 1280x800, encoded as WebP."
+    }
+  },
+  {
+    "id": "isha-2",
+    "slot": "isha",
+    "file": "isha-2.webp",
+    "fileSm": "isha-2-sm.webp",
+    "textTone": "light",
+    "accent": "#3962ac",
+    "credit": {
+      "title": "Illuminated view of the stunning Blue Mosque in Shah Alam, Malaysia, reflecting in tranquil waters.",
+      "author": "Wee Keng Bee",
+      "sourceUrl": "https://www.pexels.com/photo/sultan-salahuddin-abdul-aziz-mosque-20502452/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "modified": "Cropped to 16:10 (2947x1842 px of the 2947x1965 px original), resized to 2560x1600 and 1280x800, encoded as WebP."
+    }
+  },
+  {
+    "id": "night-1",
+    "slot": "night",
+    "file": "night-1.webp",
+    "fileSm": "night-1-sm.webp",
+    "textTone": "light",
+    "accent": "#6039ac",
+    "credit": {
+      "title": "A breathtaking view of the Milky Way illuminating the night sky over a mosque silhouette in Lahore, Pakistan.",
+      "author": "Waleed ilyas",
+      "sourceUrl": "https://www.pexels.com/photo/silhouette-of-building-during-nighttime-14829579/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "modified": "Cropped to 16:10 (7952x4970 px of the 7952x5304 px original), resized to 2560x1600 and 1280x800, encoded as WebP."
+    }
+  },
+  {
+    "id": "night-2",
+    "slot": "night",
+    "file": "night-2.webp",
+    "fileSm": "night-2-sm.webp",
+    "textTone": "light",
+    "accent": "#3966ac",
+    "credit": {
+      "title": "Stunning night view of Taksim Mosque in Istanbul, beautifully lit under a dramatic sky.",
+      "author": "Rabia Kule",
+      "sourceUrl": "https://www.pexels.com/photo/taksim-mosque-at-night-16942661/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "modified": "Cropped to 16:10 (5472x3420 px of the 5472x3648 px original), mirrored horizontally, resized to 2560x1600 and 1280x800, encoded as WebP."
+    }
+  }
+]
