@@ -249,6 +249,22 @@
   letter-spacing: 0.07em;
 }
 
+/* The place in the photo, like a calendar page. */
+.ct-caption {
+  position: absolute;
+  right: 4rem;
+  bottom: 2.4rem;
+  font: italic 500 2rem var(--serif-text);
+  letter-spacing: 0.02em;
+  opacity: 0.78;
+  text-shadow: 0 0.1rem 0.8rem rgba(0, 0, 0, 0.45);
+  animation: xf-in 2.5s ease 1s both;
+}
+
+.tone-dark .ct-caption {
+  text-shadow: 0 0.1rem 0.6rem rgba(255, 255, 255, 0.6);
+}
+
 /* --- Bottom-left prayer dial -------------------------------------------------- */
 
 .dial {

@@ -13,7 +13,8 @@
       "license": "Unsplash License",
       "licenseUrl": "https://unsplash.com/license",
       "modified": "Cropped to 16:10 (4216x2635 px of the 4216x3162 px original), resized to 2560x1600 and 1280x800, encoded as WebP."
-    }
+    },
+    "caption": "Ortaköy Mosque · Istanbul"
   },
   {
     "id": "fajr-2",
@@ -45,7 +46,8 @@
       "license": "Unsplash License",
       "licenseUrl": "https://unsplash.com/license",
       "modified": "Cropped to 16:10 (3456x2160 px of the 3840x2160 px original), resized to 2560x1600 and 1280x800, encoded as WebP."
-    }
+    },
+    "caption": "Taj Mahal · Agra"
   },
   {
     "id": "sunrise-2",
@@ -61,7 +63,8 @@
       "license": "Pexels License",
       "licenseUrl": "https://www.pexels.com/license/",
       "modified": "Cropped to 16:10 (6000x3750 px of the 6000x4000 px original), resized to 2560x1600 and 1280x800, encoded as WebP."
-    }
+    },
+    "caption": "Putra Mosque · Putrajaya"
   },
   {
     "id": "dhuhr-1",
@@ -77,7 +80,8 @@
       "license": "Unsplash License",
       "licenseUrl": "https://unsplash.com/license",
       "modified": "Cropped to 16:10 (6000x3750 px of the 6000x4000 px original), mirrored horizontally, resized to 2560x1600 and 1280x800, encoded as WebP."
-    }
+    },
+    "caption": "Kul Sharif Mosque · Kazan"
   },
   {
     "id": "dhuhr-2",
@@ -93,7 +97,8 @@
       "license": "Pexels License",
       "licenseUrl": "https://www.pexels.com/license/",
       "modified": "Cropped to 16:10 (2545x1591 px of the 2545x1696 px original), mirrored horizontally, upscaled to 2560x1600 and 1280x800, encoded as WebP."
-    }
+    },
+    "caption": "Mardin · Türkiye"
   },
   {
     "id": "asr-1",
@@ -109,7 +114,8 @@
       "license": "Pexels License",
       "licenseUrl": "https://www.pexels.com/license/",
       "modified": "Cropped to 16:10 (7220x4512 px of the 7220x4816 px original), resized to 2560x1600 and 1280x800, encoded as WebP."
-    }
+    },
+    "caption": "Grand Mosque of Mardin · Türkiye"
   },
   {
     "id": "asr-2",
@@ -125,7 +131,8 @@
       "license": "Unsplash License",
       "licenseUrl": "https://unsplash.com/license",
       "modified": "Cropped to 16:10 (4096x2560 px of the 4096x2720 px original), mirrored horizontally, resized to 2560x1600 and 1280x800, encoded as WebP."
-    }
+    },
+    "caption": "Badshahi Mosque · Lahore"
   },
   {
     "id": "maghrib-1",
@@ -173,7 +180,8 @@
       "license": "Pexels License",
       "licenseUrl": "https://www.pexels.com/license/",
       "modified": "Cropped to 16:10 (2700x1688 px of the 3840x2160 px original), resized to 2560x1600 and 1280x800, encoded as WebP."
-    }
+    },
+    "caption": "Süleymaniye Mosque · Istanbul"
   },
   {
     "id": "isha-2",
@@ -189,7 +197,8 @@
       "license": "Pexels License",
       "licenseUrl": "https://www.pexels.com/license/",
       "modified": "Cropped to 16:10 (2947x1842 px of the 2947x1965 px original), resized to 2560x1600 and 1280x800, encoded as WebP."
-    }
+    },
+    "caption": "Sultan Salahuddin Abdul Aziz Mosque · Shah Alam"
   },
   {
     "id": "night-1",
@@ -205,7 +214,8 @@
       "license": "Pexels License",
       "licenseUrl": "https://www.pexels.com/license/",
       "modified": "Cropped to 16:10 (7952x4970 px of the 7952x5304 px original), resized to 2560x1600 and 1280x800, encoded as WebP."
-    }
+    },
+    "caption": "Lahore by starlight"
   },
   {
     "id": "night-2",
@@ -221,6 +231,7 @@
       "license": "Pexels License",
       "licenseUrl": "https://www.pexels.com/license/",
       "modified": "Cropped to 16:10 (5472x3420 px of the 5472x3648 px original), mirrored horizontally, resized to 2560x1600 and 1280x800, encoded as WebP."
-    }
+    },
+    "caption": "Taksim Mosque · Istanbul"
   }
 ]

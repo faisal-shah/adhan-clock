@@ -15,6 +15,8 @@ export interface BundledBackground {
   fileSm: string;
   textTone: 'light' | 'dark';
   accent: string;
+  /** The place shown, when it is a named one. */
+  caption?: string;
   credit: Credit;
 }
 
@@ -62,6 +64,7 @@ export interface Background {
   id: string;
   url: string;
   textTone: 'light' | 'dark';
+  caption?: string;
 }
 
 async function fetchJson<T>(path: string): Promise<T> {

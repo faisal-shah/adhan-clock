@@ -144,6 +144,11 @@ export function CalligraphyTheme({ st }: { st: ClockState }) {
         </div>
       </div>
 
+      {bg?.caption && (
+        <div class="ct-caption" key={bg.id}>
+          {bg.caption}
+        </div>
+      )}
       <PrayerDial st={st} />
       <SunMedallion st={st} />
       <WeatherMedallion />

@@ -146,6 +146,8 @@ def load_manifest(path: Path) -> tuple[Settings, list[dict]]:
             raise ManifestError(f"{where}: id must be '<slot>-<n>' with n >= 1, matching the slot")
         if e["id"] in seen:
             raise ManifestError(f"{where}: duplicate id")
+        if "caption" in e and not (isinstance(e["caption"], str) and 0 < len(e["caption"]) <= 60):
+            raise ManifestError(f"{where}: caption must be a non-empty string of at most 60 characters")
         seen.add(e["id"])
         src = e["source"]
         if not (isinstance(src, dict) and str(src.get("url", "")).startswith("https://")):
@@ -403,6 +405,14 @@ def main(argv: list[str] | None = None) -> int:
             items.append(previous[e["id"]])
         else:
             items.append(process_entry(e, settings, args.out_dir, args.cache_dir))
+
+    # Captions name the place shown; they do not depend on the pixels, so they
+    # are refreshed from the manifest even for entries skipped by --only.
+    by_id = {e["id"]: e for e in entries}
+    for it in items:
+        it.pop("caption", None)
+        if "caption" in by_id[it["id"]]:
+            it["caption"] = by_id[it["id"]]["caption"]
 
     expected = {f for it in items for f in (it["file"], it["fileSm"])}
     for stale in sorted(p for p in args.out_dir.iterdir() if OUTPUT_RE.match(p.name) and p.name not in expected):

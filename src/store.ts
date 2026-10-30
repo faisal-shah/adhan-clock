@@ -129,7 +129,7 @@ export function backgroundFor(slot: BgSlot, day: Date): Background | null {
   const choice = settings.value.backgrounds[slot];
   const bundled = bundledBackgrounds.value
     .filter((b) => b.slot === slot)
-    .map((b) => ({ id: b.id, url: `/backgrounds/${b.file}`, textTone: b.textTone }));
+    .map((b) => ({ id: b.id, url: `/backgrounds/${b.file}`, textTone: b.textTone, caption: b.caption }));
   const uploaded = uploads.value
     .filter((u) => u.kind === 'image' && u.slot === slot)
     .map((u) => ({ id: `upload:${u.id}`, url: uploadUrl(u), textTone: u.textTone ?? 'light' }));

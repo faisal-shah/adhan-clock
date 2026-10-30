@@ -39,7 +39,8 @@
         "focusX": 0.5,
         "focusY": 0.43,
         "mirror": false
-      }
+      },
+      "caption": "Ortaköy Mosque · Istanbul"
     },
     {
       "id": "fajr-2",
@@ -83,7 +84,8 @@
         "focusX": 0.55,
         "focusY": 0.5,
         "mirror": false
-      }
+      },
+      "caption": "Taj Mahal · Agra"
     },
     {
       "id": "sunrise-2",
@@ -105,7 +107,8 @@
         "focusX": 0.5,
         "focusY": 0.5,
         "mirror": false
-      }
+      },
+      "caption": "Putra Mosque · Putrajaya"
     },
     {
       "id": "dhuhr-1",
@@ -127,7 +130,8 @@
         "focusX": 0.5,
         "focusY": 0.5,
         "mirror": true
-      }
+      },
+      "caption": "Kul Sharif Mosque · Kazan"
     },
     {
       "id": "dhuhr-2",
@@ -149,7 +153,8 @@
         "focusX": 0.5,
         "focusY": 0.5,
         "mirror": true
-      }
+      },
+      "caption": "Mardin · Türkiye"
     },
     {
       "id": "asr-1",
@@ -171,7 +176,8 @@
         "focusX": 0.5,
         "focusY": 0.5,
         "mirror": false
-      }
+      },
+      "caption": "Grand Mosque of Mardin · Türkiye"
     },
     {
       "id": "asr-2",
@@ -193,7 +199,8 @@
         "focusX": 0.5,
         "focusY": 0.5,
         "mirror": true
-      }
+      },
+      "caption": "Badshahi Mosque · Lahore"
     },
     {
       "id": "maghrib-1",
@@ -261,7 +268,8 @@
         "mirror": false,
         "zoom": 1.28
       },
-      "cropNote": "Zoomed so the frame ends at 78% of the original height, above the lit rooftop restaurant terraces, which show diners."
+      "cropNote": "Zoomed so the frame ends at 78% of the original height, above the lit rooftop restaurant terraces, which show diners.",
+      "caption": "Süleymaniye Mosque · Istanbul"
     },
     {
       "id": "isha-2",
@@ -283,7 +291,8 @@
         "focusX": 0.5,
         "focusY": 0.5,
         "mirror": false
-      }
+      },
+      "caption": "Sultan Salahuddin Abdul Aziz Mosque · Shah Alam"
     },
     {
       "id": "night-1",
@@ -305,7 +314,8 @@
         "focusX": 0.5,
         "focusY": 0.5,
         "mirror": false
-      }
+      },
+      "caption": "Lahore by starlight"
     },
     {
       "id": "night-2",
@@ -327,7 +337,8 @@
         "focusX": 0.5,
         "focusY": 0.5,
         "mirror": true
-      }
+      },
+      "caption": "Taksim Mosque · Istanbul"
     }
   ]
 }
