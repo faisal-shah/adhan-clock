@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { previewSound, stopAthan } from '../../audio';
 import { travelTo } from '../../core/clock';
+import { deviceTimezone } from '../../core/geo';
 import { toggleFullscreen, underFully } from '../../core/kiosk';
 import { audioDuration, deleteUpload, newId, processImage, putUpload, type Upload } from '../../core/media';
 import { addDays, startOfDay } from '../../core/prayer';
@@ -68,6 +69,12 @@ function PlaceSection() {
       <Row label="This clock is in" hint={s.place && `${s.place.latitude.toFixed(4)}, ${s.place.longitude.toFixed(4)}`}>
         <span class="row-value">{s.place?.name}</span>
       </Row>
+      {s.place?.timezone && s.place.timezone !== deviceTimezone() && (
+        <p class="panel-warn">
+          This tablet's time zone is {deviceTimezone()}, but {s.place.name} uses {s.place.timezone}. Times are shown on the
+          tablet's clock, so set the tablet's time zone to match.
+        </p>
+      )}
       {changing ? (
         <div class="panel-block">
           <LocationPicker

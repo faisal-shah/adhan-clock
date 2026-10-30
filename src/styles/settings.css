@@ -560,3 +560,13 @@
 .panel-note a {
   color: var(--gold-soft);
 }
+
+.panel-warn {
+  margin: 1.2rem 0;
+  padding: 1.4rem 1.8rem;
+  border-radius: 1.4rem;
+  background: rgba(200, 80, 40, 0.15);
+  border: 1px solid rgba(255, 150, 110, 0.35);
+  color: #ffd4c4;
+  line-height: 1.5;
+}
