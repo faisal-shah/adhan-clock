@@ -2,7 +2,7 @@ import { clockFace, minutesLeft } from '../../core/calendar';
 import { kidReminder } from '../../core/content';
 import { PERIOD_NAMES, type ClockState } from '../../core/schedule';
 import { settings } from '../../store';
-import { T, dateLine } from '../parts';
+import { T, WeatherGlyph, dateLine, useWeather } from '../parts';
 
 const CLOUD =
   'M34 86C14 86 6 64 22 55 16 36 38 22 56 33 64 12 98 6 113 26 128 13 158 20 158 44 180 42 194 66 180 80 176 85 170 86 164 86Z';
@@ -10,7 +10,7 @@ const CLOUD =
 function Cloud({ class: cls, children }: { class: string; children?: preact.ComponentChildren }) {
   return (
     <div class={`kd-cloud ${cls}`}>
-      <svg viewBox="0 0 200 92" preserveAspectRatio="none">
+      <svg class="kd-cloud-shape" viewBox="0 0 200 92" preserveAspectRatio="none">
         <path d={CLOUD} />
       </svg>
       {children && <div class="kd-cloud-text">{children}</div>}
@@ -72,11 +72,49 @@ function Sun() {
   );
 }
 
+/** Flowers along the front of the grass: x position (design px), scale, petal colour. */
+const FLOWERS: [number, number, string][] = [
+  [90, 1, '#ff7aa8'],
+  [160, 0.75, '#ffd23f'],
+  [520, 0.9, '#ffffff'],
+  [610, 0.7, '#ff7aa8'],
+  [930, 0.85, '#ffd23f'],
+  [1010, 1.05, '#b38cff'],
+  [1180, 0.8, '#ffffff'],
+];
+
+function Flower({ x, k, color }: { x: number; k: number; color: string }) {
+  return (
+    <svg class="kd-flower" viewBox="-20 -20 40 70" style={{ left: `${x / 10}rem`, width: `${5.6 * k}rem`, height: `${9.8 * k}rem` }}>
+      <path d="M0 6V46" stroke="#2f9e44" stroke-width="3" />
+      <path d="M0 30c6-8 14-8 16-4-4 5-10 7-16 4Z" fill="#2f9e44" />
+      {[0, 72, 144, 216, 288].map((a) => (
+        <ellipse cx="0" cy="-9" rx="6" ry="9" fill={color} transform={`rotate(${a})`} />
+      ))}
+      <circle r="6" fill="#ffb000" />
+    </svg>
+  );
+}
+
 function Star() {
   return (
     <svg class="kd-star" viewBox="0 0 24 24">
       <path d="m12 2 2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8Z" />
     </svg>
+  );
+}
+
+function WeatherCloud() {
+  const w = useWeather();
+  return (
+    <Cloud class="c-d">
+      {w && (
+        <div class="kd-weather">
+          <WeatherGlyph kind={w.kind} night={w.night} />
+          <b>{w.temp}</b>
+        </div>
+      )}
+    </Cloud>
   );
 }
 
@@ -90,6 +128,13 @@ export function KidsTheme({ st }: { st: ClockState }) {
   return (
     <div class="kd">
       <Sun />
+      <div class="kd-birds">
+        {[0, 1, 2].map((i) => (
+          <svg class={`kd-bird b${i}`} viewBox="0 0 40 16">
+            <path d="M2 10Q10 1 20 10Q30 1 38 10" />
+          </svg>
+        ))}
+      </div>
       <Cloud class="c-a">
         <div class="kd-cl-row">
           <T d={st.today.sunrise} />
@@ -111,7 +156,7 @@ export function KidsTheme({ st }: { st: ClockState }) {
         </Cloud>
       )}
       <Cloud class="c-c" />
-      <Cloud class="c-d" />
+      <WeatherCloud />
       <Cloud class="c-e">
         <div class="kd-next">
           <span>{what} in</span>
@@ -148,10 +193,13 @@ export function KidsTheme({ st }: { st: ClockState }) {
       </div>
 
       <div class="kd-ground">
-        <svg viewBox="0 0 1600 160" preserveAspectRatio="none">
+        <svg class="kd-grass" viewBox="0 0 1600 160" preserveAspectRatio="none">
           <path d={GRASS_BACK} fill="#2f9e44" />
           <path d={GRASS_FRONT} fill="#43c25a" />
         </svg>
+        {FLOWERS.map(([x, k, c]) => (
+          <Flower x={x} k={k} color={c} />
+        ))}
         <Mosque />
         <div class="kd-reminder" key={reminder}>
           <Star />

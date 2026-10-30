@@ -36,13 +36,65 @@
   animation: rays 90s linear infinite;
 }
 
+/* Birds gliding across the sky */
+.kd-birds {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.kd-bird {
+  position: absolute;
+  width: 3.6rem;
+  height: 1.6rem;
+  fill: none;
+  stroke: #3d6170;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: glide 60s linear infinite, flap 0.9s ease-in-out infinite alternate;
+}
+
+.kd-bird.b0 {
+  top: 21rem;
+  animation-delay: -10s, 0s;
+}
+
+.kd-bird.b1 {
+  top: 24rem;
+  width: 2.8rem;
+  animation-delay: -12s, -0.4s;
+}
+
+.kd-bird.b2 {
+  top: 19rem;
+  width: 2.4rem;
+  animation-delay: -40s, -0.2s;
+  animation-duration: 75s, 0.8s;
+}
+
+@keyframes glide {
+  from {
+    left: -5%;
+  }
+  to {
+    left: 105%;
+  }
+}
+
+@keyframes flap {
+  to {
+    transform: scaleY(0.45);
+  }
+}
+
 /* Clouds */
 .kd-cloud {
   position: absolute;
   animation: drift 14s ease-in-out infinite alternate;
 }
 
-.kd-cloud svg {
+.kd-cloud-shape {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -104,10 +156,10 @@
 }
 
 .kd-cloud.c-d {
-  right: 34rem;
-  top: 6rem;
-  width: 15rem;
-  height: 7rem;
+  right: 33rem;
+  top: 4rem;
+  width: 21rem;
+  height: 11rem;
   animation-duration: 19s;
   animation-delay: -4s;
 }
@@ -168,7 +220,7 @@
 }
 
 .kd-hm {
-  font-size: 27rem;
+  font-size: 30rem;
   letter-spacing: -0.01em;
 }
 
@@ -184,7 +236,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: 41rem;
+  top: 42.5rem;
   text-align: center;
   font: 500 2.6rem var(--sans);
   letter-spacing: 0.04em;
@@ -195,7 +247,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: 48rem;
+  top: 52.5rem;
   display: flex;
   justify-content: center;
   gap: 3.6rem;
@@ -203,8 +255,8 @@
 
 .kd-card {
   position: relative;
-  width: 17.6rem;
-  padding: 1.6rem 0 1.4rem;
+  width: 19.6rem;
+  padding: 2rem 0 1.8rem;
   border-radius: 2.4rem;
   background: linear-gradient(180deg, #2bc4e3 0%, #12a6c9 100%);
   box-shadow: 0 0.8rem 0 #0c87a6, 0 1.6rem 2.4rem rgba(18, 120, 150, 0.3);
@@ -226,7 +278,7 @@
 }
 
 .kd-card-name {
-  font: 700 2.3rem var(--sans);
+  font: 700 2.6rem var(--sans);
   letter-spacing: 0.04em;
   color: #0b3d52;
 }
@@ -236,12 +288,12 @@
 }
 
 .kd-card-time {
-  margin-top: 0.6rem;
-  font: 600 3.8rem/1.05 var(--sans);
+  margin-top: 0.8rem;
+  font: 600 4.3rem/1.05 var(--sans);
 }
 
 .kd-card-label {
-  font: 500 1.5rem var(--sans);
+  font: 500 1.7rem var(--sans);
   opacity: 0.85;
 }
 
@@ -269,10 +321,50 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 16rem;
+  height: 17rem;
 }
 
-.kd-ground > svg {
+.kd-flower {
+  position: absolute;
+  bottom: 9.2rem;
+  overflow: visible;
+  transform-origin: 50% 100%;
+  animation: sway 5s ease-in-out infinite alternate;
+}
+
+.kd-flower:nth-of-type(2n) {
+  animation-duration: 6.5s;
+  animation-delay: -2s;
+}
+
+@keyframes sway {
+  from {
+    transform: rotate(-4deg);
+  }
+  to {
+    transform: rotate(4deg);
+  }
+}
+
+.kd-weather {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding-top: 0.6rem;
+}
+
+.kd-weather svg {
+  width: 4rem;
+  height: 4rem;
+  color: #e09a2c;
+}
+
+.kd-weather b {
+  font: 700 2.6rem var(--sans);
+  color: #0d6e8a;
+}
+
+.kd-grass {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -282,7 +374,7 @@
 .kd-mosque {
   position: absolute;
   right: 6rem;
-  bottom: 5.5rem;
+  bottom: 6.5rem;
   width: 17rem;
   height: 15.5rem;
 }
