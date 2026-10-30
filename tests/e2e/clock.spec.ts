@@ -72,3 +72,30 @@ test('dismissing the athan returns to the theme', async ({ page }) => {
   await expect(page.locator('.tk-athan')).toHaveCount(0, { timeout: 3000 });
   await expect(page.locator('.ct')).toBeVisible();
 });
+
+test('plays the Dhuhr athan from the right offset and stops on dismiss', async ({ page }) => {
+  await page.addInitScript(() => {
+    const w = window as unknown as { __plays: { at: number; paused: () => boolean }[] };
+    w.__plays = [];
+    const orig = HTMLMediaElement.prototype.play;
+    HTMLMediaElement.prototype.play = function (this: HTMLMediaElement) {
+      w.__plays.push({ at: this.currentTime, paused: () => this.paused });
+      return orig.call(this);
+    };
+  });
+  await open(page, '2026-10-29T12:35:20');
+  await expect.poll(() => page.evaluate(() => (window as any).__plays.length)).toBeGreaterThan(0);
+  const at = await page.evaluate(() => (window as any).__plays[0].at);
+  expect(at).toBeGreaterThan(18);
+  expect(at).toBeLessThan(25);
+  await expect.poll(() => page.evaluate(() => (window as any).__plays[0].paused())).toBe(false);
+  await page.getByRole('button', { name: 'Stop the athan' }).click();
+  await expect.poll(() => page.evaluate(() => (window as any).__plays[0].paused())).toBe(true);
+});
+
+test('Fajr uses the Fajr athan', async ({ page }) => {
+  const urls: string[] = [];
+  page.on('request', (r) => r.url().includes('/audio/') && urls.push(r.url()));
+  await open(page, '2026-10-29T06:02:10');
+  await expect.poll(() => urls.some((u) => u.endsWith('athan-fajr-1.mp3'))).toBe(true);
+});
