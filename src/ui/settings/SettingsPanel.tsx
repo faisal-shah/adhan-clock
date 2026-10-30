@@ -577,6 +577,14 @@ function TabletSection() {
         Prayer times are calculated on this tablet. Settings, photos and recordings are stored only in this browser.
         {underFully() ? ' Running under Fully Kiosk Browser.' : ''}
       </p>
+      <div class="panel-sub">Sources</div>
+      <p class="panel-note">
+        Quran text from <a href="https://tanzil.net" target="_blank" rel="noreferrer">Tanzil.net</a> (Uthmani), English
+        translation Saheeh International. Hadith from the hadith-api collection, numbered as on sunnah.com; only sahih
+        and hasan narrations. Prayer times by adhan-js. Weather by Open-Meteo. Photo and recording credits:{' '}
+        <a href="/backgrounds/CREDITS.md" target="_blank" rel="noreferrer">photos</a>,{' '}
+        <a href="/audio/CREDITS.md" target="_blank" rel="noreferrer">athans</a>.
+      </p>
     </>
   );
 }
