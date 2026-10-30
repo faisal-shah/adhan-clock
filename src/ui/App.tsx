@@ -2,7 +2,7 @@ import { isPreviewing, travelTo } from '../core/clock';
 import type { ClockState } from '../core/schedule';
 import type { ThemeKey } from '../core/settings';
 import { unlockAudio } from '../audio';
-import { audioBlocked, clock, settings, settingsOpen, updateSettings } from '../store';
+import { audioBlocked, backgroundFor, clock, settings, settingsOpen, updateSettings } from '../store';
 import { Crossfade, GearIcon, SpeakerIcon } from './parts';
 import { LocationPicker } from './settings/LocationPicker';
 import { SettingsPanel } from './settings/SettingsPanel';
@@ -29,8 +29,10 @@ function Theme({ theme, st }: { theme: ThemeKey; st: ClockState }) {
 }
 
 function Setup() {
+  const bg = backgroundFor('isha', new Date());
   return (
     <div class="setup">
+      {bg && <img class="setup-photo" src={bg.url} alt="" />}
       <div class="setup-card">
         <div class="setup-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
         <h1>Adhan Clock</h1>
