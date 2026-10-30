@@ -16,12 +16,14 @@ import {
   HIGH_LAT_RULES,
   PRAYERS,
   type BgSlot,
+  type CalligraphyFont,
   type Settings,
   type SoundChoice,
 } from '../../core/settings';
 import {
   backgroundFor,
   bundledAudio,
+  calligraphyArt,
   bundledBackgrounds,
   clock,
   dismissed,
@@ -208,6 +210,7 @@ function bump(hhmm: string, minutes: number): string {
 
 function DisplaySection() {
   const s = settings.value;
+  const hasArt = calligraphyArt.value.length > 0;
   return (
     <>
       <Row label="Daytime theme" hint="Shown outside the calligraphy window and the night hours.">
@@ -255,8 +258,8 @@ function DisplaySection() {
       </Row>
       <Row label="Calligraphy style">
         <Segmented
-          value={s.calligraphyFont}
-          options={CALLIGRAPHY_FONTS}
+          value={s.calligraphyFont === 'art' && !hasArt ? 'ruqaa' : s.calligraphyFont}
+          options={(Object.entries(CALLIGRAPHY_FONTS) as [CalligraphyFont, string][]).filter(([k]) => hasArt || k !== 'art')}
           onChange={(calligraphyFont) => set(() => ({ calligraphyFont }))}
         />
       </Row>

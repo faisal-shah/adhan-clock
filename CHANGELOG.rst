@@ -19,8 +19,9 @@ Added
 - Gallery theme: captioned, calendar-style photographs in four
   categories, with the prayer times along the foot; museum objects shown
   whole over a blurred copy of themselves.
-- Calligraphy from vectorized Thuluth artwork, rendered as gold leaf or
-  ink; font styles (Ruqaa, Nastaliq, Kufi) remain selectable.
+- Calligraphy in Ruqaa, Nastaliq or Kufi, rendered as gold leaf or ink;
+  vector artwork placed in ``public/calligraphy/`` is used instead when
+  present.
 - "Calm" motion setting for slower tablets.
 - Night theme: dim drifting clock with Fajr and last-third-of-night times;
   backlight dimming under Fully Kiosk Browser.
