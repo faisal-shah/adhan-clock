@@ -1,0 +1,110 @@
+{
+  "defaults": {
+    "targetLufs": -16,
+    "truePeakDb": -1.5,
+    "lraTarget": 20,
+    "bitrateKbps": 96,
+    "sampleRate": 44100,
+    "keepSilenceSec": 0.3,
+    "silenceThresholdDb": -50,
+    "fadeInSec": 0.5,
+    "fadeOutSec": 0.5
+  },
+  "entries": [
+    {
+      "id": "athan-1",
+      "kind": "athan",
+      "file": "athan-1.mp3",
+      "label": "Athan — Mishary Rashid Alafasy (maqam Hijaz)",
+      "source": {
+        "url": "https://archive.org/download/azan-alafasy/azan-hejaz-2013-other.mp3",
+        "sha256": "621d0176538790f09fe7f88a394d2d3812bec78bde91681264bd49e18dc06a4d"
+      },
+      "credit": {
+        "title": "أذان باقي الصلوات (حجاز) — Adhan for the other prayers, maqam Hijaz (2013)",
+        "author": "Mishary Rashid Alafasy",
+        "sourceUrl": "https://archive.org/details/azan-alafasy",
+        "license": "unknown",
+        "licenseUrl": null
+      },
+      "licenseNote": "The archive.org item states no license. Studio recording by Mishary Rashid Alafasy; ID3 tags credit the fan blog alafasyinshad.blogspot.com.",
+      "verification": "Whisper large-v3 phrase-by-phrase transcript: complete athan from takbir to the closing tahlil; no as-salatu khayrun min an-nawm."
+    },
+    {
+      "id": "athan-2",
+      "kind": "athan",
+      "file": "athan-2.mp3",
+      "label": "Athan — Masjid al-Haram, Makkah",
+      "source": {
+        "url": "https://archive.org/download/azaan-of-world-mosques-english/1st%20Haram%20Makkah%20best.mp3",
+        "sha256": "ffcf0a5ecaa09a078d30ee50c805f0405eb4b780d36530efd2e569132bc79c9f"
+      },
+      "credit": {
+        "title": "1st Haram Makkah best",
+        "author": "Muezzin of Masjid al-Haram, Makkah (not named by the source); compiled by alqurantranslation.com",
+        "sourceUrl": "https://archive.org/details/azaan-of-world-mosques-english",
+        "license": "Public Domain Mark 1.0 (asserted by the archive.org uploader)",
+        "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/"
+      },
+      "licenseNote": "The uploader marked the whole compilation public domain; the original broadcast rights holder is not identified.",
+      "verification": "Whisper large-v3 phrase-by-phrase transcript: 12 phrases in standard order, from the opening takbir to the closing tahlil; no as-salatu khayrun min an-nawm. The reverberant melisma makes the model garble both hayya ʿala as-salah phrases, but their position and count match."
+    },
+    {
+      "id": "fajr-1",
+      "kind": "fajr",
+      "file": "athan-fajr-1.mp3",
+      "label": "Fajr athan — Mishary Rashid Alafasy (maqam Hijaz)",
+      "source": {
+        "url": "https://archive.org/download/azan-alafasy/azan-hejaz-2013-al-fajr.mp3",
+        "sha256": "9cd4e24ad4b8e95e45626259959dcb53627699c297c83eefe66daf031b1c8fb8"
+      },
+      "credit": {
+        "title": "أذان الفجر (حجاز) — Fajr adhan, maqam Hijaz (2013)",
+        "author": "Mishary Rashid Alafasy",
+        "sourceUrl": "https://archive.org/details/azan-alafasy",
+        "license": "unknown",
+        "licenseUrl": null
+      },
+      "licenseNote": "The archive.org item states no license. Studio recording by Mishary Rashid Alafasy; ID3 tags credit the fan blog alafasyinshad.blogspot.com.",
+      "verification": "ID3 title 'أذان الفجر' (Fajr adhan). Whisper large-v3 phrase-by-phrase transcript hears 'الصلاة خير من النوم' twice (163.5–178.9 s and 180.5–195.9 s of the original), after the second hayya ʿala al-falah; complete through the closing tahlil. Re-checked on the processed MP3."
+    },
+    {
+      "id": "fajr-2",
+      "kind": "fajr",
+      "file": "athan-fajr-2.mp3",
+      "label": "Fajr athan — Masjid al-Haram, Makkah",
+      "source": {
+        "url": "https://archive.org/download/azaan-of-world-mosques-english/2nd%20Fajr%20Haram%20Makkah%20best.mp3",
+        "sha256": "65f22c9de7c3b8202ee251ce4e840208282f48ad92605f65808040e2e8cd785b"
+      },
+      "credit": {
+        "title": "2nd Fajr Haram Makkah best",
+        "author": "Muezzin of Masjid al-Haram, Makkah (not named by the source); compiled by alqurantranslation.com",
+        "sourceUrl": "https://archive.org/details/azaan-of-world-mosques-english",
+        "license": "Public Domain Mark 1.0 (asserted by the archive.org uploader)",
+        "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/"
+      },
+      "licenseNote": "The uploader marked the whole compilation public domain; the original broadcast rights holder is not identified.",
+      "verification": "Source file title says Fajr. Whisper large-v3 phrase-by-phrase transcript hears 'الصلاة خير من النوم' twice (156.4–169.5 s and 173.4–186.7 s of the original), after the second hayya ʿala al-falah; complete through the closing tahlil. Re-checked on the processed MP3."
+    },
+    {
+      "id": "chime",
+      "kind": "chime",
+      "file": "chime.mp3",
+      "label": "Chime — soft three-note arpeggio",
+      "synth": "chime",
+      "overrides": {
+        "fadeInSec": 0.005,
+        "fadeOutSec": 0.3
+      },
+      "credit": {
+        "title": "Soft chime (C5–G5–C6, singing-bowl partials)",
+        "author": "Generated by scripts/audio/process.py",
+        "sourceUrl": "https://github.com/faisal-shah/adhan-clock/blob/main/scripts/audio/process.py",
+        "license": "CC0 1.0",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "verification": "Synthesized; the 5 ms fade-in keeps the strike's attack (a 0.5 s fade would turn it into a swell)."
+    }
+  ]
+}
