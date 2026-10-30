@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { previewSound, stopAthan } from '../../audio';
-import { travelTo } from '../../core/clock';
 import { deviceTimezone } from '../../core/geo';
 import { toggleFullscreen, underFully } from '../../core/kiosk';
 import { audioDuration, deleteUpload, newId, processImage, putUpload, type Upload } from '../../core/media';
-import { addDays, startOfDay } from '../../core/prayer';
 import { PERIOD_NAMES } from '../../core/schedule';
 import {
   BG_SLOTS,
@@ -26,7 +24,6 @@ import {
   calligraphyArt,
   bundledBackgrounds,
   clock,
-  dismissed,
   forgetUploadUrl,
   settings,
   settingsOpen,
@@ -37,6 +34,7 @@ import {
 import { T } from '../parts';
 import { Row, Segmented, Select, Slider, Stepper, TimeInput, Toggle } from './controls';
 import { LocationPicker } from './LocationPicker';
+import { PreviewSection } from './PreviewSection';
 
 const SECTIONS = {
   place: 'Location',
@@ -597,60 +595,6 @@ function BackgroundsSection() {
   );
 }
 
-function PreviewSection() {
-  const st = clock.value;
-  if (!st) return null;
-  const go = (t: Date, id?: string) => {
-    if (id) dismissed.value = new Set([...dismissed.value].filter((x) => x !== id));
-    stopAthan();
-    travelTo(t);
-    settingsOpen.value = false;
-  };
-  const sec = 1000;
-  const friday = addDays(startOfDay(st.now), (5 - st.now.getDay() + 7) % 7);
-  return (
-    <>
-      <p class="panel-note">
-        Jump to a few seconds before an athan and watch the whole sequence with sound. A bar at the top returns to the real time.
-      </p>
-      <div class="preview-grid">
-        {st.slots.map((slot) => (
-          <button class="btn" onClick={() => go(new Date(slot.athan.getTime() - 65 * sec), slot.id)}>
-            {PERIOD_NAMES[slot.name]} athan
-          </button>
-        ))}
-        <button class="btn" onClick={() => go(new Date(st.slots[1].iqamah.getTime() - 70 * sec), st.slots[1].id)}>
-          {PERIOD_NAMES[st.slots[1].name]} iqamah
-        </button>
-        <button
-          class="btn"
-          onClick={() => {
-            const d = friday.getTime() === startOfDay(st.now).getTime() ? st.today.dhuhr : null;
-            go(d ? new Date(d.getTime() - 65 * sec) : new Date(friday.getTime() + 12.5 * 3600 * sec));
-          }}
-        >
-          Jumu'ah
-        </button>
-        <button
-          class="btn"
-          onClick={() => go(new Date(st.today.isha.getTime() + (settings.value.night.startAfterIsha + 5) * 60 * sec))}
-        >
-          Night theme
-        </button>
-        <button class="btn" onClick={() => go(new Date(st.today.sunrise.getTime() + 5 * 60 * sec))}>
-          Sunrise
-        </button>
-        <button class="btn" onClick={() => go(new Date(st.today.sunrise.getTime() + 90 * 60 * sec))}>
-          Duha
-        </button>
-        <button class="btn" onClick={() => go(new Date(st.tahajjud.getTime() - 5 * sec))}>
-          Tahajjud
-        </button>
-      </div>
-    </>
-  );
-}
-
 function TabletSection() {
   return (
     <>
@@ -707,7 +651,7 @@ const RENDER: Record<Section, () => preact.JSX.Element | null> = {
   night: NightSection,
   sound: SoundSection,
   backgrounds: BackgroundsSection,
-  preview: PreviewSection,
+  preview: () => (clock.value ? <PreviewSection st={clock.value} /> : null),
   tablet: TabletSection,
 };
 

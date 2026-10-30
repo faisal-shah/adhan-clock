@@ -158,3 +158,46 @@ test('gallery shows calligraphy pieces with their meaning', async ({ page }) => 
   await expect(page.locator('.gl-sub')).not.toBeEmpty();
   expect(errors).toEqual([]);
 });
+
+test('showcase: browse calligraphy full screen with keys', async ({ page }) => {
+  const errors = await open(page, '2026-10-29T14:53:00');
+  await page.getByRole('button', { name: 'Settings' }).click();
+  await page.locator('.panel-nav').getByRole('button', { name: 'Preview' }).click();
+  await page
+    .locator('.pv-tabs')
+    .getByRole('button', { name: /Calligraphy/ })
+    .click();
+  await page.locator('.pv-tile').first().click();
+  await expect(page.locator('.viewer .gl-art .callig-art')).toBeVisible();
+  await expect(page.locator('.viewer-count')).toHaveText(/^1 \/ \d+$/);
+  await page.keyboard.press('ArrowRight');
+  await expect(page.locator('.viewer-count')).toHaveText(/^2 \/ \d+$/);
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.viewer')).toHaveCount(0);
+  expect(errors).toEqual([]);
+});
+
+test('showcase: pin a background from the viewer', async ({ page }) => {
+  await open(page, '2026-10-29T14:53:00');
+  await page.getByRole('button', { name: 'Settings' }).click();
+  await page.locator('.panel-nav').getByRole('button', { name: 'Preview' }).click();
+  await page
+    .locator('.pv-tabs')
+    .getByRole('button', { name: /Backgrounds/ })
+    .click();
+  await page.locator('.pv-tile').first().click();
+  await expect(page.locator('.viewer .ct')).toBeVisible();
+  await page.locator('.viewer-use').click();
+  const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('adhan-clock:settings')!));
+  expect(stored.backgrounds.fajr).toBe('fajr-1');
+});
+
+test('moments: Ramadan before iftar lands on a real Ramadan date', async ({ page }) => {
+  await open(page, '2026-10-29T14:53:00');
+  await page.getByRole('button', { name: 'Settings' }).click();
+  await page.locator('.panel-nav').getByRole('button', { name: 'Preview' }).click();
+  await page.getByRole('button', { name: /Ramadan · before iftar/ }).click();
+  await expect(page.locator('.cl-medal-name')).toHaveText('IFTAR');
+  await expect(page.locator('.cl-date')).toContainText('RAMADAN');
+  await expect(page.locator('.greeting-en')).toHaveText('Ramadan Kareem');
+});

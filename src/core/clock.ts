@@ -25,6 +25,15 @@ export function now(): Date {
   return new Date(anchorVirtual + (Date.now() - anchorReal) * speed);
 }
 
+export const getSpeed = () => speed;
+
+/** Change the rate of virtual time from this moment on (previews fast-forward). */
+export function setSpeed(n: number): void {
+  anchorVirtual = now().getTime();
+  anchorReal = Date.now();
+  speed = n;
+}
+
 /** Jump to `t` (null returns to wall time). */
 export function travelTo(t: Date | null): void {
   anchorReal = Date.now();

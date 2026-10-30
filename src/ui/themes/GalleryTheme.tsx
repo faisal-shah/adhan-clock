@@ -1,12 +1,12 @@
 import type { CalligraphyArt, GalleryItem } from '../../core/media';
 import { startOfDay } from '../../core/prayer';
-import { PERIOD_NAMES, type ClockState } from '../../core/schedule';
+import { PERIOD_NAMES, type ClockState, type PeriodKey } from '../../core/schedule';
 import { GALLERY_CATEGORIES } from '../../core/settings';
 import { calligraphyArt, gallery, settings } from '../../store';
 import { Clock, CountdownPill, Crossfade, GreetingMark, MakruhBadge, Phrase, T, dateLine } from '../parts';
 
 /** A photograph, or a calligraphy piece from the artwork set. */
-type Piece = { kind: 'photo'; id: string; item: GalleryItem } | { kind: 'art'; id: string; art: CalligraphyArt };
+export type Piece = { kind: 'photo'; id: string; item: GalleryItem } | { kind: 'art'; id: string; art: CalligraphyArt };
 
 /** Today's order: a seeded shuffle, so each day walks the collection differently. */
 function todaysOrder<T>(items: T[], day: number): T[] {
@@ -73,6 +73,10 @@ function ArtPiece({ art }: { art: CalligraphyArt }) {
 function caption(p: Piece): { cat: string; title: string; sub: string } {
   if (p.kind === 'photo') return { cat: GALLERY_CATEGORIES[p.item.category], title: p.item.title, sub: p.item.subtitle };
   const a = p.art;
+  if (a.kind !== 'gallery') {
+    const name = a.id in PERIOD_NAMES ? PERIOD_NAMES[a.id as PeriodKey] : a.id.replace(/-/g, ' ');
+    return { cat: GALLERY_CATEGORIES.calligraphy, title: name[0].toUpperCase() + name.slice(1), sub: a.arabic ?? '' };
+  }
   const clean = a.english?.replace(/[[\]]/g, '');
   const english = clean && clean.length <= 150 ? clean : '';
   return {
@@ -82,8 +86,9 @@ function caption(p: Piece): { cat: string; title: string; sub: string } {
   };
 }
 
-export function GalleryTheme({ st }: { st: ClockState }) {
-  const piece = currentPiece(st.now);
+/** `piece` pins what is shown (the showcase); otherwise the rotation decides. */
+export function GalleryTheme({ st, piece: pinned }: { st: ClockState; piece?: Piece }) {
+  const piece = pinned ?? currentPiece(st.now);
   const item = piece?.kind === 'photo' ? piece.item : null;
   const cap = piece && caption(piece);
   return (

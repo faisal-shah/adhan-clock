@@ -54,7 +54,16 @@ dua, and the Hijri date with a day adjustment.
    - *Web Content Settings → Enable Geolocation* (for "Use this tablet's location").
 4. Open the page, choose the location, then tap the faint gear on the left edge
    to adjust the calculation method, iqamah offsets, Jumu'ah, sounds and
-   themes. **Settings → Preview** plays any prayer's full sequence immediately.
+   themes.
+
+**Settings → Preview** shows everything without waiting:
+
+- *Moments* jumps to any athan sequence, any part of the day, Jumu'ah, Ramadan
+  (suhoor, before iftar, the iftar athan) and both Eids on their real dates;
+  the preview bar can fast-forward the clock 60x.
+- *Themes*, *Backgrounds*, *Gallery* and *Calligraphy* open every theme, photo
+  and calligraphy piece full screen (swipe or arrow keys to browse); a
+  background can be kept for its time of day from there.
 
 Without Fully Kiosk, use Chrome's *Add to Home screen*: the clock runs full
 screen and offline, but after each restart the athan needs one tap to be

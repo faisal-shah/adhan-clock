@@ -15,7 +15,7 @@ import {
 } from './core/media';
 import { startOfDay } from './core/prayer';
 import { clockState, computeDays, type AthanLength, type ClockState, type Days } from './core/schedule';
-import { loadSettings, saveSettings, type BgSlot, type Settings } from './core/settings';
+import { loadSettings, saveSettings, type BgSlot, type Settings, type ThemeKey } from './core/settings';
 import { fetchWeather, type Weather } from './core/weather';
 
 export const settings = signal<Settings>(loadSettings());
@@ -44,6 +44,18 @@ export const calligraphyArt = signal<CalligraphyArt[]>([]);
 export const uploads = signal<Upload[]>([]);
 export const dismissed = signal<ReadonlySet<string>>(new Set());
 export const settingsOpen = signal(false);
+/** Forces a theme while a settings preview is running. */
+export const previewTheme = signal<ThemeKey | null>(null);
+
+/** Something the showcase can put full screen. */
+export type ViewItem =
+  | { kind: 'theme'; theme: ThemeKey; label: string }
+  | { kind: 'background'; bg: BundledBackground }
+  | { kind: 'gallery'; item: GalleryItem }
+  | { kind: 'art'; art: CalligraphyArt };
+
+/** The showcase viewer: a list being browsed full screen, or null. */
+export const viewer = signal<{ items: ViewItem[]; index: number } | null>(null);
 export const audioBlocked = signal(false);
 
 export async function loadMedia(): Promise<void> {

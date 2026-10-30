@@ -35,6 +35,16 @@ export function hijriDate(d: Date, offsetDays: number): HijriDate {
   return { day: Number(parts.day), month, year: Number(parts.year), monthName: HIJRI_MONTHS[month - 1] };
 }
 
+/** The next date on or after `from` whose Hijri date is `month`/`day` (within ~13 months). */
+export function nextHijriDate(from: Date, month: number, day: number, offsetDays: number): Date | null {
+  for (let i = 0; i < 400; i++) {
+    const d = new Date(from.getFullYear(), from.getMonth(), from.getDate() + i);
+    const h = hijriDate(d, offsetDays);
+    if (h.month === month && h.day === day) return d;
+  }
+  return null;
+}
+
 export interface ClockFace {
   hm: string;
   /** 'AM' / 'PM', or '' in 24-hour mode. */

@@ -1,4 +1,5 @@
 import { taglineFor } from '../../core/content';
+import type { Background } from '../../core/media';
 import { PERIOD_NAMES, type ClockState, type Slot } from '../../core/schedule';
 import { backgroundFor, settings } from '../../store';
 import {
@@ -105,10 +106,11 @@ function WeatherMedallion() {
   );
 }
 
-export function CalligraphyTheme({ st }: { st: ClockState }) {
+/** `bg` pins a background (the showcase); otherwise the period's choice is used. */
+export function CalligraphyTheme({ st, bg: pinned }: { st: ClockState; bg?: Background }) {
   const s = settings.value;
   const period = st.period.key;
-  const bg = backgroundFor(st.period.bg, st.now);
+  const bg = pinned ?? backgroundFor(st.period.bg, st.now);
   const tone = bg?.textTone ?? 'light';
   const tagline = taglineFor(period);
   const headline = PERIOD_NAMES[period].toUpperCase();
