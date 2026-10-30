@@ -1,0 +1,42 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+
+      # Keyless auth: GitHub's OIDC token is exchanged for the deployer
+      # service account via Workload Identity Federation (restricted to
+      # this repository in the pool provider's attribute condition).
+      - if: github.event_name != 'pull_request'
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/727253655931/locations/global/workloadIdentityPools/github/providers/github
+          service_account: github-deployer@adhan-clock-fs.iam.gserviceaccount.com
+
+      - if: github.event_name != 'pull_request'
+        run: npx --yes firebase-tools@15 deploy --only hosting --project adhan-clock-fs --non-interactive

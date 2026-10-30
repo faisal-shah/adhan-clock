@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b2e5a"/>
+      <stop offset="1" stop-color="#0a142b"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0" stop-color="#fff0c4"/>
+      <stop offset="0.45" stop-color="#e8bd67"/>
+      <stop offset="1" stop-color="#b8862f"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <g fill="url(#gold)">
+    <!-- crescent -->
+    <path d="M300 96a74 74 0 1 0 62 118 60 60 0 1 1-62-118Z"/>
+    <!-- dome with finial -->
+    <path d="M256 214c-6 0-8 10-8 16 0 8 4 12 8 14 4-2 8-6 8-14 0-6-2-16-8-16Z"/>
+    <path d="M256 250c-70 22-118 74-118 132h236c0-58-48-110-118-132Z"/>
+    <rect x="118" y="388" width="276" height="22" rx="6"/>
+    <!-- minarets -->
+    <path d="M92 410V262l14-26 14 26v148Z"/>
+    <path d="M392 410V262l14-26 14 26v148Z"/>
+  </g>
+</svg>

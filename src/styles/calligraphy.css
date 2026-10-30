@@ -1,0 +1,360 @@
+/* --- Calligraphy theme ------------------------------------------------------ */
+
+.ct {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  color: #fff;
+}
+
+.ct.tone-dark {
+  color: var(--navy);
+}
+
+/* Fallback skies while photos load (or if none are bundled for a slot). */
+.ct.p-fajr { background: linear-gradient(180deg, #1d2d5c 0%, #5b5d8f 55%, #e59c6c 100%); }
+.ct.p-sunrise { background: linear-gradient(180deg, #8fb3d9 0%, #f3d3a6 70%, #f7b77a 100%); }
+.ct.p-dhuhr { background: linear-gradient(180deg, #bcd8f0 0%, #f2ece0 70%); }
+.ct.p-asr { background: linear-gradient(180deg, #d9b98a 0%, #f0cf97 60%, #c98b4e 100%); }
+.ct.p-maghrib { background: linear-gradient(180deg, #3b2a5e 0%, #c25b54 60%, #f4a259 100%); }
+.ct.p-isha { background: linear-gradient(180deg, #050b1d 0%, #13234a 70%, #2b3f6e 100%); }
+.ct.p-night { background: linear-gradient(180deg, #02040a 0%, #0a1430 100%); }
+
+.ct-photo {
+  position: absolute;
+  inset: 0;
+}
+
+.ct-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform-origin: 30% 65%;
+  animation: kenburns 70s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes kenburns {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.1) translate(-1%, -0.5%);
+  }
+}
+
+/* Legibility: a soft veil behind the right-hand column and the dial. */
+.ct-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 42rem at 0% 100%, rgba(3, 8, 20, 0.55), transparent 70%),
+    linear-gradient(270deg, rgba(4, 10, 24, 0.58) 0%, rgba(4, 10, 24, 0.3) 30%, rgba(4, 10, 24, 0) 56%);
+}
+
+.tone-dark .ct-scrim {
+  background:
+    radial-gradient(60rem 42rem at 0% 100%, rgba(3, 8, 20, 0.35), transparent 70%),
+    linear-gradient(270deg, rgba(255, 251, 244, 0.62) 0%, rgba(255, 251, 244, 0.34) 32%, rgba(255, 251, 244, 0) 58%);
+}
+
+/* Warm sunlight bloom and slow rays from the top-right corner. */
+.ct-flare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(70rem 50rem at 100% 0%, rgba(255, 238, 200, 0.5), rgba(255, 238, 200, 0.12) 45%, transparent 70%);
+}
+
+.ct-flare::after {
+  content: '';
+  position: absolute;
+  right: -80rem;
+  top: -80rem;
+  width: 160rem;
+  height: 160rem;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 255, 255, 0.16) 0deg 1.6deg, transparent 1.6deg 7deg);
+  -webkit-mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.5) 25%, transparent 55%);
+  mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.5) 25%, transparent 55%);
+  animation: rays 240s linear infinite;
+}
+
+@keyframes rays {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- Right column ----------------------------------------------------------- */
+
+.ct-right {
+  position: absolute;
+  right: 4rem;
+  top: 2.6rem;
+  width: 66rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.ct-clock {
+  font-size: 15.5rem;
+  text-shadow: 0 0.3rem 2rem rgba(0, 0, 0, 0.35);
+}
+
+.tone-dark .ct-clock {
+  text-shadow: 0 0.2rem 1.6rem rgba(255, 255, 255, 0.6);
+}
+
+.ct-date {
+  margin-top: 1.4rem;
+  font: 500 2.3rem var(--sans);
+  letter-spacing: 0.05em;
+  text-shadow: 0 0.1rem 0.8rem rgba(0, 0, 0, 0.35);
+}
+
+.tone-dark .ct-date {
+  text-shadow: none;
+}
+
+.cd-pill {
+  margin-top: 1.3rem;
+  display: flex;
+  align-items: stretch;
+  height: 5.8rem;
+  border-radius: 99rem;
+  overflow: hidden;
+  box-shadow: 0 0.8rem 2.4rem rgba(5, 12, 30, 0.28), 0 0 0 0.15rem rgba(255, 255, 255, 0.5);
+}
+
+.cd-label {
+  display: flex;
+  align-items: center;
+  padding: 0 3rem 0 3.4rem;
+  background: linear-gradient(180deg, #1a2c55, #0d1a35);
+  color: #fff;
+  font: 500 2.5rem var(--sans);
+  letter-spacing: 0.05em;
+}
+
+.cd-value {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.8rem;
+  min-width: 17rem;
+  padding: 0 2.8rem 0 2.4rem;
+  background: linear-gradient(180deg, #ffffff, #f2f0ea);
+  color: var(--navy);
+  font: 400 3.8rem/5.8rem var(--serif-display);
+}
+
+.cd-unit {
+  font: 600 1.25rem var(--sans);
+  letter-spacing: 0.12em;
+  color: #6b7590;
+}
+
+.makruh {
+  margin-top: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.7rem 1.8rem;
+  border-radius: 99rem;
+  background: rgba(120, 30, 20, 0.55);
+  backdrop-filter: blur(6px);
+  color: #ffe9df;
+  font: 500 1.6rem var(--sans);
+  letter-spacing: 0.02em;
+}
+
+.makruh-dot {
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 50%;
+  background: #ff9a7a;
+  box-shadow: 0 0 0.8rem #ff9a7a;
+}
+
+.ct-word {
+  margin-top: -1.5rem;
+  font-size: 23rem;
+  height: 34rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ct-headline {
+  margin-top: -2.5rem;
+  display: flex;
+  align-items: baseline;
+  gap: 1.4rem;
+  font-family: var(--serif-caps);
+  text-shadow: 0 0.2rem 1.4rem rgba(0, 0, 0, 0.4);
+}
+
+.tone-dark .ct-headline {
+  text-shadow: 0 0.1rem 1rem rgba(255, 255, 255, 0.5);
+}
+
+.ct-headline .small {
+  font-size: 3.8rem;
+  letter-spacing: 0.04em;
+}
+
+.ct-headline .big {
+  font-size: 6.4rem;
+  letter-spacing: 0.03em;
+}
+
+.ct-taglines {
+  margin-top: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.ct-tag {
+  padding: 0.9rem 3rem 0.8rem;
+  border-radius: 99rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(250, 246, 238, 0.78));
+  box-shadow: 0 0.6rem 2rem rgba(10, 20, 40, 0.18);
+  backdrop-filter: blur(6px);
+  color: var(--navy);
+  font: 400 2.4rem var(--serif-caps);
+  letter-spacing: 0.07em;
+}
+
+/* --- Bottom-left prayer dial -------------------------------------------------- */
+
+.dial {
+  position: absolute;
+  left: 4rem;
+  bottom: -18rem;
+  width: 54rem;
+  height: 54rem;
+  border-radius: 50%;
+  padding: 1rem;
+  background: linear-gradient(160deg, #f8edd2, #d6b984 45%, #f3e3bd 70%, #b8925a);
+  box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.45), inset 0 0 0 0.2rem rgba(255, 255, 255, 0.4);
+}
+
+.dial-face {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 30%, #1f3463 0%, #12224a 45%, #0b1633 100%);
+  box-shadow: inset 0 0 0 0.25rem rgba(227, 181, 94, 0.35), inset 0 1.5rem 3rem rgba(0, 0, 0, 0.4);
+  color: #fff;
+  text-align: center;
+  padding-top: 3.6rem;
+  box-sizing: border-box;
+}
+
+.dial-name {
+  font: 500 3.3rem/1.1 var(--sans);
+  letter-spacing: 0.04em;
+}
+
+.dial-label {
+  font: 500 1.8rem/1.3 var(--sans);
+  letter-spacing: 0.06em;
+  color: var(--gold);
+}
+
+.dial-label.light {
+  color: #fff;
+}
+
+.dial-pill {
+  display: inline-block;
+  margin-top: 0.6rem;
+  padding: 0.4rem 2.4rem 0.2rem;
+  border-radius: 1.4rem;
+  background: linear-gradient(180deg, var(--bronze-1), var(--bronze-2));
+  box-shadow: inset 0 0.15rem 0 rgba(255, 255, 255, 0.25), 0 0.4rem 1rem rgba(0, 0, 0, 0.3);
+  font: 500 4.4rem var(--sans);
+}
+
+.dial-rule {
+  height: 0.2rem;
+  margin: 1.8rem 6rem 1.6rem;
+  background: linear-gradient(90deg, transparent, rgba(227, 181, 94, 0.8), transparent);
+}
+
+.dial-cols {
+  display: flex;
+  justify-content: center;
+  gap: 6rem;
+  margin-top: 0.6rem;
+  font: 500 5rem/1.1 var(--sans);
+}
+
+/* Round sunrise/sunset medallion beside the dial. */
+.sun-medal {
+  position: absolute;
+  left: 55rem;
+  bottom: 13rem;
+  width: 17rem;
+  height: 17rem;
+  border-radius: 50%;
+  box-sizing: border-box;
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: radial-gradient(circle at 50% 30%, #1f3463, #0b1633);
+  box-shadow: 0 1.2rem 3rem rgba(0, 0, 0, 0.4), inset 0 0 0 0.2rem rgba(227, 181, 94, 0.45);
+  color: #fff;
+  font: 400 3rem/1.15 var(--serif-display);
+}
+
+.sun-medal .dial-label {
+  font-size: 1.4rem;
+}
+
+.sun-rule {
+  width: 9rem;
+  height: 0.15rem;
+  margin: 0.5rem 0 0.4rem;
+  background: rgba(227, 181, 94, 0.6);
+}
+
+.gold-t {
+  color: var(--gold);
+}
+
+.wx-medal {
+  position: absolute;
+  left: 61rem;
+  bottom: 1.6rem;
+  width: 11rem;
+  height: 11rem;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 1rem 2.4rem rgba(0, 0, 0, 0.3);
+  color: var(--navy);
+}
+
+.wx-medal svg {
+  width: 4.4rem;
+  height: 4.4rem;
+  color: #c98a2b;
+}
+
+.wx-temp {
+  font: 600 2.1rem var(--sans);
+}

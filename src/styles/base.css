@@ -1,0 +1,307 @@
+/*
+ * Every layout is drawn on a 1600x1000 design canvas: 1rem = 10 design px,
+ * scaled so the canvas fits the viewport. Edge-anchored elements stay on the
+ * edges at any aspect ratio.
+ */
+:root {
+  --navy: #0e1b36;
+  --navy-2: #172a52;
+  --ink: #101a30;
+  --gold: #e3b55e;
+  --gold-soft: #f0d9a4;
+  --champagne: #efe2c2;
+  --bronze-1: #b9864f;
+  --bronze-2: #8b5a2b;
+  --paper: #fffdf8;
+  --serif-display: 'Prata', 'Times New Roman', serif;
+  --serif-caps: 'Marcellus', 'Prata', serif;
+  --serif-text: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Poppins', system-ui, sans-serif;
+  --arabic-text: 'Amiri', serif;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  font-size: min(0.625vw, 1vh);
+  background: #05070c;
+  color-scheme: dark;
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: default;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+.stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* --- Crossfade ------------------------------------------------------------ */
+
+.xf {
+  position: absolute;
+  inset: 0;
+}
+
+.xf-in {
+  animation: xf-in var(--xf-ms, 1200ms) ease both;
+}
+
+@keyframes xf-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* --- Shared type ---------------------------------------------------------- */
+
+.clock {
+  font-family: var(--serif-display);
+  font-weight: 400;
+  line-height: 0.9;
+  white-space: nowrap;
+  font-variant-numeric: lining-nums;
+  letter-spacing: -0.01em;
+}
+
+.clock-ampm {
+  font-size: 0.4em;
+  margin-left: 0.08em;
+  letter-spacing: 0.02em;
+}
+
+.t {
+  white-space: nowrap;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.t small {
+  font-size: 0.42em;
+  margin-left: 0.1em;
+  letter-spacing: 0.03em;
+  font-weight: 500;
+}
+
+.caps {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* --- Calligraphy ---------------------------------------------------------- */
+
+.callig {
+  direction: rtl;
+  font-family: 'Aref Ruqaa', serif;
+  font-weight: 700;
+  line-height: 1.5;
+  white-space: nowrap;
+  padding: 0 0.15em;
+}
+
+.callig.f-nastaliq {
+  font-family: 'Noto Nastaliq Urdu', serif;
+  font-size: 0.72em;
+  line-height: 2.1;
+}
+
+.callig.f-kufi {
+  font-family: 'Reem Kufi', serif;
+  font-size: 0.86em;
+}
+
+/* Gold leaf: layered gradient clipped to the glyphs, a slow sheen, a soft shadow. */
+.callig.gold {
+  background: linear-gradient(
+      100deg,
+      transparent 40%,
+      rgba(255, 252, 235, 0.85) 50%,
+      transparent 60%
+    ),
+    linear-gradient(172deg, #fff3cf 0%, #f2cf84 28%, #c99540 52%, #f5dc9c 70%, #b5832f 100%);
+  background-size: 300% 100%, 100% 100%;
+  background-position: 120% 0, 0 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0.5rem 1.4rem rgba(0, 0, 0, 0.45)) drop-shadow(0 0 0.15rem rgba(80, 50, 10, 0.5));
+  animation: sheen 9s ease-in-out infinite;
+}
+
+/* Navy ink for bright skies. */
+.callig.ink {
+  background: linear-gradient(175deg, #23365f 0%, #0d1830 55%, #1a2b52 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0.3rem 0.8rem rgba(255, 255, 255, 0.35)) drop-shadow(0 0.2rem 0.3rem rgba(10, 20, 40, 0.25));
+}
+
+@keyframes sheen {
+  0%,
+  55% {
+    background-position: 120% 0, 0 0;
+  }
+  100% {
+    background-position: -40% 0, 0 0;
+  }
+}
+
+/* Written in from right to left when it appears. */
+.callig-reveal {
+  -webkit-mask-image: linear-gradient(to left, #000 45%, transparent 55%);
+  mask-image: linear-gradient(to left, #000 45%, transparent 55%);
+  -webkit-mask-size: 260% 100%;
+  mask-size: 260% 100%;
+  animation: write-in 2.6s var(--ease-out) 0.2s both;
+}
+
+@keyframes write-in {
+  from {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+  to {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+}
+
+.rise {
+  animation: rise 1.4s var(--ease-out) both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+}
+
+/* Film grain, layered over photographic themes. */
+.grain {
+  position: absolute;
+  inset: -50%;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 1.2 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* --- Chrome: gear, sound badge, preview banner ----------------------------- */
+
+.gear {
+  position: absolute;
+  z-index: 50;
+  left: 2.4rem;
+  top: 50%;
+  width: 4.4rem;
+  height: 4.4rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  opacity: 0.32;
+  padding: 0.8rem;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.gear:hover,
+.gear:focus-visible {
+  opacity: 0.8;
+}
+
+.gear svg {
+  width: 100%;
+  height: 100%;
+}
+
+.badge-sound {
+  position: absolute;
+  z-index: 60;
+  right: 2.4rem;
+  bottom: 2.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem 2.2rem;
+  border-radius: 99rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(10, 16, 30, 0.72);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font: 500 2rem var(--sans);
+  cursor: pointer;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+.badge-sound svg {
+  width: 2.6rem;
+  height: 2.6rem;
+}
+
+@keyframes pulse {
+  50% {
+    box-shadow: 0 0 0 1.2rem rgba(227, 181, 94, 0);
+    border-color: rgba(227, 181, 94, 0.8);
+  }
+}
+
+.preview-bar {
+  position: absolute;
+  z-index: 70;
+  top: 1.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.8rem 0.8rem 0.8rem 2rem;
+  border-radius: 99rem;
+  background: rgba(10, 16, 30, 0.8);
+  color: #fff;
+  font: 500 1.7rem var(--sans);
+  backdrop-filter: blur(8px);
+}
+
+.preview-bar button {
+  border: 0;
+  border-radius: 99rem;
+  padding: 0.7rem 1.6rem;
+  background: rgba(255, 255, 255, 0.14);
+  cursor: pointer;
+}
+
+.preview-bar button.primary {
+  background: var(--gold);
+  color: var(--navy);
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
