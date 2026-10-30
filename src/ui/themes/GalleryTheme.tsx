@@ -1,12 +1,15 @@
-import type { GalleryItem } from '../../core/media';
+import type { CalligraphyArt, GalleryItem } from '../../core/media';
 import { startOfDay } from '../../core/prayer';
 import { PERIOD_NAMES, type ClockState } from '../../core/schedule';
 import { GALLERY_CATEGORIES } from '../../core/settings';
-import { gallery, settings } from '../../store';
-import { Clock, CountdownPill, Crossfade, GreetingMark, MakruhBadge, T, dateLine } from '../parts';
+import { calligraphyArt, gallery, settings } from '../../store';
+import { Clock, CountdownPill, Crossfade, GreetingMark, MakruhBadge, Phrase, T, dateLine } from '../parts';
+
+/** A photograph, or a calligraphy piece from the artwork set. */
+type Piece = { kind: 'photo'; id: string; item: GalleryItem } | { kind: 'art'; id: string; art: CalligraphyArt };
 
 /** Today's order: a seeded shuffle, so each day walks the collection differently. */
-function todaysOrder(items: GalleryItem[], day: number): GalleryItem[] {
+function todaysOrder<T>(items: T[], day: number): T[] {
   // mulberry32
   let seed = day >>> 0;
   const rand = () => {
@@ -24,9 +27,14 @@ function todaysOrder(items: GalleryItem[], day: number): GalleryItem[] {
   return out;
 }
 
-export function currentGalleryItem(now: Date): GalleryItem | null {
+export function currentPiece(now: Date): Piece | null {
   const g = settings.value.gallery;
-  const pool = gallery.value.filter((x) => g.categories[x.category]);
+  const pool: Piece[] = [
+    ...gallery.value.filter((x) => g.categories[x.category]).map((item) => ({ kind: 'photo' as const, id: item.id, item })),
+    ...(g.categories.calligraphy
+      ? calligraphyArt.value.filter((a) => a.kind === 'gallery').map((art) => ({ kind: 'art' as const, id: art.id, art }))
+      : []),
+  ];
   if (!pool.length) return null;
   const day = Math.floor(startOfDay(now).getTime() / 86_400_000);
   const order = todaysOrder(pool, day);
@@ -51,12 +59,36 @@ function Photo({ item }: { item: GalleryItem }) {
   );
 }
 
-export function GalleryTheme({ st }: { st: ClockState }) {
-  const item = currentGalleryItem(st.now);
+function ArtPiece({ art }: { art: CalligraphyArt }) {
   return (
-    <div class={`gl ${item?.fit ?? ''}`}>
-      <Crossfade k={item?.id ?? 'none'} ms={2500}>
-        {item && <Photo item={item} />}
+    <div class="gl-photo gl-art">
+      <div class="gl-art-pattern" />
+      <div class="gl-art-piece">
+        <Phrase id={art.id} text={art.arabic ?? ''} scale={1} />
+      </div>
+    </div>
+  );
+}
+
+function caption(p: Piece): { cat: string; title: string; sub: string } {
+  if (p.kind === 'photo') return { cat: GALLERY_CATEGORIES[p.item.category], title: p.item.title, sub: p.item.subtitle };
+  const a = p.art;
+  const english = a.english && a.english.length <= 150 ? a.english : '';
+  return {
+    cat: GALLERY_CATEGORIES.calligraphy,
+    title: a.transliteration ?? a.ref ?? '',
+    sub: [english && `“${english}”`, a.ref].filter(Boolean).join(' · '),
+  };
+}
+
+export function GalleryTheme({ st }: { st: ClockState }) {
+  const piece = currentPiece(st.now);
+  const item = piece?.kind === 'photo' ? piece.item : null;
+  const cap = piece && caption(piece);
+  return (
+    <div class={`gl ${item?.fit ?? ''} ${piece?.kind === 'art' ? 'art' : ''}`}>
+      <Crossfade k={piece?.id ?? 'none'} ms={2500}>
+        {piece && (piece.kind === 'photo' ? <Photo item={piece.item} /> : <ArtPiece art={piece.art} />)}
       </Crossfade>
       <div class="gl-scrim" />
 
@@ -70,11 +102,11 @@ export function GalleryTheme({ st }: { st: ClockState }) {
         <MakruhBadge st={st} />
       </div>
 
-      {item && (
-        <div class="gl-caption" key={item.id}>
-          <div class="gl-cat">{GALLERY_CATEGORIES[item.category]}</div>
-          <div class="gl-title">{item.title}</div>
-          <div class="gl-sub">{item.subtitle}</div>
+      {piece && cap && (
+        <div class="gl-caption" key={piece.id}>
+          <div class="gl-cat">{cap.cat}</div>
+          <div class="gl-title">{cap.title}</div>
+          <div class="gl-sub">{cap.sub}</div>
         </div>
       )}
 

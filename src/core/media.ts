@@ -47,8 +47,12 @@ export interface CalligraphyArt {
   file: string;
   /** width / height of the artwork's viewBox */
   aspect: number;
-  kind?: 'prayer' | 'phrase';
+  kind?: 'prayer' | 'phrase' | 'gallery';
   arabic?: string;
+  /** Gallery pieces only */
+  english?: string;
+  ref?: string;
+  transliteration?: string;
 }
 
 /** A user upload. The blob lives in IndexedDB; this metadata mirrors it in memory. */

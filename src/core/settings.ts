@@ -42,6 +42,7 @@ export const GALLERY_CATEGORIES = {
   learning: 'Seekers of Knowledge',
   treasures: 'Treasures of Islamic Civilization',
   landscapes: 'Lands of Islam',
+  calligraphy: 'Calligraphy',
 } as const;
 export type GalleryCategory = keyof typeof GALLERY_CATEGORIES;
 
@@ -129,7 +130,7 @@ export const DEFAULT_SETTINGS: Settings = {
   ramadan: 'auto',
   showDaily: true,
   makruhBadge: true,
-  gallery: { minutes: 5, categories: { mosques: true, learning: true, treasures: true, landscapes: true } },
+  gallery: { minutes: 5, categories: { mosques: true, learning: true, treasures: true, landscapes: true, calligraphy: true } },
   title: 'Home',
   motion: 'full',
 };
