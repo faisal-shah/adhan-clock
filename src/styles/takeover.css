@@ -419,3 +419,16 @@
   letter-spacing: 0.08em;
   color: var(--gold-soft);
 }
+
+/* Tahajjud happens in a dark bedroom: same scene, less light. */
+.tk-athan.night .tk-rays {
+  opacity: 0.22;
+}
+
+.tk-athan.night .tk-halo {
+  opacity: 0.5;
+}
+
+.tk-athan.night .tk-bg img {
+  filter: brightness(0.75);
+}
