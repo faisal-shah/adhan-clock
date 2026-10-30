@@ -247,9 +247,9 @@
 .dial {
   position: absolute;
   left: 4rem;
-  bottom: -18rem;
-  width: 54rem;
-  height: 54rem;
+  bottom: -16rem;
+  width: 49rem;
+  height: 49rem;
   border-radius: 50%;
   padding: 1rem;
   background: linear-gradient(160deg, #f8edd2, #d6b984 45%, #f3e3bd 70%, #b8925a);
@@ -264,17 +264,17 @@
   box-shadow: inset 0 0 0 0.25rem rgba(227, 181, 94, 0.35), inset 0 1.5rem 3rem rgba(0, 0, 0, 0.4);
   color: #fff;
   text-align: center;
-  padding-top: 3.6rem;
+  padding-top: 3.2rem;
   box-sizing: border-box;
 }
 
 .dial-name {
-  font: 500 3.3rem/1.1 var(--sans);
+  font: 500 3rem/1.1 var(--sans);
   letter-spacing: 0.04em;
 }
 
 .dial-label {
-  font: 500 1.8rem/1.3 var(--sans);
+  font: 500 1.65rem/1.3 var(--sans);
   letter-spacing: 0.06em;
   color: var(--gold);
 }
@@ -290,28 +290,28 @@
   border-radius: 1.4rem;
   background: linear-gradient(180deg, var(--bronze-1), var(--bronze-2));
   box-shadow: inset 0 0.15rem 0 rgba(255, 255, 255, 0.25), 0 0.4rem 1rem rgba(0, 0, 0, 0.3);
-  font: 500 4.4rem var(--sans);
+  font: 500 4rem var(--sans);
 }
 
 .dial-rule {
   height: 0.2rem;
-  margin: 1.8rem 6rem 1.6rem;
+  margin: 1.5rem 5rem 1.3rem;
   background: linear-gradient(90deg, transparent, rgba(227, 181, 94, 0.8), transparent);
 }
 
 .dial-cols {
   display: flex;
   justify-content: center;
-  gap: 6rem;
-  margin-top: 0.6rem;
-  font: 500 5rem/1.1 var(--sans);
+  gap: 5rem;
+  margin-top: 0.4rem;
+  font: 500 4.5rem/1.1 var(--sans);
 }
 
 /* Round sunrise/sunset medallion beside the dial. */
 .sun-medal {
   position: absolute;
-  left: 55rem;
-  bottom: 13rem;
+  left: 50rem;
+  bottom: 12rem;
   width: 17rem;
   height: 17rem;
   border-radius: 50%;
@@ -343,7 +343,7 @@
 
 .wx-medal {
   position: absolute;
-  left: 61rem;
+  left: 55rem;
   bottom: 1.6rem;
   width: 11rem;
   height: 11rem;

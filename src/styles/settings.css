@@ -420,7 +420,7 @@
 
 /* Today's times */
 .times-table {
-  margin-top: 2.4rem;
+  margin: 0.6rem 0 1.6rem;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1rem;

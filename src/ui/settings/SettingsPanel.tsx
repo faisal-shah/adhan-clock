@@ -91,6 +91,24 @@ function TimesSection() {
   const st = clock.value;
   return (
     <>
+      {st && (
+        <div class="times-table">
+          {[
+            ['Fajr', st.today.fajr],
+            ['Sunrise', st.today.sunrise],
+            ['Dhuhr', st.today.dhuhr],
+            ['Asr', st.today.asr],
+            ['Maghrib', st.today.maghrib],
+            ['Isha', st.today.isha],
+            ['Last third', st.tahajjud],
+          ].map(([label, d]) => (
+            <div>
+              <span>{label as string}</span>
+              <T d={d as Date} />
+            </div>
+          ))}
+        </div>
+      )}
       <Row label="Calculation method">
         <Select value={s.method} options={CALC_METHODS} onChange={(method) => set(() => ({ method }))} />
       </Row>
@@ -120,24 +138,6 @@ function TimesSection() {
           />
         </Row>
       ))}
-      {st && (
-        <div class="times-table">
-          {[
-            ['Fajr', st.today.fajr],
-            ['Sunrise', st.today.sunrise],
-            ['Dhuhr', st.today.dhuhr],
-            ['Asr', st.today.asr],
-            ['Maghrib', st.today.maghrib],
-            ['Isha', st.today.isha],
-            ['Last third', st.tahajjud],
-          ].map(([label, d]) => (
-            <div>
-              <span>{label as string}</span>
-              <T d={d as Date} />
-            </div>
-          ))}
-        </div>
-      )}
     </>
   );
 }
@@ -300,12 +300,20 @@ function NightSection() {
   );
 }
 
+/** "Fajr athan — Mishary Rashid Alafasy (maqam Hijaz)" -> "Fajr · Mishary Rashid Alafasy" */
+function shortLabel(label: string): string {
+  const [kind, who = ''] = label.split(' — ');
+  return `${kind.startsWith('Fajr') ? 'Fajr · ' : ''}${who.replace(/\s*\(.*\)$/, '')}`;
+}
+
 function SoundPicker({ choice, kind, onChange }: { choice: SoundChoice; kind: 'athan' | 'fajr'; onChange: (c: SoundChoice) => void }) {
   const [playing, setPlaying] = useState(false);
   const stopRef = useRef<(() => void) | null>(null);
   useEffect(() => () => stopRef.current?.(), []);
   const opts: [string, string][] = [
-    ...bundledAudio.value.filter((a) => a.kind === 'athan' || a.kind === 'fajr').map((a) => [a.id, a.label] as [string, string]),
+    ...bundledAudio.value
+      .filter((a) => a.kind === 'athan' || a.kind === 'fajr')
+      .map((a) => [a.id, shortLabel(a.label)] as [string, string]),
     ...uploads.value.filter((u) => u.kind === 'audio').map((u) => [`upload:${u.id}`, `Uploaded: ${u.name}`] as [string, string]),
   ];
   // Fajr athans first for Fajr.
