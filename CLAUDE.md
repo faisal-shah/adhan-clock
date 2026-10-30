@@ -56,6 +56,17 @@ Run the dev server in tmux (`tmux new -d -s adhan-dev 'npx vite --port 5173
 1280×800 (`W`, `H`, `DPR`, `WAIT` env vars). Look at the PNGs; the Playwright
 suite only proves things render without errors.
 
+## Content sets
+
+- `public/calligraphy/index.json`: artwork by id. Period ids (`fajr`, `dhuhr`,
+  ...) replace the font in `Calligraphy`; phrase ids (`bismillah`, `eid`,
+  `ramadan`, `jumuah-mubarak`, `fajr-call`) are looked up with `findArt` /
+  `Phrase`; `kind: "gallery"` pieces join the Gallery rotation. Everything
+  degrades to the Ruqaa font when a piece is missing.
+- `public/gallery/index.json`: photos with `fit` (`cover` scenes, `contain`
+  museum objects shown over a blurred copy) and captions from the source
+  records. The Gallery order is a per-day seeded shuffle.
+
 ## Gotchas
 
 - Uthmani Quran text (from Tanzil) needs Amiri Quran: wrap with

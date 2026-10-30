@@ -16,12 +16,14 @@ Added
   arc, geometric patterns, verse/hadith/dua of the day.
 - Kids theme: sun, clouds, birds, grass, flowers and a mosque, with rotating
   reminders.
-- Gallery theme: captioned, calendar-style photographs in four
-  categories, with the prayer times along the foot; museum objects shown
+- Gallery theme: 38 captioned, calendar-style photographs (mosques,
+  manuscripts and madrasas, museum treasures, lands of Islam), with the prayer times along the foot; museum objects shown
   whole over a blurred copy of themselves.
-- Calligraphy in Ruqaa, Nastaliq or Kufi, rendered as gold leaf or ink;
-  vector artwork placed in ``public/calligraphy/`` is used instead when
-  present.
+- Thuluth calligraphy artwork (KHATTAATT, used with permission) for the
+  prayer names, rendered as gold leaf or ink; Ruqaa, Nastaliq and Kufi
+  font styles remain selectable and cover words without artwork.
+- Eid, Ramadan and Jumu'ah greetings in calligraphy; calligraphy pieces in
+  the Gallery.
 - "Calm" motion setting for slower tablets.
 - Night theme: dim drifting clock with Fajr and last-third-of-night times;
   backlight dimming under Fully Kiosk Browser.
