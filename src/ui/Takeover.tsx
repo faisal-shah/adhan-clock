@@ -3,7 +3,7 @@ import { EVENTS, isUthmani, taglineFor } from '../core/content';
 import { PERIOD_NAMES, type ClockState, type PeriodKey, type Takeover as TakeoverState } from '../core/schedule';
 import type { BgSlot } from '../core/settings';
 import { backgroundFor, dismiss, resolveAudio, settings } from '../store';
-import { Calligraphy, Clock, SpeakerIcon, dateLine } from './parts';
+import { Calligraphy, Clock, Phrase, SpeakerIcon, dateLine, findArt } from './parts';
 import { splitTagline } from './themes/CalligraphyTheme';
 
 const BG_OF: Record<PeriodKey, BgSlot> = {
@@ -155,6 +155,11 @@ export function TakeoverLayer({ st }: { st: ClockState }) {
           <span class="big">{name}</span>
           <span class="small">TIME</span>
         </div>
+        {t.name === 'fajr' && findArt('fajr-call') && (
+          <div class="tk-call rise" style={{ animationDelay: '2s' }}>
+            <Phrase id="fajr-call" text="" />
+          </div>
+        )}
         {tagline && (
           <div class="tk-tags rise" style={{ animationDelay: '2.2s' }}>
             {splitTagline(tagline.english.toUpperCase()).map((l) => (

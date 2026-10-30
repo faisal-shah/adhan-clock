@@ -111,3 +111,10 @@
   margin-top: 0.4rem;
   font: italic 500 2.1rem/1.4 var(--serif-text);
 }
+
+.nt-greeting {
+  margin-bottom: 1.6rem;
+  font-size: 5rem;
+  --art-max-w: 24rem;
+  opacity: 0.5;
+}

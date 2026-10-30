@@ -2,7 +2,7 @@ import { minutesLeft } from '../../core/calendar';
 import { dailyItem, DAILY_LABEL, isUthmani } from '../../core/content';
 import { PERIOD_NAMES, type ClockState } from '../../core/schedule';
 import { settings } from '../../store';
-import { Clock, MakruhBadge, T, WeatherGlyph, dateLine, useWeather } from '../parts';
+import { Clock, GreetingMark, MakruhBadge, T, WeatherGlyph, dateLine, useWeather } from '../parts';
 
 function Medallion({ st }: { st: ClockState }) {
   const c = st.countdown;
@@ -78,6 +78,7 @@ export function ClassicTheme({ st }: { st: ClockState }) {
           </div>
         </div>
 
+        <GreetingMark st={st} class="cl-greeting" />
         <div class="cl-card">
           <WeatherChip />
           <div class="cl-clock">

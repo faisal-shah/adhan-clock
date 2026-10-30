@@ -3,7 +3,7 @@ import { startOfDay } from '../../core/prayer';
 import { PERIOD_NAMES, type ClockState } from '../../core/schedule';
 import { GALLERY_CATEGORIES } from '../../core/settings';
 import { gallery, settings } from '../../store';
-import { Clock, CountdownPill, Crossfade, MakruhBadge, T, dateLine } from '../parts';
+import { Clock, CountdownPill, Crossfade, GreetingMark, MakruhBadge, T, dateLine } from '../parts';
 
 /** Today's order: a seeded shuffle, so each day walks the collection differently. */
 function todaysOrder(items: GalleryItem[], day: number): GalleryItem[] {
@@ -60,6 +60,7 @@ export function GalleryTheme({ st }: { st: ClockState }) {
       </Crossfade>
       <div class="gl-scrim" />
 
+      <GreetingMark st={st} class="corner" />
       <div class="gl-top">
         <div class="gl-clock">
           <Clock d={st.now} />

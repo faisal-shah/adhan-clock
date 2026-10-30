@@ -46,6 +46,24 @@ export function dailyItem(now: Date, minutes = 4, type?: DailyItem['type'], maxE
   return pool[(day * 7 + slot) % pool.length];
 }
 
+export interface Greeting {
+  /** Calligraphy artwork id */
+  id: 'eid' | 'ramadan' | 'jumuah-mubarak';
+  arabic: string;
+  english: string;
+}
+
+/** Eid (1–3 Shawwal, 10–13 Dhu al-Hijjah), then Ramadan, then Friday. */
+export function greetingFor(now: Date, hijri: { day: number; month: number }, ramadan: boolean): Greeting | null {
+  const { day, month } = hijri;
+  if ((month === 10 && day <= 3) || (month === 12 && day >= 10 && day <= 13)) {
+    return { id: 'eid', arabic: 'عيد مبارك', english: 'Eid Mubarak' };
+  }
+  if (ramadan) return { id: 'ramadan', arabic: 'رمضان كريم', english: 'Ramadan Kareem' };
+  if (now.getDay() === 5) return { id: 'jumuah-mubarak', arabic: 'جمعة مباركة', english: 'Jumu’ah Mubarak' };
+  return null;
+}
+
 /** The short line under "It's Dhuhr time". */
 export function taglineFor(period: PeriodKey): TextItem | null {
   if (period === 'fajr') return EVENTS.fajrTagline;

@@ -410,3 +410,10 @@
   fill: #ffd23f;
   stroke: #237a36;
 }
+
+.kd-greeting {
+  padding-top: 0.6rem;
+  font: 700 1.9rem var(--sans);
+  color: #0d6e8a;
+  white-space: nowrap;
+}

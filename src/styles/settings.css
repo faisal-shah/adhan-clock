@@ -34,8 +34,11 @@
 }
 
 .setup-bismillah {
+  display: flex;
+  justify-content: center;
   font: 400 4.4rem/1.6 var(--arabic-text);
   color: var(--gold);
+  --art-max-w: 40rem;
 }
 
 .setup h1 {

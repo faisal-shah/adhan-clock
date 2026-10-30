@@ -1,5 +1,5 @@
 import { clockFace, minutesLeft } from '../../core/calendar';
-import { kidReminder } from '../../core/content';
+import { greetingFor, kidReminder } from '../../core/content';
 import { PERIOD_NAMES, type ClockState } from '../../core/schedule';
 import { settings } from '../../store';
 import { T, WeatherGlyph, dateLine, useWeather } from '../parts';
@@ -136,6 +136,7 @@ export function KidsTheme({ st }: { st: ClockState }) {
           : PERIOD_NAMES[c.slot.name];
   const inText = mins >= 60 ? `${Math.floor(mins / 60)} hr ${mins % 60} min` : `${mins} min`;
   const reminder = kidReminder(st.now, st.next, st.current);
+  const greeting = greetingFor(st.now, st.hijri, st.ramadan);
   return (
     <div class="kd">
       <Sun />
@@ -166,7 +167,7 @@ export function KidsTheme({ st }: { st: ClockState }) {
           ))}
         </Cloud>
       )}
-      <Cloud class="c-c" />
+      <Cloud class="c-c">{greeting && <div class="kd-greeting">{greeting.english}!</div>}</Cloud>
       <WeatherCloud />
       <Cloud class="c-e">
         <div class="kd-next">

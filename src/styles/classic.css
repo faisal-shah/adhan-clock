@@ -353,3 +353,17 @@
   font-size: 0.8em;
   color: #a07c3c;
 }
+
+.cl-greeting {
+  position: absolute;
+  left: 1.5rem;
+  top: 26rem;
+  width: 23rem;
+  font-size: 7.5rem;
+  --art-max-w: 21rem;
+}
+
+.cl-greeting .greeting-en {
+  color: #a07c3c;
+  text-shadow: none;
+}

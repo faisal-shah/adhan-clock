@@ -1,7 +1,18 @@
 import { taglineFor } from '../../core/content';
 import { PERIOD_NAMES, type ClockState, type Slot } from '../../core/schedule';
 import { backgroundFor, settings } from '../../store';
-import { Calligraphy, Clock, CountdownPill, Crossfade, MakruhBadge, T, WeatherGlyph, dateLine, useWeather } from '../parts';
+import {
+  Calligraphy,
+  Clock,
+  GreetingMark,
+  CountdownPill,
+  Crossfade,
+  MakruhBadge,
+  T,
+  WeatherGlyph,
+  dateLine,
+  useWeather,
+} from '../parts';
 
 const DAYLIT = new Set(['sunrise', 'duha', 'dhuhr', 'jumuah', 'asr']);
 
@@ -112,6 +123,7 @@ export function CalligraphyTheme({ st }: { st: ClockState }) {
       {DAYLIT.has(period) && <div class="ct-flare" />}
       <div class="grain" />
 
+      <GreetingMark st={st} class="corner" tone={tone === 'light' ? 'gold' : 'ink'} />
       <div class="ct-right">
         <div class="ct-clock">
           <Clock d={st.now} />

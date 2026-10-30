@@ -1,10 +1,12 @@
 import type { ComponentChildren } from 'preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { clockFace, countdownFace, gregorianLine, hijriLine, type HijriDate } from '../core/calendar';
+import { greetingFor } from '../core/content';
 import { PERIOD_ARABIC, type ClockState, type Countdown, type PeriodKey } from '../core/schedule';
 import { PERIOD_NAMES } from '../core/schedule';
 import type { CalligraphyFont } from '../core/settings';
 import { describeWeather, toUnit, type WeatherKind } from '../core/weather';
+import type { CalligraphyArt } from '../core/media';
 import { calligraphyArt, settings, weather } from '../store';
 
 export function Clock({ d }: { d: Date }) {
@@ -59,6 +61,24 @@ export function CountdownPill({ st }: { st: ClockState }) {
   );
 }
 
+function ArtMask({ art, tone, scale = 1.25 }: { art: CalligraphyArt; tone: 'gold' | 'ink'; scale?: number }) {
+  return (
+    <div class={`callig-art-shadow ${tone}`}>
+      <div
+        class={`callig-art ${tone}`}
+        style={{
+          maskImage: `url(/calligraphy/${art.file})`,
+          WebkitMaskImage: `url(/calligraphy/${art.file})`,
+          width: `min(var(--art-max-w, 100rem), ${(scale * art.aspect).toFixed(3)}em)`,
+          aspectRatio: String(art.aspect),
+        }}
+      />
+    </div>
+  );
+}
+
+export const findArt = (id: string) => calligraphyArt.value.find((a) => a.id === id);
+
 export function Calligraphy({
   word,
   font,
@@ -70,24 +90,46 @@ export function Calligraphy({
   tone: 'gold' | 'ink';
   reveal?: boolean;
 }) {
-  const art = font === 'art' ? calligraphyArt.value.find((a) => a.id === word) : undefined;
+  const art = font === 'art' ? findArt(word) : undefined;
   return (
     <div class={reveal ? 'callig-reveal' : undefined} key={word}>
       {art ? (
-        <div class={`callig-art-shadow ${tone}`}>
-          <div
-            class={`callig-art ${tone}`}
-            style={{
-              maskImage: `url(/calligraphy/${art.file})`,
-              WebkitMaskImage: `url(/calligraphy/${art.file})`,
-              width: `min(var(--art-max-w, 100rem), ${(1.25 * art.aspect).toFixed(3)}em)`,
-              aspectRatio: String(art.aspect),
-            }}
-          />
-        </div>
+        <ArtMask art={art} tone={tone} />
       ) : (
         <div class={`callig f-${font === 'art' ? 'ruqaa' : font} ${tone}`}>{PERIOD_ARABIC[word]}</div>
       )}
+    </div>
+  );
+}
+
+/**
+ * A calligraphic phrase (Bismillah, Eid Mubarak, ...): the artwork when the
+ * set includes it, otherwise the text in the calligraphy font. Size with
+ * font-size on the parent; `scale` is the artwork height in em.
+ */
+export function Phrase({
+  id,
+  text,
+  tone = 'gold',
+  scale = 1.25,
+}: {
+  id: string;
+  text: string;
+  tone?: 'gold' | 'ink';
+  scale?: number;
+}) {
+  const art = findArt(id);
+  return art ? <ArtMask art={art} tone={tone} scale={scale} /> : <div class={`callig f-ruqaa ${tone}`}>{text}</div>;
+}
+
+/** The day's greeting (Eid, Ramadan, Jumu'ah) as calligraphy with its English below. */
+export function GreetingMark({ st, class: cls, tone = 'gold' }: { st: ClockState; class: string; tone?: 'gold' | 'ink' }) {
+  const g = greetingFor(st.now, st.hijri, st.ramadan);
+  if (!g) return null;
+  return (
+    <div class={`greeting ${cls} ${tone}`} key={g.id}>
+      <Phrase id={g.id} text={g.arabic} tone={tone} />
+      <div class="greeting-en">{g.english}</div>
     </div>
   );
 }

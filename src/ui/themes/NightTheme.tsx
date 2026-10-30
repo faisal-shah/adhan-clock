@@ -2,7 +2,7 @@ import { countdownFace } from '../../core/calendar';
 import { dailyItem, isUthmani } from '../../core/content';
 import { PERIOD_NAMES, type ClockState } from '../../core/schedule';
 import { backgroundFor, settings } from '../../store';
-import { Clock, T, dateLine } from '../parts';
+import { Clock, GreetingMark, T, dateLine } from '../parts';
 
 /** Fixed star positions (deterministic) for a quiet sky. */
 const STARS = Array.from({ length: 70 }, (_, i) => {
@@ -43,6 +43,7 @@ export function NightTheme({ st }: { st: ClockState }) {
         <path d="M62 12a40 40 0 1 0 26 66A34 34 0 0 1 62 12Z" />
       </svg>
       <div class="nt-center" style={{ transform: `translate(${dx}rem, ${dy}rem)` }}>
+        <GreetingMark st={st} class="nt-greeting" />
         <div class="nt-clock">
           <Clock d={st.now} />
         </div>

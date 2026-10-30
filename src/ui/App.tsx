@@ -3,7 +3,7 @@ import type { ClockState } from '../core/schedule';
 import type { ThemeKey } from '../core/settings';
 import { unlockAudio } from '../audio';
 import { audioBlocked, backgroundFor, clock, settings, settingsOpen, updateSettings } from '../store';
-import { Crossfade, GearIcon, SpeakerIcon } from './parts';
+import { Crossfade, GearIcon, Phrase, SpeakerIcon, findArt } from './parts';
 import { LocationPicker } from './settings/LocationPicker';
 import { SettingsPanel } from './settings/SettingsPanel';
 import { CalligraphyTheme } from './themes/CalligraphyTheme';
@@ -34,7 +34,9 @@ function Setup() {
     <div class="setup">
       {bg && <img class="setup-photo" src={bg.url} alt="" />}
       <div class="setup-card">
-        <div class="setup-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+        <div class="setup-bismillah">
+          {findArt('bismillah') ? <Phrase id="bismillah" text="" /> : 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ'}
+        </div>
         <h1>Adhan Clock</h1>
         <p>Prayer times are calculated on this tablet from its location. Choose where this clock lives.</p>
         <LocationPicker onPick={(place) => updateSettings(() => ({ place }))} />

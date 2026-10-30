@@ -432,3 +432,10 @@
 .tk-athan.night .tk-bg img {
   filter: brightness(0.75);
 }
+
+.tk-call {
+  position: relative;
+  margin-top: 1.4rem;
+  font-size: 5.4rem;
+  --art-max-w: 46rem;
+}
