@@ -115,7 +115,10 @@ test('gallery rotates captioned photos by the configured interval', async ({ pag
     credit: {},
   }));
   await page.route('**/gallery/index.json', (r) => r.fulfill({ json: items }));
-  const errors = await open(page, '2026-10-29T14:53:00', { dayTheme: 'gallery' });
+  const errors = await open(page, '2026-10-29T14:53:00', {
+    dayTheme: 'gallery',
+    gallery: { minutes: 5, categories: { mosques: true, learning: true, treasures: true, landscapes: true, calligraphy: false } },
+  });
   await expect(page.locator('.gl-title')).toHaveText(/Title [abc]/);
   await expect(page.locator('.gl-cat')).toHaveText('Mosques of the World');
   await expect(page.locator('.gl-p')).toHaveCount(5);
@@ -145,4 +148,13 @@ test('works offline after the first visit: reload, photos and the athan', async 
   });
   expect(played).toBe(true);
   expect(failed).toEqual([]);
+});
+
+test('gallery shows calligraphy pieces with their meaning', async ({ page }) => {
+  await page.route('**/gallery/index.json', (r) => r.fulfill({ json: [] }));
+  const errors = await open(page, '2026-10-29T14:53:00', { dayTheme: 'gallery' });
+  await expect(page.locator('.gl-cat')).toHaveText('Calligraphy');
+  await expect(page.locator('.gl-art .callig-art')).toBeVisible();
+  await expect(page.locator('.gl-sub')).not.toBeEmpty();
+  expect(errors).toEqual([]);
 });
