@@ -1,0 +1,798 @@
+{
+  "defaults": {
+    "maxLongSide": 2400,
+    "minLongSide": 1920,
+    "sizeStep": 0.9,
+    "quality": 80,
+    "minQuality": 72,
+    "qualityStep": 4,
+    "maxBytes": 512000,
+    "referenceAspect": [
+      16,
+      10
+    ],
+    "toneRegions": {
+      "caption": {
+        "x0": 0.0,
+        "y0": 0.7,
+        "x1": 0.4,
+        "y1": 1.0
+      },
+      "clock": {
+        "x0": 0.6,
+        "y0": 0.0,
+        "x1": 1.0,
+        "y1": 0.3
+      }
+    },
+    "darkTextMinLuminance": 0.45,
+    "containLayout": {
+      "objectBox": {
+        "x0": 0.225,
+        "y0": 0.05,
+        "x1": 0.775,
+        "y1": 0.86
+      },
+      "backdropBrightness": 0.45,
+      "backdropBlur": 0.025
+    }
+  },
+  "entries": [
+    {
+      "id": "sheikh-lotfollah",
+      "category": "mosques",
+      "title": "Sheikh Lotfollah Mosque",
+      "subtitle": "Prayer hall · Isfahan, Iran · begun 1603",
+      "fit": "cover",
+      "focus": "50% 45%",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Sheikh_Lotfollah_Mosque2%2C_Isfahan%2C_Iran.jpg",
+        "sha256": "6e1331a502f89a01cc2ec3c9f97c0e201f54cc8a649ffebb4dd890ce2d0521db"
+      },
+      "credit": {
+        "title": "Sheikh Lotfollah Mosque2, Isfahan, Iran",
+        "author": "Amirpashaei",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sheikh_Lotfollah_Mosque2,_Isfahan,_Iran.jpg",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "captionSource": "Commons file; Wikidata Q856356 (Sheikh Lotfollah Mosque, Isfahan) inception 1603"
+    },
+    {
+      "id": "nasir-ol-molk",
+      "category": "mosques",
+      "title": "Nasir-ol-Molk Mosque",
+      "subtitle": "Shiraz, Iran · 1876–1888",
+      "fit": "cover",
+      "focus": "50% 50%",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Mezquita_de_Nasirolmolk%2C_Shiraz%2C_Ir%C3%A1n%2C_2016-09-24%2C_DD_66-68_HDR.jpg",
+        "sha256": "a6bd6c8d6df9bf0f3cedea35ad5e07d38fdafcf900fec6f65f74be811a8b4f99"
+      },
+      "credit": {
+        "title": "Mezquita de Nasirolmolk, Shiraz, Irán, 2016-09-24, DD 66-68 HDR",
+        "author": "Diego Delso",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mezquita_de_Nasirolmolk,_Shiraz,_Ir%C3%A1n,_2016-09-24,_DD_66-68_HDR.jpg",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "captionSource": "Commons description: built 1876 to 1888 by order of Mirza Hasan Ali (Nasir ol Molk)"
+    },
+    {
+      "id": "dome-of-the-rock",
+      "category": "mosques",
+      "title": "Dome of the Rock",
+      "subtitle": "Jerusalem · 691 · the Dome of the Chain in front",
+      "fit": "cover",
+      "focus": "50% 55%",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Jerusalem-2013-Temple_Mount-Dome_of_the_Rock_%26_Chain.jpg",
+        "sha256": "2f748ad5275680aadde3837305e90cdba1af5b44abc6c1c0466281dfbfb8f605"
+      },
+      "credit": {
+        "title": "Jerusalem-2013-Temple Mount-Dome of the Rock & Chain",
+        "author": "Godot13",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jerusalem-2013-Temple_Mount-Dome_of_the_Rock_%26_Chain.jpg",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "captionSource": "Commons description (Dome of the Rock with the Dome of the Chain in front); Wikidata Q172077 inception 691"
+    },
+    {
+      "id": "ibn-tulun",
+      "category": "mosques",
+      "title": "Mosque of Ibn Tulun",
+      "subtitle": "Courtyard and minaret · Cairo, Egypt · 879",
+      "fit": "cover",
+      "focus": "50% 60%",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Kairo_Ibn_Tulun_Moschee_BW_5.jpg",
+        "sha256": "21899a5beee7164484a1f4318af01dc83dbfaffaab844f8f407a84f5a065c0fd"
+      },
+      "credit": {
+        "title": "Kairo Ibn Tulun Moschee BW 5",
+        "author": "Berthold Werner",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kairo_Ibn_Tulun_Moschee_BW_5.jpg",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0/"
+      },
+      "captionSource": "Commons description 'Cairo, Ibn Tulun Mosque'; Wikidata Q915413 inception 879"
+    },
+    {
+      "id": "cordoba",
+      "category": "mosques",
+      "title": "Great Mosque of Córdoba",
+      "subtitle": "Hypostyle hall · Córdoba, Spain · begun 786",
+      "fit": "cover",
+      "focus": "50% 35%",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/8/85/Mosque%E2%80%93Cathedral_of_C%C3%B3rdoba_-_Hypostyle_hall_%286%29.jpg",
+        "sha256": "219e8a998af251368e4232e0b3f8133f6e2eb7c4e33eccc73b00db3768c9aef5"
+      },
+      "credit": {
+        "title": "Mosque–Cathedral of Córdoba - Hypostyle hall (6)",
+        "author": "Gzzz",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mosque%E2%80%93Cathedral_of_C%C3%B3rdoba_-_Hypostyle_hall_(6).jpg",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "captionSource": "Commons description (hypostyle hall of the Mosque–Cathedral of Córdoba); Wikidata Q33200 inception 786"
+    },
+    {
+      "id": "shah-jahan-thatta",
+      "category": "mosques",
+      "title": "Shah Jahan Mosque",
+      "subtitle": "Dome interior · Thatta, Sindh, Pakistan · 1659",
+      "fit": "cover",
+      "focus": "50% 50%",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/5/53/PK_Thatta_asv2020-02_img03_Shah_Jahan_Mosque.jpg",
+        "sha256": "bf61ec2ccf397ca4728824dfd414d3a5d0473a280c295bbf109d5f8610535290"
+      },
+      "credit": {
+        "title": "PK Thatta asv2020-02 img03 Shah Jahan Mosque",
+        "author": "A.Savin",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:PK_Thatta_asv2020-02_img03_Shah_Jahan_Mosque.jpg",
+        "license": "FAL",
+        "licenseUrl": "https://artlibre.org/licence/lal/en/"
+      },
+      "captionSource": "Commons description (interior of one of the domes); Wikidata Q4022334 inception 1659"
+    },
+    {
+      "id": "kairouan",
+      "category": "mosques",
+      "title": "Great Mosque of Kairouan",
+      "subtitle": "The minaret from the prayer hall · Tunisia · founded 670",
+      "fit": "cover",
+      "focus": "50% 55%",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Great_Mosque_of_Kairouan_minaret_view_01.jpg",
+        "sha256": "5579586a9d8522e2f6f15b1bef188d827feb85a3b11193e5163025586e1e9a4f"
+      },
+      "credit": {
+        "title": "Great Mosque of Kairouan minaret view 01",
+        "author": "IssamBarhoumi",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Great_Mosque_of_Kairouan_minaret_view_01.jpg",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "captionSource": "Commons description; Wikidata Q1255269 inception 670"
+    },
+    {
+      "id": "bibi-khanym",
+      "category": "mosques",
+      "title": "Bibi-Khanym Mosque",
+      "subtitle": "Northern dome · Samarkand, Uzbekistan · 1404",
+      "fit": "cover",
+      "focus": "50% 22%",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Northern_dome_of_Bibi-Khanym_Mosque_01.jpg",
+        "sha256": "7398a7a2c2505ca51a505d9afc9aeed5cec42e25de4127e24466158a294a118a"
+      },
+      "credit": {
+        "title": "Northern dome of Bibi-Khanym Mosque 01",
+        "author": "Bgag",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Northern_dome_of_Bibi-Khanym_Mosque_01.jpg",
+        "license": "CC0 1.0",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "captionSource": "Commons description; Wikidata Q679218 inception 1404"
+    },
+    {
+      "id": "xian",
+      "category": "mosques",
+      "title": "Great Mosque of Xi'an",
+      "subtitle": "Garden pavilions · Xi'an, China",
+      "fit": "cover",
+      "focus": "50% 50%",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/2/22/1_great_mosque_xian_2011.JPG",
+        "sha256": "035edf4649d08eaefc6ffa442c749071dbb668b838b111d78cd4c2d9d767f31c"
+      },
+      "credit": {
+        "title": "1 great mosque xian 2011",
+        "author": "chensiyuan",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:1_great_mosque_xian_2011.JPG",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "captionSource": "Commons description: Great Mosque of Xi'an, Chinese gardens, pavilions"
+    },
+    {
+      "id": "hassan-ii",
+      "category": "mosques",
+      "title": "Hassan II Mosque",
+      "subtitle": "The minaret at dusk · Casablanca, Morocco · 1993",
+      "fit": "cover",
+      "focus": "50% 40%",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Whispers_of_Gold_-_Hassan_II_Mosque_at_Dusk.jpg",
+        "sha256": "411fabae631ea62bf706f13142cffaba2364f9123b1840b08f2a2dbab9d8456a"
+      },
+      "credit": {
+        "title": "Whispers of Gold - Hassan II Mosque at Dusk",
+        "author": "OussamaHamama",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Whispers_of_Gold_-_Hassan_II_Mosque_at_Dusk.jpg",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "captionSource": "Commons description (minaret at dusk framed by arches); Wikidata Q41346 inception 1993"
+    },
+    {
+      "id": "omar-ali-saifuddien",
+      "category": "mosques",
+      "title": "Sultan Omar Ali Saifuddien Mosque",
+      "subtitle": "At dusk on the eve of Ramadan · Brunei",
+      "fit": "cover",
+      "focus": "55% 50%",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/5/59/Sultan_Omar_Ali_Saifuddin_Mosque_02.jpg",
+        "sha256": "9080131c56a9db6c0f9eab030bf286db92a777068b9ec9cd7ef257a3e841af9b"
+      },
+      "credit": {
+        "title": "Sultan Omar Ali Saifuddin Mosque 02",
+        "author": "Sam Garza",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sultan_Omar_Ali_Saifuddin_Mosque_02.jpg",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0/"
+      },
+      "captionSource": "Commons description: dusk at the mosque in Brunei on the eve of Ramadan"
+    },
+    {
+      "id": "masjid-nabawi",
+      "category": "mosques",
+      "title": "The Prophet's Mosque",
+      "subtitle": "The Green Dome · Madinah, Saudi Arabia",
+      "fit": "cover",
+      "focus": "40% 70%",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Medium_shot_of_the_Green_Dome_at_The_Prophet%27s_Mosque_%28Al_Masjid-e-Nabawi%29.jpg",
+        "sha256": "5a9abefae05efb377597d51133ac525c08b8afc550c81de8bc1805f08625114a"
+      },
+      "credit": {
+        "title": "Medium shot of the Green Dome at The Prophet's Mosque (Al Masjid-e-Nabawi)",
+        "author": "TheHadiRahim",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Medium_shot_of_the_Green_Dome_at_The_Prophet%27s_Mosque_(Al_Masjid-e-Nabawi).jpg",
+        "license": "CC0 1.0",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "captionSource": "Commons description (the Green Dome at Al-Masjid an-Nabawi); Wikidata Q486080, Q727042"
+    },
+    {
+      "id": "djenne",
+      "category": "mosques",
+      "title": "Great Mosque of Djenné",
+      "subtitle": "Djenné, Mali · present building 1906",
+      "fit": "cover",
+      "focus": "70% 50%",
+      "crop": {
+        "x0": 0.0,
+        "y0": 0.0,
+        "x1": 0.92,
+        "y1": 1.0
+      },
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/f/f1/MaliDjenn%C3%A9Mosqu%C3%A9e.JPG",
+        "sha256": "3324796627398dbe4dfba0a6b7f31c8988db018cd21da7c7ae22afe1c8d738a2"
+      },
+      "credit": {
+        "title": "MaliDjennéMosquée",
+        "author": "BluesyPete",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:MaliDjenn%C3%A9Mosqu%C3%A9e.JPG",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/"
+      },
+      "captionSource": "Commons description; Wikidata Q683632 inception 1906"
+    },
+    {
+      "id": "minaret-of-jam",
+      "category": "landscapes",
+      "title": "Minaret of Jam",
+      "subtitle": "Ghor Province, Afghanistan · 1194",
+      "fit": "cover",
+      "focus": "50% 50%",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/2/21/Jam_minaret_ghor_province_Afghanistan.jpg",
+        "sha256": "03816ea2b0b53cf4a7c3d0eed0e5dc295b680e329315fe8a59849fbae370ffdc"
+      },
+      "credit": {
+        "title": "Jam minaret ghor province Afghanistan",
+        "author": "AhmadElhan",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jam_minaret_ghor_province_Afghanistan.jpg",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "captionSource": "Commons description; Wikidata Q192981 inception 1194"
+    },
+    {
+      "id": "ishak-pasha",
+      "category": "landscapes",
+      "title": "Ishak Pasha Palace",
+      "subtitle": "Doğubayazıt, eastern Turkey · 1685–1784",
+      "fit": "cover",
+      "focus": "60% 70%",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/9/93/Do%C4%9Fubayaz%C4%B1t%2C_palazzo_di_ishak_pasha%2C_1685-1784%2C_veduta_esterna_da_est_02.jpg",
+        "sha256": "2f3de20e56f4a0decb726fa692eb7aaedb32cf6a28d97974afa21b3690d63255"
+      },
+      "credit": {
+        "title": "Doğubayazıt, palazzo di ishak pasha, 1685-1784, veduta esterna da est 02",
+        "author": "Francesco Bini",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Do%C4%9Fubayaz%C4%B1t,_palazzo_di_ishak_pasha,_1685-1784,_veduta_esterna_da_est_02.jpg",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "captionSource": "Commons description 'Ishak Pasha Palace'; file title gives Doğubayazıt, 1685–1784, view from the east"
+    },
+    {
+      "id": "nizwa",
+      "category": "landscapes",
+      "title": "Friday Mosque, Nizwa",
+      "subtitle": "The minaret from Nizwa Fort · Oman",
+      "fit": "cover",
+      "focus": "35% 60%",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/0/07/Nizwa_Fort_and_Minaret_of_Friday_Mosque.JPG",
+        "sha256": "5da652b7db5531dd6846ee63651eada1a1a3a2753c45b2b3315c38d285dc5c51"
+      },
+      "credit": {
+        "title": "Nizwa Fort and Minaret of Friday Mosque",
+        "author": "Martin Falbisoner",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nizwa_Fort_and_Minaret_of_Friday_Mosque.JPG",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "captionSource": "Commons description: minaret of the Friday Mosque seen from Nizwa Fort, Oman"
+    },
+    {
+      "id": "umm-al-fahm",
+      "category": "landscapes",
+      "title": "Umm al-Fahm",
+      "subtitle": "The skyline at sunset",
+      "fit": "cover",
+      "focus": "60% 50%",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/d/d8/Sunsets_of_Umm_al-Fahm6.JPG",
+        "sha256": "5654ad8f6a8dbb41798703a2cae25e424fdc7d49a5fb8091d94eeab51bc7ca17"
+      },
+      "credit": {
+        "title": "Sunsets of Umm al-Fahm6",
+        "author": "Moataz Egbaria",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sunsets_of_Umm_al-Fahm6.JPG",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/"
+      },
+      "captionSource": "Commons description: Umm al-Fahm skyline at sunset"
+    },
+    {
+      "id": "chinguetti",
+      "category": "landscapes",
+      "title": "Chinguetti Mosque",
+      "subtitle": "Adrar, Mauritania · 13th or 14th century",
+      "fit": "cover",
+      "focus": "50% 40%",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/1/11/%D9%85%D8%B3%D8%AC%D8%AF_%D8%B4%D9%86%D9%82%D9%8A%D8%B7_%D8%A7%D9%84%D8%AA%D8%A7%D8%B1%D9%8A%D8%AE%D9%8A.jpg",
+        "sha256": "5ef1a1ae718540ba157bff68e67c03d34d2ff9debf88ab4bbc1d6719ba233495"
+      },
+      "credit": {
+        "title": "مسجد شنقيط التاريخي",
+        "author": "Mohamed Natti",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:%D9%85%D8%B3%D8%AC%D8%AF_%D8%B4%D9%86%D9%82%D9%8A%D8%B7_%D8%A7%D9%84%D8%AA%D8%A7%D8%B1%D9%8A%D8%AE%D9%8A.jpg",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "captionSource": "Commons description (Arabic): built in the 13th or 14th century in the Chinguetti oasis, Adrar, Mauritania"
+    },
+    {
+      "id": "kalyan-minaret",
+      "category": "landscapes",
+      "title": "Kalyan Minaret",
+      "subtitle": "Bukhara, Uzbekistan · 1127 · beside the Mir-i-Arab Madrasa dome",
+      "fit": "cover",
+      "focus": "50% 60%",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Kalan_Minaret_02.jpg",
+        "sha256": "d778c3bfa256150a056982716a2ff067a590f774d344ca39528f18837e515321"
+      },
+      "credit": {
+        "title": "Kalan Minaret 02",
+        "author": "Bgag",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kalan_Minaret_02.jpg",
+        "license": "CC0 1.0",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "captionSource": "Commons description; Wikidata Q4294007 inception 1127"
+    },
+    {
+      "id": "birmingham-quran",
+      "category": "learning",
+      "title": "The Birmingham Qur'an",
+      "subtitle": "Surahs 18–20 · parchment carbon-dated to 568–645",
+      "fit": "contain",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/3/37/Birmingham_Quran_manuscript_full.jpg",
+        "sha256": "e1a4ac89eaf6fc34d30287029b4a2b83fdbaf8dcbb6d12aaed339c4bae826c48"
+      },
+      "credit": {
+        "title": "Birmingham Quran manuscript full",
+        "author": "Unknown author (via thehistoryblog.com)",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Birmingham_Quran_manuscript_full.jpg",
+        "license": "Public domain",
+        "licenseUrl": null
+      },
+      "captionSource": "Commons description (folios 1–2, chapters 18–20; parchment carbon-dated 568–645); Wikidata Q20722902"
+    },
+    {
+      "id": "quran-stand",
+      "category": "learning",
+      "title": "Stand for a Qur'an Manuscript",
+      "subtitle": "Iran, dated 761 AH / 1360 CE · The Met",
+      "fit": "contain",
+      "source": {
+        "url": "https://images.metmuseum.org/CRDImages/is/original/DP231243.jpg",
+        "sha256": "84bc0ead7d39fb3addc82510786fe84631d085d6b7ab4944dbdeae232b78c4e1"
+      },
+      "credit": {
+        "title": "Stand for a Qur'an Manuscript",
+        "author": "The Metropolitan Museum of Art",
+        "sourceUrl": "https://www.metmuseum.org/art/collection/search/446151",
+        "license": "CC0 1.0 (The Met Open Access)",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "captionSource": "The Met collection record 10.218 (object 446151): title, date, place"
+    },
+    {
+      "id": "kashmir-quran",
+      "category": "learning",
+      "title": "Qur'an Manuscript",
+      "subtitle": "Kashmir, late 18th–early 19th century · The Met",
+      "fit": "contain",
+      "source": {
+        "url": "https://images.metmuseum.org/CRDImages/is/original/DP235922.jpg",
+        "sha256": "e11a00706d8713fb2a8a135bf9c8f99157bdf96efef935d496720c8c5e63d53c"
+      },
+      "credit": {
+        "title": "Qur'an Manuscript",
+        "author": "The Metropolitan Museum of Art",
+        "sourceUrl": "https://www.metmuseum.org/art/collection/search/456964",
+        "license": "CC0 1.0 (The Met Open Access)",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "captionSource": "The Met collection record 2009.294 (object 456964): title, date, place"
+    },
+    {
+      "id": "hermitage-rahle",
+      "category": "learning",
+      "title": "Qur'an on a Rahle",
+      "subtitle": "Ottoman Turkey, 1818–19, copied by Ibrahim al-Sururi · Hermitage",
+      "fit": "cover",
+      "focus": "50% 20%",
+      "crop": {
+        "x0": 0.0,
+        "y0": 0.0,
+        "x1": 1.0,
+        "y1": 0.74
+      },
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Hermitage_hall_389_-_05.jpg",
+        "sha256": "7c4a4c283e37295109a7925d5d4a52caf01235fc7404beeca2989bc5c05c5175"
+      },
+      "credit": {
+        "title": "Hermitage hall 389 - 05",
+        "author": "Netelo",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hermitage_hall_389_-_05.jpg",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "captionSource": "Commons description (Winter Palace, Hall 389): Quran, Turkey, 1234 AH / 1818–1819, scribe Ibrahim as-Sururi; rahle (book stand), Turkey, 19th century. Cropped above the museum's label cards"
+    },
+    {
+      "id": "al-attarine",
+      "category": "learning",
+      "title": "Al-Attarine Madrasa",
+      "subtitle": "Courtyard · Fez, Morocco · c. 1323",
+      "fit": "cover",
+      "focus": "50% 50%",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/7/7a/Al-Attarine_Madrasa_YAC_2017.jpg",
+        "sha256": "66e862f3a612bced0180c718805e68f71dfe8c999acbceadfdcbccae95b90921"
+      },
+      "credit": {
+        "title": "Al-Attarine Madrasa YAC 2017",
+        "author": "Alina Chan",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Al-Attarine_Madrasa_YAC_2017.jpg",
+        "license": "Public domain",
+        "licenseUrl": null
+      },
+      "captionSource": "Commons description; Wikidata Q4702240 inception 1320/1323"
+    },
+    {
+      "id": "ben-youssef",
+      "category": "learning",
+      "title": "Ben Youssef Madrasa",
+      "subtitle": "Main courtyard · Marrakesh, Morocco · 1565",
+      "fit": "cover",
+      "focus": "50% 50%",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Ben_Youssef_Madrasa_DSCF5986.jpg",
+        "sha256": "e1678222b2e9a88f80f545f58e4cd28f1f8deb2c9abaa0627d752ab69083150f"
+      },
+      "credit": {
+        "title": "Ben Youssef Madrasa DSCF5986",
+        "author": "R Prazeres",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ben_Youssef_Madrasa_DSCF5986.jpg",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "captionSource": "Commons description; Wikidata Q1560540 inception 1565"
+    },
+    {
+      "id": "kufic-folio",
+      "category": "learning",
+      "title": "Qur'an Manuscript Folio",
+      "subtitle": "North Africa, 9th century · Cleveland Museum of Art",
+      "fit": "contain",
+      "source": {
+        "url": "https://openaccess-cdn.clevelandart.org/1993.39/1993.39_print.jpg",
+        "sha256": "78d5355d06bcb3d8e1fe6a9f050f71a4f116cbfd7a82e586a175216bfb9b49ba"
+      },
+      "credit": {
+        "title": "Qur'an Manuscript Folio",
+        "author": "The Cleveland Museum of Art",
+        "sourceUrl": "https://clevelandart.org/art/1993.39",
+        "license": "CC0 1.0 (Cleveland Museum of Art Open Access)",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "captionSource": "Cleveland Museum of Art record 1993.39: Qur'an Manuscript Folio, 800s. North Africa, Aghlabid or Abbasid, 9th century. Gold, ink and colors on parchment; sheet: 26.7 x 36.3 cm (10 1/2 x 14 5/16 in.). The Cleveland Museum of Art, The Severance and Greta Millikin Purchase Fund, 1993.39"
+    },
+    {
+      "id": "tughra-suleiman",
+      "category": "treasures",
+      "title": "Tughra of Sultan Süleiman the Magnificent",
+      "subtitle": "Istanbul, ca. 1555–60 · The Met",
+      "fit": "contain",
+      "source": {
+        "url": "https://images.metmuseum.org/CRDImages/is/original/DP251197.jpg",
+        "sha256": "7dbcff43125438dc381caa2881d6a0402bb21a071cd0bb11385f841bbf83c362"
+      },
+      "credit": {
+        "title": "Tughra (Insignia) of Sultan Süleiman the Magnificent (r. 1520–66)",
+        "author": "The Metropolitan Museum of Art",
+        "sourceUrl": "https://www.metmuseum.org/art/collection/search/449533",
+        "license": "CC0 1.0 (The Met Open Access)",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "captionSource": "The Met collection record 38.149.1 (object 449533): title, date, place"
+    },
+    {
+      "id": "turban-helmet",
+      "category": "treasures",
+      "title": "Turban Helmet",
+      "subtitle": "Turkish, possibly Istanbul, late 15th–16th century · The Met",
+      "fit": "contain",
+      "source": {
+        "url": "https://images.metmuseum.org/CRDImages/aa/original/DP147136.jpg",
+        "sha256": "9f3e33b3edfd112ec809ad5148ee70289cc530762226a2fd09279bb3c93cac6c"
+      },
+      "credit": {
+        "title": "Turban Helmet",
+        "author": "The Metropolitan Museum of Art",
+        "sourceUrl": "https://www.metmuseum.org/art/collection/search/21976",
+        "license": "CC0 1.0 (The Met Open Access)",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "captionSource": "The Met collection record 04.3.210 (object 21976): title, date, place"
+    },
+    {
+      "id": "ottoman-saber",
+      "category": "treasures",
+      "title": "Saber",
+      "subtitle": "Turkish, probably Istanbul, 1522–66 · The Met",
+      "fit": "contain",
+      "source": {
+        "url": "https://images.metmuseum.org/CRDImages/aa/original/DP160328.jpg",
+        "sha256": "8633db8ccdc725744949e56e2c878a51cc7e325133dcae3016f1565ab69eb115"
+      },
+      "credit": {
+        "title": "Saber",
+        "author": "The Metropolitan Museum of Art",
+        "sourceUrl": "https://www.metmuseum.org/art/collection/search/24320",
+        "license": "CC0 1.0 (The Met Open Access)",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "captionSource": "The Met collection record 36.25.1297 (object 24320): title, date, place"
+    },
+    {
+      "id": "rasulid-astrolabe",
+      "category": "treasures",
+      "title": "Astrolabe of ‘Umar ibn Yusuf al-Muzaffari",
+      "subtitle": "Yemen, dated 690 AH / 1291 CE · The Met",
+      "fit": "contain",
+      "source": {
+        "url": "https://images.metmuseum.org/CRDImages/is/original/DP170386.jpg",
+        "sha256": "ebb29384c49cfd5882179b4f56cbb581de8e7c370effee245288241ad15026b3"
+      },
+      "credit": {
+        "title": "Astrolabe of ‘Umar ibn Yusuf ibn ‘Umar ibn ‘Ali ibn Rasul al-Muzaffari",
+        "author": "The Metropolitan Museum of Art",
+        "sourceUrl": "https://www.metmuseum.org/art/collection/search/444408",
+        "license": "CC0 1.0 (The Met Open Access)",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "captionSource": "The Met collection record 91.1.535a–h (object 444408): title, date, place"
+    },
+    {
+      "id": "barquq-lamp",
+      "category": "treasures",
+      "title": "Mosque Lamp of Sultan Barquq",
+      "subtitle": "Egypt or Syria, ca. 1382–99 · The Met",
+      "fit": "contain",
+      "source": {
+        "url": "https://images.metmuseum.org/CRDImages/is/original/DP123180.jpg",
+        "sha256": "1ccc88e8d2f4fe115e0522e67d4783575375761470abcc9e7bda1831f23de18d"
+      },
+      "credit": {
+        "title": "Mosque Lamp of Sultan Barquq",
+        "author": "The Metropolitan Museum of Art",
+        "sourceUrl": "https://www.metmuseum.org/art/collection/search/447004",
+        "license": "CC0 1.0 (The Met Open Access)",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "captionSource": "The Met collection record 17.190.989 (object 447004): title, date, place"
+    },
+    {
+      "id": "isfahan-mihrab",
+      "category": "treasures",
+      "title": "Mihrab (Prayer Niche)",
+      "subtitle": "Isfahan, Iran, dated 755 AH / 1354–55 CE · The Met",
+      "fit": "contain",
+      "source": {
+        "url": "https://images.metmuseum.org/CRDImages/is/original/DP235035.jpg",
+        "sha256": "44afaae680f322357b6a0a0cbe26855da5b4f8ed5729642360120093e933411a"
+      },
+      "credit": {
+        "title": "Mihrab (Prayer Niche)",
+        "author": "The Metropolitan Museum of Art",
+        "sourceUrl": "https://www.metmuseum.org/art/collection/search/449537",
+        "license": "CC0 1.0 (The Met Open Access)",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "captionSource": "The Met collection record 39.20 (object 449537): title, date, place"
+    },
+    {
+      "id": "kaaba-curtain",
+      "category": "treasures",
+      "title": "Curtain for the Door of the Ka'bah",
+      "subtitle": "Cairo, Egypt, 1015 AH / 1606 CE · Khalili Collections",
+      "fit": "contain",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/6/64/Khalili_Collection_Hajj_Kabah_curtain.jpg",
+        "sha256": "1202bf969f12f122dea7cb5c9bbf91b13546efeb7a0fcd30ca06bca6a3d45290"
+      },
+      "credit": {
+        "title": "Khalili Collection Hajj Kabah curtain",
+        "author": "Khalili Collections",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Khalili_Collection_Hajj_Kabah_curtain.jpg",
+        "license": "CC BY-SA 3.0 igo",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/igo/"
+      },
+      "captionSource": "Commons description (Khalili Collections partnership upload): Curtain for Door of the Ka'bah, Cairo, Egypt, 1015 AH (1606 AD)"
+    },
+    {
+      "id": "blue-quran",
+      "category": "treasures",
+      "title": "Folio from the Blue Qur'an",
+      "subtitle": "Possibly Qairawan, Tunisia, 9th–10th century · The Met",
+      "fit": "contain",
+      "source": {
+        "url": "https://images.metmuseum.org/CRDImages/is/original/DP167100.jpg",
+        "sha256": "823051fccc8b96f3c698b5826482652a5a879263893cd03d3536c1427f66d952"
+      },
+      "credit": {
+        "title": "Folio from the \"Blue Qur'an\"",
+        "author": "The Metropolitan Museum of Art",
+        "sourceUrl": "https://www.metmuseum.org/art/collection/search/454662",
+        "license": "CC0 1.0 (The Met Open Access)",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "captionSource": "The Met collection record 2004.88 (object 454662): title, date, place"
+    },
+    {
+      "id": "iznik-tiles",
+      "category": "treasures",
+      "title": "Iznik Wall Tiles",
+      "subtitle": "Iznik, Turkey, Ottoman, 1600s · Cleveland Museum of Art",
+      "fit": "contain",
+      "source": {
+        "url": "https://openaccess-cdn.clevelandart.org/1915.651/1915.651_print.jpg",
+        "sha256": "4e539ebbabbc1254721cbbfa38099657934439d09e50421111a203399a6de592"
+      },
+      "credit": {
+        "title": "Wall Tiles",
+        "author": "The Cleveland Museum of Art",
+        "sourceUrl": "https://clevelandart.org/art/1915.651",
+        "license": "CC0 1.0 (Cleveland Museum of Art Open Access)",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "captionSource": "Cleveland Museum of Art record 1915.651: Wall Tiles, 1600s. Turkey (Iznik), Ottoman Period. Fritware with underglaze-painted design. The Cleveland Museum of Art, Gift of the John Huntington Art and Polytechnic Trust, 1915.651"
+    },
+    {
+      "id": "senneh-prayer-rug",
+      "category": "treasures",
+      "title": "\"Senneh\" Prayer Rug",
+      "subtitle": "Sanandaj, northwestern Iran, late 18th–early 19th century · The Met",
+      "fit": "contain",
+      "source": {
+        "url": "https://images.metmuseum.org/CRDImages/is/original/DP166864.jpg",
+        "sha256": "01c65d1ccec054bad94e73c3c79e4a1123c7a16ed371cfe7a3438ee405521117"
+      },
+      "credit": {
+        "title": "\"Senneh\" Prayer Rug",
+        "author": "The Metropolitan Museum of Art",
+        "sourceUrl": "https://www.metmuseum.org/art/collection/search/452193",
+        "license": "CC0 1.0 (The Met Open Access)",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "captionSource": "The Met collection record 1970.302.8 (object 452193): title, date, place"
+    },
+    {
+      "id": "shah-jahan-rosette",
+      "category": "treasures",
+      "title": "Rosette Bearing the Titles of Shah Jahan",
+      "subtitle": "Shah Jahan Album · India, ca. 1645 · The Met",
+      "fit": "contain",
+      "source": {
+        "url": "https://images.metmuseum.org/CRDImages/is/original/DP240657.jpg",
+        "sha256": "0b078392ee17639e9c1a8dd35c02f93429c1ec5fb3732ab1269fa2c36a93609b"
+      },
+      "credit": {
+        "title": "\"Rosette Bearing the Names and Titles of Shah Jahan\", Folio from the Shah Jahan Album",
+        "author": "The Metropolitan Museum of Art",
+        "sourceUrl": "https://www.metmuseum.org/art/collection/search/451286",
+        "license": "CC0 1.0 (The Met Open Access)",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "captionSource": "The Met collection record 55.121.10.39 (object 451286): title, date, place"
+    },
+    {
+      "id": "topkapi-dagger",
+      "category": "treasures",
+      "title": "The Topkapı Dagger",
+      "subtitle": "Ottoman, 1746 · Topkapı Palace Museum, Istanbul",
+      "fit": "contain",
+      "source": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/5/53/Topkap%C4%B1_Dagger.jpg",
+        "sha256": "5ea6a2685e01cbc18c40cbdc4ac99410eaa64dc13c9b950e98678be9038fb018"
+      },
+      "credit": {
+        "title": "Topkapı Dagger",
+        "author": "Joseolgon",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Topkap%C4%B1_Dagger.jpg",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
+      },
+      "captionSource": "Commons description: emerald-studded jambiya made in 1746 by Ottoman craftsmen as a gift for the Shah of Persia; Topkapı Palace"
+    }
+  ]
+}

@@ -48,7 +48,7 @@
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(70rem 40rem at 100% 0%, rgba(3, 6, 14, 0.55), transparent 70%),
+    radial-gradient(85rem 52rem at 100% 0%, rgba(3, 6, 14, 0.74) 0%, rgba(3, 6, 14, 0.4) 45%, transparent 75%),
     linear-gradient(0deg, rgba(3, 6, 14, 0.78) 0%, rgba(3, 6, 14, 0.35) 18%, transparent 34%);
 }
 

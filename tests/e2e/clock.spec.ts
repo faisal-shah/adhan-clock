@@ -121,3 +121,28 @@ test('gallery rotates captioned photos by the configured interval', async ({ pag
   await expect(page.locator('.gl-p')).toHaveCount(5);
   expect(errors).toEqual([]);
 });
+
+test('works offline after the first visit: reload, photos and the athan', async ({ page, context }) => {
+  test.setTimeout(60_000);
+  await open(page, '2026-10-29T12:34:50');
+  // The first visit installs the service worker and precaches everything;
+  // it controls the page from the next load.
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  await page.reload();
+  await expect.poll(() => page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(true);
+  await context.setOffline(true);
+  const failed: string[] = [];
+  page.on('requestfailed', (r) => {
+    const u = r.url();
+    if (!u.includes('open-meteo') && !u.includes('bigdatacloud')) failed.push(u);
+  });
+  await page.goto('/?now=2026-10-29T12:35:05');
+  await expect(page.locator('.tk-athan')).toBeVisible();
+  await expect(page.locator('.tk-bg img')).toHaveJSProperty('complete', true);
+  const played = await page.evaluate(async () => {
+    const r = await fetch('/audio/athan-1.mp3');
+    return r.ok && (await r.blob()).size > 100_000;
+  });
+  expect(played).toBe(true);
+  expect(failed).toEqual([]);
+});
