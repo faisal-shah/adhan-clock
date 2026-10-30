@@ -158,16 +158,25 @@ function cachedWeather(): Weather | null {
 export const weather = signal<Weather | null>(cachedWeather());
 
 export function startWeather(): void {
-  const refresh = () => {
-    const s = settings.value;
-    if (!s.weather.enabled || !s.place) return;
-    fetchWeather(s.place.latitude, s.place.longitude)
+  const refresh = (place: Settings['place']) => {
+    if (!place) return;
+    fetchWeather(place.latitude, place.longitude)
       .then((w) => {
         weather.value = w;
         localStorage.setItem(WEATHER_KEY, JSON.stringify(w));
       })
       .catch(() => {});
   };
-  if (!weather.value) refresh();
-  setInterval(refresh, WEATHER_REFRESH);
+  // Refetch whenever the place changes or weather is switched on; the cache
+  // only stands in for the first load at the same place.
+  let lastKey = '';
+  effect(() => {
+    const { place, weather: w } = settings.value;
+    const key = w.enabled && place ? `${place.latitude},${place.longitude}` : '';
+    if (key === lastKey) return;
+    const first = lastKey === '';
+    lastKey = key;
+    if (key && !(first && weather.value)) refresh(place);
+  });
+  setInterval(() => settings.value.weather.enabled && refresh(settings.value.place), WEATHER_REFRESH);
 }
