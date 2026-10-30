@@ -1,1 +1,72 @@
-[]
+[
+  {
+    "id": "fajr",
+    "file": "fajr.svg",
+    "aspect": 0.981,
+    "source": {
+      "url": "https://khattaatt.com/products/islamic-prayer-fajr-arabic-calligraphy-t011",
+      "title": "Fajr Prayer (صلاة الفجر) Arabic Calligraphy, Thuluth T011",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "dhuhr",
+    "file": "dhuhr.svg",
+    "aspect": 1.2115,
+    "source": {
+      "url": "https://khattaatt.com/products/islamic-prayer-dhuhr-arabic-calligraphy-t011",
+      "title": "Dhuhr Prayer (صلاة الظهر) Arabic Calligraphy, Thuluth T011",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "asr",
+    "file": "asr.svg",
+    "aspect": 1.4112,
+    "source": {
+      "url": "https://khattaatt.com/products/islamic-prayer-asr-arabic-calligraphy-t011",
+      "title": "Asr Prayer (صلاة العصر) Arabic Calligraphy, Thuluth T011",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "maghrib",
+    "file": "maghrib.svg",
+    "aspect": 1.3736,
+    "source": {
+      "url": "https://khattaatt.com/products/islamic-prayer-maghrib-arabic-calligraphy-t011",
+      "title": "Maghrib Prayer (صلاة المغرب) Arabic Calligraphy, Thuluth T011",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "isha",
+    "file": "isha.svg",
+    "aspect": 1.3678,
+    "source": {
+      "url": "https://khattaatt.com/products/islamic-prayer-isha-arabic-calligraphy-t011",
+      "title": "Isha Prayer (صلاة العشاء) Arabic Calligraphy, Thuluth T011",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "jumuah",
+    "file": "jumuah.svg",
+    "aspect": 1.1869,
+    "source": {
+      "url": "https://khattaatt.com/products/khair-ayamkom-t-01",
+      "title": "خير أيامكم يوم الجمعة, Thuluth T-01",
+      "author": "KHATTAATT"
+    }
+  },
+  {
+    "id": "duha",
+    "file": "duha.svg",
+    "aspect": 0.9445,
+    "source": {
+      "url": "https://commons.wikimedia.org/wiki/File:Ad-Dhuha.svg",
+      "title": "Ad-Dhuha.svg (surah title seal), CC BY-SA 4.0",
+      "author": "Ahmad252 (Wikimedia Commons)"
+    }
+  }
+]
