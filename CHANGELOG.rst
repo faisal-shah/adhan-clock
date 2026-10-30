@@ -16,6 +16,12 @@ Added
   arc, geometric patterns, verse/hadith/dua of the day.
 - Kids theme: sun, clouds, birds, grass, flowers and a mosque, with rotating
   reminders.
+- Gallery theme: captioned, calendar-style photographs in four
+  categories, with the prayer times along the foot; museum objects shown
+  whole over a blurred copy of themselves.
+- Calligraphy from vectorized Thuluth artwork, rendered as gold leaf or
+  ink; font styles (Ruqaa, Nastaliq, Kufi) remain selectable.
+- "Calm" motion setting for slower tablets.
 - Night theme: dim drifting clock with Fajr and last-third-of-night times;
   backlight dimming under Fully Kiosk Browser.
 - Athan sequence: one-minute countdown, athan screen, dua after the athan,
