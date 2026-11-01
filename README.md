@@ -37,12 +37,15 @@ All photographs form one library: 52 bundled photos plus any you add from
 the tablet. The Gallery theme rotates through it, and each part of the day
 (Fajr, Sunrise & Duha, Dhuhr & Jumu'ah, Asr, Maghrib, Isha, Night & Tahajjud)
 has its own set of backgrounds for the calligraphy theme and the athan
-screen, showing a different one each day.
+screen, showing a different one each day. Parts of the day that share
+photos show different ones on the same day.
 
-- **Settings → Backgrounds** shows each part of the day's set. *Choose photos*
-  opens the whole library: tap photos to add or remove them, open one full
-  screen to see it behind that prayer's calligraphy, add your own photos, or
-  go back to the suggested pair.
+- **Settings → Backgrounds** shows each part of the day's set, starting with
+  today's photo and then the days after it. *Choose photos* opens the whole
+  library: tap photos to add or remove them, *Select all* or *Clear* a whole
+  group, open one full screen to see it behind that prayer's calligraphy, add
+  your own photos, or go back to the suggested pair. *Select all* at the top
+  takes every photo, including ones you add later.
 - **Settings → Preview → Gallery** shows every photo, which prayers use it,
   and a *Your Photos* area for adding and deleting your own. Opening a photo
   shows chips for each part of the day, to make it a background there.

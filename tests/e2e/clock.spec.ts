@@ -238,14 +238,55 @@ test('gallery: upload a photo, make it a background, delete it', async ({ page }
   await expect(page.locator('.viewer-slots').getByRole('button', { name: 'Isha' })).toHaveAttribute('aria-pressed', 'true');
   const isha = (await stored(page)).backgrounds.isha as string[];
   expect(isha).toHaveLength(3);
-  expect(isha[2]).toMatch(/^upload:/);
+  expect(isha.filter((id) => id.startsWith('upload:'))).toHaveLength(1);
   await page.keyboard.press('Escape');
   await expect(tile.locator('.pv-note')).toHaveText('Isha');
 
   page.once('dialog', (d) => d.accept());
   await tile.getByRole('button', { name: 'Delete kul sharif' }).click();
   await expect(tile).toHaveCount(0);
-  expect((await stored(page)).backgrounds.isha).toEqual(['suleymaniye', 'shah-alam']);
+  expect(((await stored(page)).backgrounds.isha as string[]).sort()).toEqual(['shah-alam', 'suleymaniye']);
+  expect(errors).toEqual([]);
+});
+
+test('backgrounds: select every photo, or a whole group', async ({ page }) => {
+  const errors = await open(page, '2026-10-29T06:30:00', { dayTheme: 'calligraphy' });
+  await openSettings(page, 'Backgrounds');
+  await page.locator('.bg-slot').first().getByRole('button', { name: 'Choose photos' }).click();
+  const picker = page.getByRole('dialog', { name: 'Fajr backgrounds' });
+  const selectAll = picker.getByRole('button', { name: 'Select all', exact: true });
+  // The suggested pair is all there is, so it can't be cleared.
+  await expect(picker.getByRole('button', { name: 'Clear: Suggested for Fajr' })).toHaveCount(0);
+
+  const total = await picker.locator('.pk-tile').count();
+  await selectAll.click();
+  expect((await stored(page)).backgrounds.fajr).toBe('all');
+  await expect(picker.locator('.pk-tile.on')).toHaveCount(total);
+  await expect(selectAll).toHaveCount(0);
+  await expect(picker.locator('.picker-head p')).toHaveText(
+    `All ${total} photos, a different one each day, and any you add later`,
+  );
+
+  // A photo added later joins the rotation.
+  await picker.locator('.up-tile input').setInputFiles('public/gallery/kul-sharif.webp');
+  await expect(picker.locator('.pk-tile.on')).toHaveCount(total + 1);
+  expect((await stored(page)).backgrounds.fajr).toBe('all');
+
+  // Clear one group, then select it again.
+  const treasures = picker.locator('.pk-group', { hasText: 'Treasures of Islamic Civilization' });
+  const inTreasures = await treasures.locator('.pk-tile').count();
+  await picker.getByRole('button', { name: 'Clear: Treasures of Islamic Civilization' }).click();
+  await expect(treasures.locator('.pk-tile.on')).toHaveCount(0);
+  expect((await stored(page)).backgrounds.fajr).toHaveLength(total + 1 - inTreasures);
+  await expect(selectAll).toBeVisible();
+  await picker.getByRole('button', { name: 'Select all: Treasures of Islamic Civilization' }).click();
+  expect((await stored(page)).backgrounds.fajr).toBe('all');
+
+  await picker.getByRole('button', { name: 'Done' }).click();
+  const fajr = page.locator('.bg-slot').first();
+  await expect(fajr.locator('.bg-slot-count')).toHaveText(`All ${total + 1} photos`);
+  await expect(fajr.locator('.bg-thumb')).toHaveCount(total + 1);
+  await expect(fajr.locator('.bg-thumb').first().locator('.bg-today')).toHaveText('Today');
   expect(errors).toEqual([]);
 });
 

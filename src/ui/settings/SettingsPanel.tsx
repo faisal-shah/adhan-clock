@@ -20,8 +20,6 @@ import {
 } from '../../core/settings';
 import {
   addUpload,
-  backgroundFor,
-  backgroundsFor,
   bundledAudio,
   calligraphyArt,
   clock,
@@ -29,6 +27,7 @@ import {
   removeUpload,
   settings,
   settingsOpen,
+  upcomingBackgrounds,
   updateSettings,
   uploads,
   viewer,
@@ -504,9 +503,9 @@ function BackgroundsSection() {
         day. Choose any photos from the gallery, or add your own.
       </p>
       {BG_SLOTS.map((slot) => {
-        const set = backgroundsFor(slot);
-        const showing = backgroundFor(slot, day);
-        const custom = settings.value.backgrounds[slot] !== null;
+        // Today's photo first, then the days after it.
+        const set = upcomingBackgrounds(slot, day);
+        const choice = settings.value.backgrounds[slot];
         const items: ViewItem[] = set.map((photo) => ({ kind: 'background', photo, slot }));
         return (
           <div class="bg-slot">
@@ -514,8 +513,9 @@ function BackgroundsSection() {
               <div>
                 <div class="bg-slot-name">{BG_SLOT_NAMES[slot]}</div>
                 <div class="bg-slot-count">
+                  {choice === 'all' ? 'All ' : ''}
                   {set.length} {set.length === 1 ? 'photo' : 'photos'}
-                  {custom ? '' : ' · suggested'}
+                  {choice === null ? ' · suggested' : ''}
                 </div>
               </div>
               <button class="btn small" onClick={() => (picking.value = slot)}>
@@ -525,12 +525,12 @@ function BackgroundsSection() {
             <div class="bg-thumbs">
               {set.map((p, i) => (
                 <button
-                  class={`bg-thumb ${showing?.id === p.id ? 'showing' : ''}`}
+                  class={`bg-thumb ${i === 0 ? 'showing' : ''}`}
                   aria-label={`Preview ${p.title}`}
                   onClick={() => (viewer.value = { items, index: i })}
                 >
                   <PhotoThumb photo={p} />
-                  {showing?.id === p.id && <span class="bg-today">Today</span>}
+                  {i === 0 && <span class="bg-today">Today</span>}
                 </button>
               ))}
             </div>

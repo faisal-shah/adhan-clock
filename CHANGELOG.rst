@@ -37,6 +37,10 @@ Added
   the day rotates through any set of library photos, chosen in a full-screen
   picker or from the photo viewer; uploaded photos join the library and the
   Gallery.
+- Background picker: *Select all* for every photo (including photos added
+  later), and *Select all* / *Clear* for each group. Parts of the day that
+  share photos show different ones on the same day; Settings → Backgrounds
+  lists each set from today's photo on.
 - Preview: jump to any athan sequence, part of the day, Jumu'ah, Ramadan or
   Eid on real dates (with 60x fast-forward), and browse every theme, photo
   and calligraphy piece full screen.

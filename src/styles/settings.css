@@ -954,6 +954,28 @@
   padding: 0 4rem 6rem;
 }
 
+.pk-group-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.6rem;
+}
+
+.pk-group-act {
+  margin: 2rem 0 -0.4rem;
+  border: 0;
+  padding: 1rem 0 1rem 2.4rem;
+  background: none;
+  color: var(--gold-soft);
+  font: 500 1.7rem var(--sans);
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.pk-group-act:active {
+  opacity: 0.6;
+}
+
 .pk-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));

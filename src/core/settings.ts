@@ -61,6 +61,13 @@ export const BG_SLOT_NAMES: Record<BgSlot, string> = {
   night: 'Night & Tahajjud',
 };
 
+/**
+ * A slot's photos: chosen ids (bundled, or `upload:<id>`), 'all' for every
+ * photo in the library including ones added later, or null for the
+ * library's suggestions.
+ */
+export type PhotoChoice = string[] | 'all' | null;
+
 export interface Place {
   name: string;
   latitude: number;
@@ -102,11 +109,8 @@ export interface Settings {
   sounds: Record<PrayerKey, SoundChoice>;
   tahajjud: SoundChoice;
   chime: { enabled: boolean; volume: number };
-  /**
-   * Per slot, the photos (bundled id or `upload:<id>`) the calligraphy theme
-   * rotates through, one a day; null means the library's defaults for the slot.
-   */
-  backgrounds: Record<BgSlot, string[] | null>;
+  /** Per slot, the photos the calligraphy theme rotates through, one a day. */
+  backgrounds: Record<BgSlot, PhotoChoice>;
   clock24h: boolean;
   hijriOffset: number;
   weather: { enabled: boolean; unit: 'f' | 'c' };
@@ -137,7 +141,7 @@ export const DEFAULT_SETTINGS: Settings = {
   sounds: perPrayer((p) => ({ enabled: true, audioId: p === 'fajr' ? 'fajr-1' : 'athan-1', volume: p === 'fajr' ? 0.6 : 0.8 })),
   tahajjud: { enabled: false, audioId: 'athan-1', volume: 0.3 },
   chime: { enabled: true, volume: 0.5 },
-  backgrounds: Object.fromEntries(BG_SLOTS.map((s) => [s, null])) as Record<BgSlot, string[] | null>,
+  backgrounds: Object.fromEntries(BG_SLOTS.map((s) => [s, null])) as Record<BgSlot, PhotoChoice>,
   clock24h: false,
   hijriOffset: 0,
   weather: { enabled: true, unit: 'f' },
@@ -199,8 +203,9 @@ function parsePlace(raw: unknown): Place | null {
   };
 }
 
-/** A slot's photo list: distinct ids, or null (the defaults) for anything else, including an empty list. */
-function parsePhotoIds(raw: unknown): string[] | null {
+/** A slot's photos: 'all', distinct ids, or null (the defaults) for anything else, including an empty list. */
+function parsePhotoChoice(raw: unknown): PhotoChoice {
+  if (raw === 'all') return 'all';
   if (!Array.isArray(raw) || !raw.length || !raw.every((v) => typeof v === 'string' && v.length > 0 && v.length <= 80))
     return null;
   return [...new Set(raw as string[])].slice(0, 500);
@@ -211,7 +216,7 @@ export function sanitizeSettings(raw: unknown): Settings {
   const r = raw as Record<string, unknown> | null;
   s.place = parsePlace(r?.place);
   const bgs = (r?.backgrounds ?? {}) as Record<string, unknown>;
-  s.backgrounds = Object.fromEntries(BG_SLOTS.map((slot) => [slot, parsePhotoIds(bgs[slot])])) as Settings['backgrounds'];
+  s.backgrounds = Object.fromEntries(BG_SLOTS.map((slot) => [slot, parsePhotoChoice(bgs[slot])])) as Settings['backgrounds'];
   s.jumuah.times = s.jumuah.times.filter((t) => /^([01]\d|2[0-3]):[0-5]\d$/.test(t)).slice(0, 2);
   return s;
 }

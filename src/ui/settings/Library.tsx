@@ -7,6 +7,7 @@ import {
   photos,
   picking,
   resetBackgrounds,
+  setBackgrounds,
   settings,
   toggleBackground,
   uploadPhotos,
@@ -80,7 +81,7 @@ export function BackgroundPicker() {
   const slot = picking.value!;
   const [hint, setHint] = useState('');
   const chosen = new Set(backgroundsFor(slot).map((p) => p.id));
-  const custom = settings.value.backgrounds[slot] !== null;
+  const choice = settings.value.backgrounds[slot];
   const suggested = new Set(defaultBackgrounds(slot));
   const all = photos.value;
   const groups: { title: string; photos: Photo[]; uploads?: boolean }[] = [
@@ -100,18 +101,32 @@ export function BackgroundPicker() {
     setHint('');
     toggleBackground(slot, p.id);
   };
+  const choose = (ps: Photo[], on: boolean) => {
+    setHint('');
+    setBackgrounds(
+      slot,
+      ps.map((p) => p.id),
+      on,
+    );
+  };
+  const summary =
+    choice === 'all'
+      ? `All ${all.length} photos, a different one each day, and any you add later`
+      : `${chosen.size} ${chosen.size === 1 ? 'photo' : 'photos'} chosen${chosen.size > 1 ? ', a different one each day' : ''}`;
   let index = 0;
   return (
     <div class="picker" role="dialog" aria-label={`${BG_SLOT_NAMES[slot]} backgrounds`}>
       <header class="picker-head">
         <div>
           <h2>{BG_SLOT_NAMES[slot]}</h2>
-          <p class={hint ? 'warn' : ''}>
-            {hint ||
-              `${chosen.size} ${chosen.size === 1 ? 'photo' : 'photos'} chosen${chosen.size > 1 ? ', a different one each day' : ''}`}
-          </p>
+          <p class={hint ? 'warn' : ''}>{hint || summary}</p>
         </div>
-        {custom && (
+        {choice !== 'all' && (
+          <button class="btn" onClick={() => choose(all, true)}>
+            Select all
+          </button>
+        )}
+        {choice !== null && (
           <button class="btn" onClick={() => resetBackgrounds(slot)}>
             Use the suggested
           </button>
@@ -121,45 +136,53 @@ export function BackgroundPicker() {
         </button>
       </header>
       <div class="picker-body">
-        {groups.map(
-          (g) =>
-            (g.photos.length > 0 || g.uploads) && (
-              <section class="pk-group">
+        {groups.map((g) => {
+          if (!g.photos.length && !g.uploads) return null;
+          const inGroup = g.photos.filter((p) => chosen.has(p.id)).length;
+          return (
+            <section class="pk-group">
+              <div class="pk-group-head">
                 <div class="panel-sub">{g.title}</div>
-                <div class="pk-grid">
-                  {g.uploads && (
-                    <UploadTile
-                      onAdded={(ids) =>
-                        ids.forEach((id) => {
-                          toggleBackground(slot, id);
-                        })
-                      }
-                    />
-                  )}
-                  {g.photos.map((p) => {
-                    const i = index++;
-                    const on = chosen.has(p.id);
-                    return (
-                      <div class={`pk-tile ${on ? 'on' : ''}`}>
-                        <button class="pk-pick" aria-pressed={on} aria-label={p.title} onClick={() => toggle(p)}>
-                          <PhotoThumb photo={p} />
-                          <span class="pk-check" aria-hidden="true" />
-                        </button>
-                        <button
-                          class="pk-look"
-                          aria-label={`Preview ${p.title}`}
-                          onClick={() => (viewer.value = { items, index: i })}
-                        >
-                          <ExpandIcon />
-                        </button>
-                        <span class="pk-label">{p.title}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </section>
-            ),
-        )}
+                {g.photos.length > 1 &&
+                  (inGroup < g.photos.length ? (
+                    <button class="pk-group-act" aria-label={`Select all: ${g.title}`} onClick={() => choose(g.photos, true)}>
+                      Select all
+                    </button>
+                  ) : (
+                    // Clearing the only chosen group would leave the slot empty.
+                    inGroup < chosen.size && (
+                      <button class="pk-group-act" aria-label={`Clear: ${g.title}`} onClick={() => choose(g.photos, false)}>
+                        Clear
+                      </button>
+                    )
+                  ))}
+              </div>
+              <div class="pk-grid">
+                {g.uploads && <UploadTile onAdded={(ids) => setBackgrounds(slot, ids, true)} />}
+                {g.photos.map((p) => {
+                  const i = index++;
+                  const on = chosen.has(p.id);
+                  return (
+                    <div class={`pk-tile ${on ? 'on' : ''}`}>
+                      <button class="pk-pick" aria-pressed={on} aria-label={p.title} onClick={() => toggle(p)}>
+                        <PhotoThumb photo={p} />
+                        <span class="pk-check" aria-hidden="true" />
+                      </button>
+                      <button
+                        class="pk-look"
+                        aria-label={`Preview ${p.title}`}
+                        onClick={() => (viewer.value = { items, index: i })}
+                      >
+                        <ExpandIcon />
+                      </button>
+                      <span class="pk-label">{p.title}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          );
+        })}
       </div>
     </div>
   );

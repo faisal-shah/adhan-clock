@@ -90,9 +90,15 @@ flowchart LR
   (`processImage`) and `PhotoView` all read it; change it, then rebuild the
   library.
 - `store.photos` merges bundled photos and image uploads (`upload:<id>`).
-  `settings.backgrounds[slot]` is a list of photo ids, or null for the
-  library's suggestions; `backgroundsFor` drops ids that no longer exist and
-  falls back to the suggestions, and `toggleBackground` never empties a slot.
+  `settings.backgrounds[slot]` is a `PhotoChoice`: a list of photo ids,
+  `'all'` (the whole library, including later uploads), or null for the
+  library's suggestions. `backgroundsFor` drops ids that no longer exist and
+  falls back to the suggestions. Writes go through `chooseBackgrounds`, which
+  never empties a slot and stores a list that covers the library as `'all'`.
+- A rotation is ordered by a hash of each photo id (stable as photos come
+  and go, categories mixed), not by the stored list. `photoForDay` offsets
+  each slot by `n / 7` photos, so slots sharing a pool show different photos
+  on the same day; `upcoming` gives the rotation from today on.
 
 ## Gotchas
 
