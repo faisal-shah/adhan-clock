@@ -108,3 +108,5 @@ flowchart LR
   content is empty (takeover ending).
 - Bundled asset indexes (`public/*/index.json`) are produced by the scripts in
   `scripts/*/`; regenerate rather than hand-edit.
+- Run prettier on `src` and `tests` only: the manifests under `scripts/` are
+  written by the scripts themselves (`--pin`) in Python's JSON layout.
