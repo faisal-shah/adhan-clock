@@ -367,9 +367,7 @@ button {
 }
 
 /* Calm motion: keep the look, drop the continuous animation. */
-[data-motion='calm'] .ct-photo img,
-[data-motion='calm'] .gl-cover,
-[data-motion='calm'] .tk-bg img,
+[data-motion='calm'] .ph-cover,
 [data-motion='calm'] .ct-flare::after,
 [data-motion='calm'] .tk-rays,
 [data-motion='calm'] .tk-halo,
@@ -437,4 +435,34 @@ button {
   z-index: 2;
   font-size: 7rem;
   --art-max-w: 26rem;
+}
+
+/* --- Photos (PhotoView) -------------------------------------------------------- */
+
+.ph {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.ph img {
+  position: absolute;
+}
+
+.ph-cover,
+.ph-blur {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The blur and its strength come from photo-layout.json (inline style). */
+.ph-blur {
+  transform: scale(1.2);
+}
+
+.ph-object {
+  object-fit: contain;
+  filter: drop-shadow(0 2.4rem 4rem rgba(0, 0, 0, 0.55));
 }

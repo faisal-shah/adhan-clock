@@ -63,9 +63,36 @@ suite only proves things render without errors.
   `ramadan`, `jumuah-mubarak`, `fajr-call`) are looked up with `findArt` /
   `Phrase`; `kind: "gallery"` pieces join the Gallery rotation. Everything
   degrades to the Ruqaa font when a piece is missing.
-- `public/gallery/index.json`: photos with `fit` (`cover` scenes, `contain`
-  museum objects shown over a blurred copy) and captions from the source
-  records. The Gallery order is a per-day seeded shuffle.
+- `public/gallery/index.json`: the photo library. Photos have `fit`
+  (`cover` scenes, `contain` museum objects shown over a blurred copy),
+  captions from the source records, `tones` (overlay text tone per layout)
+  and optional `slots` (the suggested backgrounds for those parts of the
+  day). The Gallery order is a per-day seeded shuffle.
+```mermaid
+flowchart LR
+  manifest[scripts/gallery/manifest.json] --> script[scripts/gallery/process.py]
+  layout[src/core/photo-layout.json] --> script
+  layout --> processImage[processImage uploads]
+  layout --> PhotoView
+  script --> index[public/gallery/index.json]
+  processImage --> idb[(IndexedDB uploads)]
+  index --> photos[store.photos]
+  idb --> photos
+  photos --> gallery[Gallery theme]
+  photos --> rot[backgroundsFor slot]
+  bgs[(settings.backgrounds)] --> rot
+  rot --> ct[Calligraphy theme and takeovers]
+```
+
+- `src/core/photo-layout.json` describes the two photo layouts (Gallery,
+  calligraphy): the text regions tones are measured on and the box a
+  `contain` object sits in. `scripts/gallery/process.py`, upload processing
+  (`processImage`) and `PhotoView` all read it; change it, then rebuild the
+  library.
+- `store.photos` merges bundled photos and image uploads (`upload:<id>`).
+  `settings.backgrounds[slot]` is a list of photo ids, or null for the
+  library's suggestions; `backgroundsFor` drops ids that no longer exist and
+  falls back to the suggestions, and `toggleBackground` never empties a slot.
 
 ## Gotchas
 

@@ -1,21 +1,35 @@
 import { computed, effect, signal } from '@preact/signals';
 import { now } from './core/clock';
+import { bundledPhoto, defaultIds, photoForDay, rotation } from './core/library';
 import {
+  deleteUpload,
+  listUploads,
   loadBundledAudio,
-  loadGallery,
   loadCalligraphyArt,
+  loadGallery,
+  newId,
+  processImage,
+  putUpload,
+  type BundledAudio,
   type CalligraphyArt,
   type GalleryItem,
-  loadBundledBackgrounds,
-  listUploads,
-  type Background,
-  type BundledAudio,
-  type BundledBackground,
+  type ImageUpload,
+  type Photo,
   type Upload,
 } from './core/media';
 import { startOfDay } from './core/prayer';
 import { clockState, computeDays, type AthanLength, type ClockState, type Days } from './core/schedule';
-import { loadSettings, saveSettings, type BgSlot, type Settings, type ThemeKey } from './core/settings';
+import {
+  BG_SLOTS,
+  DEFAULT_SETTINGS,
+  PRAYERS,
+  loadSettings,
+  saveSettings,
+  type BgSlot,
+  type Settings,
+  type SoundChoice,
+  type ThemeKey,
+} from './core/settings';
 import { fetchWeather, type Weather } from './core/weather';
 
 export const settings = signal<Settings>(loadSettings());
@@ -37,7 +51,6 @@ setInterval(() => {
   }
 }, 200);
 
-export const bundledBackgrounds = signal<BundledBackground[]>([]);
 export const bundledAudio = signal<BundledAudio[]>([]);
 export const gallery = signal<GalleryItem[]>([]);
 export const calligraphyArt = signal<CalligraphyArt[]>([]);
@@ -50,17 +63,18 @@ export const previewTheme = signal<ThemeKey | null>(null);
 /** Something the showcase can put full screen. */
 export type ViewItem =
   | { kind: 'theme'; theme: ThemeKey; label: string }
-  | { kind: 'background'; bg: BundledBackground }
-  | { kind: 'gallery'; item: GalleryItem }
+  | { kind: 'background'; photo: Photo; slot: BgSlot }
+  | { kind: 'photo'; photo: Photo }
   | { kind: 'art'; art: CalligraphyArt };
 
 /** The showcase viewer: a list being browsed full screen, or null. */
 export const viewer = signal<{ items: ViewItem[]; index: number } | null>(null);
+/** The slot whose background picker is open, or null. */
+export const picking = signal<BgSlot | null>(null);
 export const audioBlocked = signal(false);
 
 export async function loadMedia(): Promise<void> {
-  const [bgs, audio, ups, gal, art] = await Promise.allSettled([
-    loadBundledBackgrounds(),
+  const [audio, ups, gal, art] = await Promise.allSettled([
     loadBundledAudio(),
     listUploads(),
     loadGallery(),
@@ -68,7 +82,6 @@ export async function loadMedia(): Promise<void> {
   ]);
   if (art.status === 'fulfilled') calligraphyArt.value = art.value;
   if (gal.status === 'fulfilled') gallery.value = gal.value;
-  if (bgs.status === 'fulfilled') bundledBackgrounds.value = bgs.value;
   if (audio.status === 'fulfilled') bundledAudio.value = audio.value;
   if (ups.status === 'fulfilled') uploads.value = ups.value;
 }
@@ -110,7 +123,7 @@ export function forgetUploadUrl(id: string): void {
 export function resolveAudio(audioId: string): { url: string; durationSec: number } | null {
   if (audioId.startsWith('upload:')) {
     const u = uploads.value.find((x) => x.id === audioId.slice(7));
-    return u ? { url: uploadUrl(u), durationSec: u.durationSec ?? 0 } : null;
+    return u?.kind === 'audio' ? { url: uploadUrl(u), durationSec: u.durationSec } : null;
   }
   const b = bundledAudio.value.find((x) => x.id === audioId);
   return b ? { url: `/audio/${b.file}`, durationSec: b.durationSec } : null;
@@ -134,23 +147,108 @@ export const clock = computed<ClockState | null>(() => {
   return clockState(tick.value, d, settings.value, athanLength.value, dismissed.value);
 });
 
-const dayOfYear = (d: Date) => Math.floor((startOfDay(d).getTime() - new Date(d.getFullYear(), 0, 1).getTime()) / 86_400_000);
+// --- Photo library and backgrounds -------------------------------------------
 
-/** The background for a slot: the pinned choice, or a daily rotation over bundled + uploaded photos. */
-export function backgroundFor(slot: BgSlot, day: Date): Background | null {
-  const choice = settings.value.backgrounds[slot];
-  const bundled = bundledBackgrounds.value
-    .filter((b) => b.slot === slot)
-    .map((b) => ({ id: b.id, url: `/backgrounds/${b.file}`, textTone: b.textTone, caption: b.caption }));
-  const uploaded = uploads.value
-    .filter((u) => u.kind === 'image' && u.slot === slot)
-    .map((u) => ({ id: `upload:${u.id}`, url: uploadUrl(u), textTone: u.textTone ?? 'light' }));
-  const pool = [...uploaded, ...bundled];
-  if (choice !== 'auto') {
-    const pinned = pool.find((b) => b.id === choice);
-    if (pinned) return pinned;
+const thumbUrls = new Map<string, string>();
+
+function uploadPhoto(u: ImageUpload): Photo {
+  let thumb = thumbUrls.get(u.id);
+  if (!thumb) {
+    thumb = URL.createObjectURL(u.thumb);
+    thumbUrls.set(u.id, thumb);
   }
-  return pool.length ? pool[dayOfYear(day) % pool.length] : null;
+  return {
+    id: `upload:${u.id}`,
+    url: uploadUrl(u),
+    thumb,
+    category: 'uploads',
+    title: u.name,
+    subtitle: '',
+    fit: u.fit,
+    tones: u.tones,
+  };
+}
+
+/** Every photo: bundled, then the user's uploads. */
+export const photos = computed<Photo[]>(() => [
+  ...gallery.value.map(bundledPhoto),
+  ...uploads.value.flatMap((u) => (u.kind === 'image' ? [uploadPhoto(u)] : [])),
+]);
+
+const photoById = computed(() => new Map(photos.value.map((p) => [p.id, p])));
+
+export const defaultBackgrounds = (slot: BgSlot): string[] => defaultIds(gallery.value, slot);
+
+/** The photos a slot rotates through, in order. */
+export function backgroundsFor(slot: BgSlot): Photo[] {
+  return rotation(settings.value.backgrounds[slot], defaultBackgrounds(slot), photoById.value);
+}
+
+/** The slot's photo for the day. */
+export function backgroundFor(slot: BgSlot, day: Date): Photo | null {
+  return photoForDay(backgroundsFor(slot), day);
+}
+
+/** Adds a photo to a slot's rotation, or takes it out (a rotation keeps at least one photo). */
+export function toggleBackground(slot: BgSlot, id: string): void {
+  const ids = backgroundsFor(slot).map((p) => p.id);
+  const next = ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id];
+  if (!next.length) return;
+  updateSettings((s) => ({ backgrounds: { ...s.backgrounds, [slot]: next } }));
+}
+
+export function resetBackgrounds(slot: BgSlot): void {
+  updateSettings((s) => ({ backgrounds: { ...s.backgrounds, [slot]: null } }));
+}
+
+export async function addUpload<U extends Upload>(u: Omit<U, 'id'>): Promise<U> {
+  const full = { ...u, id: newId() } as U;
+  await putUpload(full);
+  uploads.value = [...uploads.value, full];
+  return full;
+}
+
+const photoName = (file: string) =>
+  file
+    .replace(/\.[^.]+$/, '')
+    .replace(/[_-]+/g, ' ')
+    .trim()
+    .slice(0, 48) || 'Photo';
+
+/** Adds photos to the library; returns their ids. */
+export async function uploadPhotos(files: File[]): Promise<string[]> {
+  const ids: string[] = [];
+  for (const file of files) {
+    const img = await processImage(file);
+    const u = await addUpload<ImageUpload>({ kind: 'image', name: photoName(file.name), ...img });
+    ids.push(`upload:${u.id}`);
+  }
+  return ids;
+}
+
+/** Deletes an upload and every reference to it. */
+export async function removeUpload(id: string): Promise<void> {
+  await deleteUpload(id);
+  forgetUploadUrl(id);
+  const thumb = thumbUrls.get(id);
+  if (thumb) URL.revokeObjectURL(thumb);
+  thumbUrls.delete(id);
+  uploads.value = uploads.value.filter((u) => u.id !== id);
+  const ref = `upload:${id}`;
+  updateSettings((x) => {
+    const sound = (c: SoundChoice, d: SoundChoice) => (c.audioId === ref ? { ...c, audioId: d.audioId } : c);
+    const backgrounds = Object.fromEntries(
+      BG_SLOTS.map((slot) => {
+        const ids = x.backgrounds[slot]?.filter((i) => i !== ref) ?? null;
+        return [slot, ids?.length ? ids : null];
+      }),
+    ) as Settings['backgrounds'];
+    return {
+      sounds: Object.fromEntries(PRAYERS.map((p) => [p, sound(x.sounds[p], DEFAULT_SETTINGS.sounds[p])])) as Settings['sounds'],
+      tahajjud: sound(x.tahajjud, DEFAULT_SETTINGS.tahajjud),
+      backgrounds,
+    };
+  });
 }
 
 // --- Weather ----------------------------------------------------------------

@@ -5,13 +5,13 @@ import { travelTo } from '../../core/clock';
 import type { CalligraphyArt } from '../../core/media';
 import { addDays, computeDay, startOfDay } from '../../core/prayer';
 import { PERIOD_NAMES, type ClockState, type PeriodKey } from '../../core/schedule';
-import { BG_SLOTS, GALLERY_CATEGORIES, type GalleryCategory, type ThemeKey } from '../../core/settings';
+import { GALLERY_CATEGORIES, type ThemeKey } from '../../core/settings';
 import {
-  bundledBackgrounds,
   calligraphyArt,
   dismissed,
-  gallery,
+  photos,
   previewTheme,
+  removeUpload,
   settings,
   settingsOpen,
   viewer,
@@ -20,6 +20,7 @@ import {
 import { Phrase } from '../parts';
 import { viewLabel } from '../Viewer';
 import { Segmented } from './controls';
+import { PHOTO_CATEGORIES, PhotoThumb, UploadTile, slotShort, slotsByPhoto } from './Library';
 
 const MIN = 60_000;
 
@@ -121,22 +122,19 @@ const open = (items: ViewItem[], index: number) => (viewer.value = { items, inde
 function Tile({
   items,
   index,
-  image,
+  note,
   children,
-  wide = false,
 }: {
   items: ViewItem[];
   index: number;
-  image?: string;
+  note?: string;
   children?: preact.ComponentChildren;
-  wide?: boolean;
 }) {
   return (
-    <button class={`pv-tile ${wide ? 'wide' : ''}`} onClick={() => open(items, index)}>
-      <span class="pv-thumb" style={image ? { backgroundImage: `url(${image})` } : undefined}>
-        {children}
-      </span>
+    <button class="pv-tile" onClick={() => open(items, index)}>
+      <span class="pv-thumb">{children}</span>
       <span class="pv-label">{viewLabel(items[index])}</span>
+      {note && <span class="pv-note">{note}</span>}
     </button>
   );
 }
@@ -165,45 +163,45 @@ function ThemesTab() {
   );
 }
 
-function BackgroundsTab() {
-  const items: ViewItem[] = BG_SLOTS.flatMap((slot) =>
-    bundledBackgrounds.value.filter((b) => b.slot === slot).map((bg) => ({ kind: 'background' as const, bg })),
-  );
-  return (
-    <>
-      <p class="panel-note">Every photo as the calligraphy theme shows it. Open one to keep it for its time of day.</p>
-      {BG_SLOTS.map((slot) => (
-        <div class="pv-group">
-          <div class="panel-sub">
-            {PERIOD_NAMES[({ night: 'tahajjud' } as Record<string, PeriodKey>)[slot] ?? (slot as PeriodKey)]}
-          </div>
-          <div class="pv-grid">
-            {items.map((it, i) =>
-              it.kind === 'background' && it.bg.slot === slot ? (
-                <Tile items={items} index={i} image={`/backgrounds/${it.bg.fileSm}`} />
-              ) : null,
-            )}
-          </div>
-        </div>
-      ))}
-    </>
-  );
-}
-
 function GalleryTab() {
-  const cats = (Object.keys(GALLERY_CATEGORIES) as GalleryCategory[]).filter((c) => c !== 'calligraphy');
-  const items: ViewItem[] = cats.flatMap((c) =>
-    gallery.value.filter((g) => g.category === c).map((item) => ({ kind: 'gallery' as const, item })),
+  const all = photos.value;
+  const items: ViewItem[] = PHOTO_CATEGORIES.flatMap((c) =>
+    all.filter((p) => p.category === c).map((photo) => ({ kind: 'photo' as const, photo })),
   );
+  const used = slotsByPhoto();
   return (
     <>
-      {cats.map((c) => (
+      <p class="panel-note">
+        Every photo as the Gallery theme shows it. Open one to make it a background for any part of the day.
+      </p>
+      {PHOTO_CATEGORIES.map((c) => (
         <div class="pv-group">
           <div class="panel-sub">{GALLERY_CATEGORIES[c]}</div>
+          {c === 'uploads' && (
+            <p class="panel-note">
+              Photos from this tablet join the Gallery and can be chosen as backgrounds. They stay on this tablet.
+            </p>
+          )}
           <div class="pv-grid">
+            {c === 'uploads' && <UploadTile />}
             {items.map((it, i) =>
-              it.kind === 'gallery' && it.item.category === c ? (
-                <Tile items={items} index={i} image={`/gallery/${it.item.file}`} />
+              it.kind === 'photo' && it.photo.category === c ? (
+                <div class="pv-cell">
+                  <Tile items={items} index={i} note={used.get(it.photo.id)?.map(slotShort).join(' · ')}>
+                    <PhotoThumb photo={it.photo} />
+                  </Tile>
+                  {c === 'uploads' && (
+                    <button
+                      class="pv-del"
+                      aria-label={`Delete ${it.photo.title}`}
+                      onClick={() => {
+                        if (confirm(`Delete "${it.photo.title}" from this tablet?`)) void removeUpload(it.photo.id.slice(7));
+                      }}
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
               ) : null,
             )}
           </div>
@@ -244,7 +242,7 @@ function CalligraphyTab() {
   );
 }
 
-type Tab = 'moments' | 'themes' | 'backgrounds' | 'gallery' | 'calligraphy';
+type Tab = 'moments' | 'themes' | 'gallery' | 'calligraphy';
 
 export function PreviewSection({ st }: { st: ClockState }) {
   const [tab, setTab] = useState<Tab>('moments');
@@ -256,8 +254,7 @@ export function PreviewSection({ st }: { st: ClockState }) {
           options={[
             ['moments', 'Moments'],
             ['themes', 'Themes'],
-            ['backgrounds', `Backgrounds · ${bundledBackgrounds.value.length}`],
-            ['gallery', `Gallery · ${gallery.value.length}`],
+            ['gallery', `Gallery · ${photos.value.length}`],
             ['calligraphy', `Calligraphy · ${calligraphyArt.value.length}`],
           ]}
           onChange={setTab}
@@ -265,7 +262,6 @@ export function PreviewSection({ st }: { st: ClockState }) {
       </div>
       {tab === 'moments' && <MomentsTab st={st} />}
       {tab === 'themes' && <ThemesTab />}
-      {tab === 'backgrounds' && <BackgroundsTab />}
       {tab === 'gallery' && <GalleryTab />}
       {tab === 'calligraphy' && <CalligraphyTab />}
     </>

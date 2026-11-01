@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import { previewSound, stopAthan } from '../../audio';
 import { deviceTimezone } from '../../core/geo';
 import { toggleFullscreen, underFully } from '../../core/kiosk';
-import { audioDuration, deleteUpload, newId, processImage, putUpload, type Upload } from '../../core/media';
+import { audioDuration, type AudioUpload } from '../../core/media';
 import { PERIOD_NAMES } from '../../core/schedule';
 import {
+  BG_SLOT_NAMES,
   BG_SLOTS,
   CALC_METHODS,
   CALLIGRAPHY_FONTS,
@@ -13,26 +14,29 @@ import {
   type GalleryCategory,
   HIGH_LAT_RULES,
   PRAYERS,
-  type BgSlot,
   type CalligraphyFont,
   type Settings,
   type SoundChoice,
 } from '../../core/settings';
 import {
+  addUpload,
   backgroundFor,
+  backgroundsFor,
   bundledAudio,
   calligraphyArt,
-  bundledBackgrounds,
   clock,
-  forgetUploadUrl,
+  picking,
+  removeUpload,
   settings,
   settingsOpen,
   updateSettings,
-  uploadUrl,
   uploads,
+  viewer,
+  type ViewItem,
 } from '../../store';
 import { T } from '../parts';
 import { Row, Segmented, Select, Slider, Stepper, TimeInput, Toggle } from './controls';
+import { PhotoThumb } from './Library';
 import { LocationPicker } from './LocationPicker';
 import { PreviewSection } from './PreviewSection';
 
@@ -48,16 +52,6 @@ const SECTIONS = {
   tablet: 'Tablet',
 } as const;
 type Section = keyof typeof SECTIONS;
-
-const SLOT_NAMES: Record<BgSlot, string> = {
-  fajr: 'Fajr',
-  sunrise: 'Sunrise & Duha',
-  dhuhr: "Dhuhr & Jumu'ah",
-  asr: 'Asr',
-  maghrib: 'Maghrib',
-  isha: 'Isha',
-  night: 'Night & Tahajjud',
-};
 
 const set = (patch: (s: Settings) => Partial<Settings>) => updateSettings(patch);
 
@@ -425,29 +419,6 @@ function SoundPicker({
   );
 }
 
-async function addUpload(u: Omit<Upload, 'id'>) {
-  const full = { ...u, id: newId() } as Upload;
-  await putUpload(full);
-  uploads.value = [...uploads.value, full];
-  return full;
-}
-
-async function removeUpload(id: string) {
-  await deleteUpload(id);
-  forgetUploadUrl(id);
-  uploads.value = uploads.value.filter((u) => u.id !== id);
-  const ref = `upload:${id}`;
-  set((x) => ({
-    sounds: Object.fromEntries(
-      PRAYERS.map((p) => [p, x.sounds[p].audioId === ref ? DEFAULT_SETTINGS.sounds[p] : x.sounds[p]]),
-    ) as Settings['sounds'],
-    tahajjud: x.tahajjud.audioId === ref ? { ...x.tahajjud, audioId: DEFAULT_SETTINGS.tahajjud.audioId } : x.tahajjud,
-    backgrounds: Object.fromEntries(
-      BG_SLOTS.map((b) => [b, x.backgrounds[b] === ref ? 'auto' : x.backgrounds[b]]),
-    ) as Settings['backgrounds'],
-  }));
-}
-
 function SoundSection() {
   const s = settings.value;
   const [error, setError] = useState('');
@@ -490,7 +461,7 @@ function SoundSection() {
       {uploads.value
         .filter((u) => u.kind === 'audio')
         .map((u) => (
-          <Row label={u.name} hint={u.durationSec ? `${Math.round(u.durationSec)} s` : undefined}>
+          <Row label={u.name} hint={u.kind === 'audio' && u.durationSec ? `${Math.round(u.durationSec)} s` : undefined}>
             <button class="btn small" onClick={() => removeUpload(u.id)}>
               Delete
             </button>
@@ -511,7 +482,7 @@ function SoundSection() {
               setError('');
               try {
                 const durationSec = await audioDuration(file);
-                await addUpload({ kind: 'audio', name: file.name.replace(/\.[^.]+$/, ''), durationSec, blob: file });
+                await addUpload<AudioUpload>({ kind: 'audio', name: file.name.replace(/\.[^.]+$/, ''), durationSec, blob: file });
               } catch (err) {
                 setError(String((err as Error).message ?? err));
               }
@@ -525,68 +496,43 @@ function SoundSection() {
 }
 
 function BackgroundsSection() {
-  const s = settings.value;
-  const [busy, setBusy] = useState<BgSlot | null>(null);
   const day = clock.value?.now ?? new Date();
   return (
     <>
       <p class="panel-note">
-        Each part of the day has its own photo for the calligraphy theme. "Auto" changes it daily. Uploaded photos join the
-        rotation, or tap one to keep it.
+        Each part of the day has a set of photos for the calligraphy theme and the athan screen, and shows a different one each
+        day. Choose any photos from the gallery, or add your own.
       </p>
       {BG_SLOTS.map((slot) => {
-        const choice = s.backgrounds[slot];
+        const set = backgroundsFor(slot);
         const showing = backgroundFor(slot, day);
-        const items = [
-          ...bundledBackgrounds.value
-            .filter((b) => b.slot === slot)
-            .map((b) => ({ id: b.id, url: `/backgrounds/${b.fileSm}`, upload: null as Upload | null })),
-          ...uploads.value
-            .filter((u) => u.kind === 'image' && u.slot === slot)
-            .map((u) => ({ id: `upload:${u.id}`, url: uploadUrl(u), upload: u })),
-        ];
-        const pick = (id: string) => set((x) => ({ backgrounds: { ...x.backgrounds, [slot]: id } }));
+        const custom = settings.value.backgrounds[slot] !== null;
+        const items: ViewItem[] = set.map((photo) => ({ kind: 'background', photo, slot }));
         return (
           <div class="bg-slot">
             <div class="bg-slot-head">
-              <span>{SLOT_NAMES[slot]}</span>
-              <button class={`chip ${choice === 'auto' ? 'on' : ''}`} onClick={() => pick('auto')}>
-                Auto
+              <div>
+                <div class="bg-slot-name">{BG_SLOT_NAMES[slot]}</div>
+                <div class="bg-slot-count">
+                  {set.length} {set.length === 1 ? 'photo' : 'photos'}
+                  {custom ? '' : ' · suggested'}
+                </div>
+              </div>
+              <button class="btn small" onClick={() => (picking.value = slot)}>
+                Choose photos
               </button>
             </div>
             <div class="bg-thumbs">
-              {items.map((it) => (
-                <div class={`bg-thumb ${choice === it.id ? 'pinned' : ''} ${showing?.id === it.id ? 'showing' : ''}`}>
-                  <button style={{ backgroundImage: `url(${it.url})` }} onClick={() => pick(it.id)} aria-label="Use this photo" />
-                  {it.upload && (
-                    <button class="bg-del" aria-label="Delete photo" onClick={() => removeUpload(it.upload!.id)}>
-                      ×
-                    </button>
-                  )}
-                </div>
+              {set.map((p, i) => (
+                <button
+                  class={`bg-thumb ${showing?.id === p.id ? 'showing' : ''}`}
+                  aria-label={`Preview ${p.title}`}
+                  onClick={() => (viewer.value = { items, index: i })}
+                >
+                  <PhotoThumb photo={p} />
+                  {showing?.id === p.id && <span class="bg-today">Today</span>}
+                </button>
               ))}
-              <label class={`bg-add ${busy === slot ? 'busy' : ''}`}>
-                +
-                <input
-                  type="file"
-                  accept="image/*"
-                  hidden
-                  onChange={async (e) => {
-                    const input = e.target as HTMLInputElement;
-                    const file = input.files?.[0];
-                    input.value = '';
-                    if (!file) return;
-                    setBusy(slot);
-                    try {
-                      const { blob, textTone } = await processImage(file);
-                      const u = await addUpload({ kind: 'image', name: file.name, slot, textTone, blob });
-                      pick(`upload:${u.id}`);
-                    } finally {
-                      setBusy(null);
-                    }
-                  }}
-                />
-              </label>
             </div>
           </div>
         );
@@ -630,7 +576,7 @@ function TabletSection() {
         </a>{' '}
         (Uthmani), English translation Saheeh International. Hadith from the hadith-api collection, numbered as on sunnah.com;
         only sahih and hasan narrations. Prayer times by adhan-js. Weather by Open-Meteo. Photo and recording credits:{' '}
-        <a href="/backgrounds/CREDITS.md" target="_blank" rel="noreferrer">
+        <a href="/gallery/CREDITS.md" target="_blank" rel="noreferrer">
           photos
         </a>
         ,{' '}
@@ -660,10 +606,11 @@ export function SettingsPanel() {
   const Body = RENDER[section];
   const close = () => {
     stopAthan();
+    picking.value = null;
     settingsOpen.value = false;
   };
   return (
-    <div class="settings" onPointerDown={(e) => e.target === e.currentTarget && close()}>
+    <div class="settings" inert={picking.value !== null} onPointerDown={(e) => e.target === e.currentTarget && close()}>
       <div class="panel">
         <nav class="panel-nav">
           <div class="panel-title">Settings</div>

@@ -1,5 +1,5 @@
 import { taglineFor } from '../../core/content';
-import type { Background } from '../../core/media';
+import type { Photo } from '../../core/media';
 import { PERIOD_NAMES, type ClockState, type Slot } from '../../core/schedule';
 import { backgroundFor, settings } from '../../store';
 import {
@@ -9,6 +9,7 @@ import {
   CountdownPill,
   Crossfade,
   MakruhBadge,
+  PhotoView,
   T,
   WeatherGlyph,
   dateLine,
@@ -106,19 +107,19 @@ function WeatherMedallion() {
   );
 }
 
-/** `bg` pins a background (the showcase); otherwise the period's choice is used. */
-export function CalligraphyTheme({ st, bg: pinned }: { st: ClockState; bg?: Background }) {
+/** `bg` pins a background (the showcase); otherwise the period's rotation decides. */
+export function CalligraphyTheme({ st, bg: pinned }: { st: ClockState; bg?: Photo }) {
   const s = settings.value;
   const period = st.period.key;
   const bg = pinned ?? backgroundFor(st.period.bg, st.now);
-  const tone = bg?.textTone ?? 'light';
+  const tone = bg?.tones.calligraphy ?? 'light';
   const tagline = taglineFor(period);
   const headline = PERIOD_NAMES[period].toUpperCase();
   return (
     <div class={`ct tone-${tone} p-${st.period.bg}`}>
       <div class="ct-photo">
-        <Crossfade k={bg?.url ?? st.period.bg} ms={2500}>
-          {bg && <img src={bg.url} alt="" decoding="async" />}
+        <Crossfade k={bg?.id ?? st.period.bg} ms={2500}>
+          {bg && <PhotoView photo={bg} layout="calligraphy" />}
         </Crossfade>
       </div>
       <div class="ct-scrim" />

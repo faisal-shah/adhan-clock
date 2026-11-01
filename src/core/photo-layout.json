@@ -1,0 +1,27 @@
+{
+  "referenceAspect": [16, 10],
+  "darkTextMinLuminance": 0.45,
+  "layouts": {
+    "gallery": {
+      "toneRegions": {
+        "caption": { "x0": 0.0, "y0": 0.7, "x1": 0.4, "y1": 1.0 },
+        "clock": { "x0": 0.6, "y0": 0.0, "x1": 1.0, "y1": 0.3 }
+      },
+      "contain": {
+        "objectBox": { "x0": 0.225, "y0": 0.05, "x1": 0.775, "y1": 0.86 },
+        "backdropBrightness": 0.45,
+        "backdropBlur": 0.025
+      }
+    },
+    "calligraphy": {
+      "toneRegions": {
+        "column": { "x0": 0.55, "y0": 0.0, "x1": 1.0, "y1": 0.6 }
+      },
+      "contain": {
+        "objectBox": { "x0": 0.04, "y0": 0.06, "x1": 0.54, "y1": 0.66 },
+        "backdropBrightness": 0.45,
+        "backdropBlur": 0.025
+      }
+    }
+  }
+}

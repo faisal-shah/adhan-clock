@@ -46,16 +46,17 @@
   background: linear-gradient(180deg, #02040a, #0a1430);
 }
 
-.tk-bg img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.tk-bg .ph-cover {
   animation: tk-zoom 40s ease-out both;
 }
 
-.tk-bg.blur img {
+/* The takeovers are centred: a museum object would sit behind the text, so
+   only its blurred copy shows. */
+.tk-bg .ph-object {
+  display: none;
+}
+
+.tk-bg.blur .ph-cover {
   filter: blur(1.6rem) saturate(1.1);
   transform: scale(1.12);
   animation: none;

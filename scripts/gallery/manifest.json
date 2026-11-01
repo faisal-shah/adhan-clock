@@ -7,37 +7,344 @@
     "minQuality": 72,
     "qualityStep": 4,
     "maxBytes": 512000,
-    "referenceAspect": [
-      16,
-      10
-    ],
-    "toneRegions": {
-      "caption": {
-        "x0": 0.0,
-        "y0": 0.7,
-        "x1": 0.4,
-        "y1": 1.0
-      },
-      "clock": {
-        "x0": 0.6,
-        "y0": 0.0,
-        "x1": 1.0,
-        "y1": 0.3
-      }
-    },
-    "darkTextMinLuminance": 0.45,
-    "containLayout": {
-      "objectBox": {
-        "x0": 0.225,
-        "y0": 0.05,
-        "x1": 0.775,
-        "y1": 0.86
-      },
-      "backdropBrightness": 0.45,
-      "backdropBlur": 0.025
-    }
+    "thumbLongSide": 640,
+    "thumbQuality": 72
   },
   "entries": [
+    {
+      "id": "ortakoy",
+      "category": "mosques",
+      "title": "Ortaköy Mosque",
+      "subtitle": "Istanbul, Türkiye · 1854–1856 · at blue hour",
+      "fit": "cover",
+      "focus": "50% 8%",
+      "slots": [
+        "fajr"
+      ],
+      "source": {
+        "url": "https://images.unsplash.com/photo-1661935602338-64c38771ca09",
+        "sha256": "3b33eeebc153a8512a3b413b031895faf0a87f184a2f88588cb452f86c62c4e5"
+      },
+      "credit": {
+        "title": "a building with towers by a body of water",
+        "author": "Osman Özavcı",
+        "sourceUrl": "https://unsplash.com/photos/a-building-with-towers-by-a-body-of-water-1o-GiUs-6x4",
+        "license": "Unsplash License",
+        "licenseUrl": "https://unsplash.com/license"
+      },
+      "captionSource": "Background manifest subject (Ortaköy Mosque and the Bosphorus Bridge, Istanbul); Wikipedia: Ortaköy Mosque built 1854–1856"
+    },
+    {
+      "id": "puchong-lake",
+      "category": "mosques",
+      "title": "Lakeside Mosque",
+      "subtitle": "Puchong, Selangor, Malaysia · at dusk",
+      "fit": "cover",
+      "focus": "50% 50%",
+      "mirror": true,
+      "slots": [
+        "fajr"
+      ],
+      "source": {
+        "url": "https://images.unsplash.com/photo-1618671308741-24dedf9253a4",
+        "sha256": "dc2da7ff2f0cfe04d28a190afc84f8436b06935993029fe01174f2e7efc11385"
+      },
+      "credit": {
+        "title": "white dome building near body of water during sunset",
+        "author": "Esmonde Yong",
+        "sourceUrl": "https://unsplash.com/photos/white-dome-building-near-body-of-water-during-sunset-7_COgbItdkQ",
+        "license": "Unsplash License",
+        "licenseUrl": "https://unsplash.com/license"
+      },
+      "captionSource": "Unsplash photo page: location 'Puchong, Selangor, Malaysia', title 'white dome building near body of water during sunset'"
+    },
+    {
+      "id": "taj-mahal",
+      "category": "landscapes",
+      "title": "Taj Mahal",
+      "subtitle": "Agra, India · 1632–1653 · in the morning mist",
+      "fit": "cover",
+      "focus": "100% 50%",
+      "slots": [
+        "sunrise"
+      ],
+      "source": {
+        "url": "https://images.unsplash.com/photo-1762999823430-8a1aa4ffc1a4",
+        "sha256": "73db6445ea9438532ea63d9c0083e6d479e2304aca6f5302ef6ea501a1bc71bb"
+      },
+      "credit": {
+        "title": "Taj mahal monument emerges from morning mist",
+        "author": "qin liu",
+        "sourceUrl": "https://unsplash.com/photos/taj-mahal-monument-emerges-from-morning-mist-fU_RObkfzSs",
+        "license": "Unsplash License",
+        "licenseUrl": "https://unsplash.com/license"
+      },
+      "captionSource": "Background manifest subject (Taj Mahal and its mosque, Agra); Wikipedia: Taj Mahal built 1632–1653"
+    },
+    {
+      "id": "putra",
+      "category": "mosques",
+      "title": "Putra Mosque",
+      "subtitle": "Putrajaya, Malaysia · 1997–1999 · in morning light",
+      "fit": "cover",
+      "focus": "50% 50%",
+      "slots": [
+        "sunrise"
+      ],
+      "source": {
+        "url": "https://images.pexels.com/photos/338416/pexels-photo-338416.jpeg",
+        "sha256": "5868bd0a70f2b490992b1d7e2a86150a39279099a1aa51fe591c54932b4669e8"
+      },
+      "credit": {
+        "title": "Beautiful scene of Putra Mosque reflecting on calm lake waters under a vibrant morning sky.",
+        "author": "Zukiman Mohamad",
+        "sourceUrl": "https://www.pexels.com/photo/reflection-of-building-in-lake-338416/",
+        "license": "Pexels License",
+        "licenseUrl": "https://www.pexels.com/license/"
+      },
+      "captionSource": "Background manifest subject (Putra Mosque, Putrajaya); Wikipedia: Putra Mosque built 1997–1999"
+    },
+    {
+      "id": "kul-sharif",
+      "category": "mosques",
+      "title": "Kul Sharif Mosque",
+      "subtitle": "Kazan Kremlin, Russia · completed 2005",
+      "fit": "cover",
+      "focus": "50% 50%",
+      "mirror": true,
+      "slots": [
+        "dhuhr"
+      ],
+      "source": {
+        "url": "https://images.unsplash.com/photo-1770904128875-63e0764ca813",
+        "sha256": "d747f66fc5b95600cc279af87e01dcfcf5365be484600b1f0f1eb825ff734208"
+      },
+      "credit": {
+        "title": "A white mosque with blue domes and minarets",
+        "author": "ekrem osmanoglu",
+        "sourceUrl": "https://unsplash.com/photos/a-white-mosque-with-blue-domes-and-minarets-Xg5Y-X2yQVk",
+        "license": "Unsplash License",
+        "licenseUrl": "https://unsplash.com/license"
+      },
+      "captionSource": "Background manifest subject (Kul Sharif Mosque, Kazan); Wikipedia: Kul Sharif Mosque opened 2005"
+    },
+    {
+      "id": "mardin-haze",
+      "category": "landscapes",
+      "title": "Mardin",
+      "subtitle": "A minaret rising out of the haze · Türkiye",
+      "fit": "cover",
+      "focus": "50% 50%",
+      "mirror": true,
+      "slots": [
+        "dhuhr"
+      ],
+      "source": {
+        "url": "https://images.pexels.com/photos/3999933/pexels-photo-3999933.jpeg",
+        "sha256": "b5fd7420de3a892f323fcc2cf78acd659cec2ffbdda47d181f7f01c71c6da20d"
+      },
+      "credit": {
+        "title": "Captivating view of a historic minaret tower in Mardin, Turkey surrounded by fog. A serene architectural marvel.",
+        "author": "Caner Cankisi",
+        "sourceUrl": "https://www.pexels.com/photo/concrete-tower-3999933/",
+        "license": "Pexels License",
+        "licenseUrl": "https://www.pexels.com/license/"
+      },
+      "captionSource": "Pexels description: 'historic minaret tower in Mardin, Turkey surrounded by fog'"
+    },
+    {
+      "id": "mardin-grand",
+      "category": "mosques",
+      "title": "Grand Mosque of Mardin",
+      "subtitle": "Mardin, Türkiye · above the Mesopotamian plain",
+      "fit": "cover",
+      "focus": "50% 50%",
+      "slots": [
+        "asr"
+      ],
+      "source": {
+        "url": "https://images.pexels.com/photos/38981896/pexels-photo-38981896.jpeg",
+        "sha256": "9a982d85f0a057189ebfc745a2ef4b4501868e8f335d36e1b9ff9bf27ca590d4"
+      },
+      "credit": {
+        "title": "Captivating aerial shot of a historic minaret in Mardin, Türkiye, set against a vast golden landscape at sunset.",
+        "author": "burcubyzt_85",
+        "sourceUrl": "https://www.pexels.com/photo/aerial-view-of-historic-mardin-minaret-at-sunset-38981896/",
+        "license": "Pexels License",
+        "licenseUrl": "https://www.pexels.com/license/"
+      },
+      "captionSource": "Pexels description: 'historic minaret in Mardin, Türkiye, set against a vast golden landscape'; background manifest subject"
+    },
+    {
+      "id": "badshahi",
+      "category": "mosques",
+      "title": "Badshahi Mosque",
+      "subtitle": "Lahore, Pakistan · 1671–1673 · in afternoon light",
+      "fit": "cover",
+      "focus": "50% 50%",
+      "mirror": true,
+      "slots": [
+        "asr"
+      ],
+      "source": {
+        "url": "https://images.unsplash.com/photo-1601399681546-ff2983a355c3",
+        "sha256": "e19fddf8abdad2d84ba38319df33fc5496abfad7fde3f94904e48e3293383770"
+      },
+      "credit": {
+        "title": "brown and white dome building",
+        "author": "Aryan Ghauri",
+        "sourceUrl": "https://unsplash.com/photos/brown-and-white-dome-building-5F98r2fRgJE",
+        "license": "Unsplash License",
+        "licenseUrl": "https://unsplash.com/license"
+      },
+      "captionSource": "Background manifest subject (Badshahi Mosque, Lahore); Wikipedia: Badshahi Mosque built 1671–1673"
+    },
+    {
+      "id": "sundown-minaret",
+      "category": "landscapes",
+      "title": "Minaret at Sundown",
+      "subtitle": "Dome and minaret before the mountains",
+      "fit": "cover",
+      "focus": "50% 50%",
+      "slots": [
+        "maghrib"
+      ],
+      "source": {
+        "url": "https://images.pexels.com/photos/8062986/pexels-photo-8062986.jpeg",
+        "sha256": "f434884aeae83f77bac347d0943c5f72004d4ed657ef6595ecc64724053b80d3"
+      },
+      "credit": {
+        "title": "A stunning silhouette of a mosque tower against a vibrant sunset with mountain silhouettes in the background.",
+        "author": "i.am.anatolia",
+        "sourceUrl": "https://www.pexels.com/photo/silhouette-of-a-tall-building-8062986/",
+        "license": "Pexels License",
+        "licenseUrl": "https://www.pexels.com/license/"
+      },
+      "captionSource": "Pexels description: 'silhouette of a mosque tower against a vibrant sunset with mountain silhouettes'"
+    },
+    {
+      "id": "istanbul-sunset",
+      "category": "landscapes",
+      "title": "Istanbul at Sunset",
+      "subtitle": "Dome and minaret against the evening sky",
+      "fit": "cover",
+      "focus": "50% 50%",
+      "mirror": true,
+      "slots": [
+        "maghrib"
+      ],
+      "source": {
+        "url": "https://images.unsplash.com/photo-1517480117385-7aece0d15d16",
+        "sha256": "36f19bf2197b09c486151c888e1821e45376864e0e982fa85ad97afad9c0a9c9"
+      },
+      "credit": {
+        "title": "silhouette of town buildings",
+        "author": "nurhan",
+        "sourceUrl": "https://unsplash.com/photos/silhouette-of-town-buildings-yC70QqvrPRk",
+        "license": "Unsplash License",
+        "licenseUrl": "https://unsplash.com/license"
+      },
+      "captionSource": "Unsplash photo page: description 'Sunset in Istanbul', location Istanbul, Turkey"
+    },
+    {
+      "id": "suleymaniye",
+      "category": "mosques",
+      "title": "Süleymaniye Mosque",
+      "subtitle": "Istanbul, Türkiye · 1550–1557 · under a crescent moon",
+      "fit": "cover",
+      "crop": {
+        "x0": 0.0784,
+        "y0": 0.0,
+        "x1": 0.7816,
+        "y1": 0.7812
+      },
+      "focus": "50% 50%",
+      "slots": [
+        "isha"
+      ],
+      "source": {
+        "url": "https://images.pexels.com/photos/23227976/pexels-photo-23227976.jpeg",
+        "sha256": "7299f0be0b59a11f243253144da0bed2f351477a72b7b831241176b095a45221"
+      },
+      "credit": {
+        "title": "Beautiful night view of Suleymaniye Mosque with illuminated crescent moon in Istanbul, Turkey.",
+        "author": "Vitaly Gariev",
+        "sourceUrl": "https://www.pexels.com/photo/view-of-illuminated-mosque-in-istanbul-at-night-23227976/",
+        "license": "Pexels License",
+        "licenseUrl": "https://www.pexels.com/license/"
+      },
+      "captionSource": "Background manifest subject (Süleymaniye Mosque, Istanbul, with a crescent moon); Wikipedia: built 1550–1557"
+    },
+    {
+      "id": "shah-alam",
+      "category": "mosques",
+      "title": "Sultan Salahuddin Abdul Aziz Mosque",
+      "subtitle": "Shah Alam, Malaysia · 1988 · at blue hour",
+      "fit": "cover",
+      "focus": "50% 50%",
+      "slots": [
+        "isha"
+      ],
+      "source": {
+        "url": "https://images.pexels.com/photos/20502452/pexels-photo-20502452.jpeg",
+        "sha256": "aa23bb4a2b4526291f46f24144fe8edf2fa160949b3fe4073c936e9bd22483cd"
+      },
+      "credit": {
+        "title": "Illuminated view of the stunning Blue Mosque in Shah Alam, Malaysia, reflecting in tranquil waters.",
+        "author": "Wee Keng Bee",
+        "sourceUrl": "https://www.pexels.com/photo/sultan-salahuddin-abdul-aziz-mosque-20502452/",
+        "license": "Pexels License",
+        "licenseUrl": "https://www.pexels.com/license/"
+      },
+      "captionSource": "Background manifest subject (Sultan Salahuddin Abdul Aziz Mosque, Shah Alam); Wikipedia: completed 1988"
+    },
+    {
+      "id": "lahore-stars",
+      "category": "landscapes",
+      "title": "Lahore by Starlight",
+      "subtitle": "The Milky Way over a mosque skyline · Pakistan",
+      "fit": "cover",
+      "focus": "50% 50%",
+      "slots": [
+        "night"
+      ],
+      "source": {
+        "url": "https://images.pexels.com/photos/14829579/pexels-photo-14829579.jpeg",
+        "sha256": "b87ad4f327bcfb82a60edd49116295c1dce61fc7387dd06c694f8fd3d340ebab"
+      },
+      "credit": {
+        "title": "A breathtaking view of the Milky Way illuminating the night sky over a mosque silhouette in Lahore, Pakistan.",
+        "author": "Waleed ilyas",
+        "sourceUrl": "https://www.pexels.com/photo/silhouette-of-building-during-nighttime-14829579/",
+        "license": "Pexels License",
+        "licenseUrl": "https://www.pexels.com/license/"
+      },
+      "captionSource": "Pexels description: 'the Milky Way illuminating the night sky over a mosque silhouette in Lahore, Pakistan'"
+    },
+    {
+      "id": "taksim",
+      "category": "mosques",
+      "title": "Taksim Mosque",
+      "subtitle": "Istanbul, Türkiye · 2021 · under a night sky",
+      "fit": "cover",
+      "focus": "50% 50%",
+      "mirror": true,
+      "slots": [
+        "night"
+      ],
+      "source": {
+        "url": "https://images.pexels.com/photos/16942661/pexels-photo-16942661.jpeg",
+        "sha256": "72fc50a7508790eb22db353030a741fbaba443ce9366fc1dd0133c2f522783ae"
+      },
+      "credit": {
+        "title": "Stunning night view of Taksim Mosque in Istanbul, beautifully lit under a dramatic sky.",
+        "author": "Rabia Kule",
+        "sourceUrl": "https://www.pexels.com/photo/taksim-mosque-at-night-16942661/",
+        "license": "Pexels License",
+        "licenseUrl": "https://www.pexels.com/license/"
+      },
+      "captionSource": "Background manifest subject (Taksim Mosque, Istanbul); Wikipedia: Taksim Mosque opened 2021"
+    },
     {
       "id": "sheikh-lotfollah",
       "category": "mosques",

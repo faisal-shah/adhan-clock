@@ -2,34 +2,41 @@
 # requires-python = ">=3.10"
 # dependencies = ["pillow>=10.2"]
 # ///
-"""Build the Gallery theme photos in public/gallery/ from scripts/gallery/manifest.json.
+"""Build the photo library in public/gallery/ from scripts/gallery/manifest.json.
 
-For every manifest entry this script:
+The library feeds the Gallery theme and the per-prayer backgrounds of the
+calligraphy theme. For every manifest entry this script:
 
 1. downloads ``source.url`` into a cache directory and checks its SHA-256;
 2. applies the EXIF orientation and converts embedded ICC profiles to sRGB;
-3. trims the optional ``crop`` box (fractions of the source frame);
+3. mirrors the photo when ``mirror`` is true (to move the subject away from
+   the clock column), then trims the optional ``crop`` box (fractions of the
+   mirrored frame);
 4. scales the result down to ``maxLongSide`` (never up) and encodes WebP,
    stepping the quality from ``quality`` down to ``minQuality`` until the file
    fits ``maxBytes``; when even ``minQuality`` is too big, it shrinks the long
    side by ``sizeStep`` and tries again, but never below ``minLongSide``
    (a very detailed photo may then stay above ``maxBytes``; the run says so);
-5. measures ``textTone``.
+5. writes a ``thumbLongSide`` thumbnail (``<id>-sm.webp``) for pickers;
+6. measures ``tones``: the overlay text tone for each layout.
 
-``textTone`` is measured on the frame the theme actually shows on a
-``referenceAspect`` screen (see ``display_frame``): cover items cover-fitted at
-their ``focus`` (a CSS ``object-position``); contain items drawn whole inside
-``containLayout.objectBox`` over a blurred, darkened full-screen copy of
-themselves. ``containLayout`` mirrors ``.gl-object`` and ``.gl-blur`` in
-``src/styles/gallery.css``; update both together. The mean WCAG relative
-luminance (averaged in linear light) over the ``toneRegions`` (caption and
-clock) decides it: "dark" when it is at least ``darkTextMinLuminance``,
-otherwise "light".
+The layouts (Gallery theme, calligraphy theme) live in
+``src/core/photo-layout.json``, which the app also reads to place contain
+items, so the measurement and the rendering share one set of numbers. A tone
+is measured on the frame the layout shows on a ``referenceAspect`` screen
+(see ``display_frame``): cover items cover-fitted at their ``focus`` (a CSS
+``object-position``); contain items drawn whole inside the layout's
+``contain.objectBox`` over a blurred, darkened full-screen copy of
+themselves. The mean WCAG relative luminance (averaged in linear light) over
+the layout's ``toneRegions`` decides it: "dark" when it is at least
+``darkTextMinLuminance``, otherwise "light".
+
+``slots`` lists the parts of the day the photo is a default background for.
 
 It then writes ``index.json`` (consumed by the app) and ``CREDITS.md``. Every
 derived value comes from this run, so the manifest is the single source of
-truth. Category ids and their order come from ``GALLERY_CATEGORIES`` in
-``src/core/settings.ts``.
+truth. Category ids and their order come from ``GALLERY_CATEGORIES`` and slot
+ids from ``BG_SLOTS`` in ``src/core/settings.ts``.
 
 Usage (from the repo root)::
 
@@ -62,6 +69,9 @@ REPO = Path(__file__).resolve().parents[2]
 DEFAULT_MANIFEST = REPO / "scripts" / "gallery" / "manifest.json"
 DEFAULT_OUT = REPO / "public" / "gallery"
 SETTINGS_TS = REPO / "src" / "core" / "settings.ts"
+LAYOUT_JSON = REPO / "src" / "core" / "photo-layout.json"
+# Gallery categories filled from elsewhere: calligraphy art and the user's uploads.
+NOT_PHOTO_CATEGORIES = {"calligraphy", "uploads"}
 DEFAULT_CACHE = Path(tempfile.gettempdir()) / "adhan-clock-gallery-src"
 USER_AGENT = "adhan-clock-gallery-build/1.0 (https://github.com/faisal-shah/adhan-clock; faisal.shah@gmail.com)"
 REQUEST_GAP_S = 2.0  # pause before every download; Wikimedia rate-limits bursts of original-file requests
@@ -72,16 +82,23 @@ Image.MAX_IMAGE_PIXELS = 400_000_000
 ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 FOCUS_RE = re.compile(r"^(?P<x>\d{1,3})% (?P<y>\d{1,3})%$")
 SHA_RE = re.compile(r"^[0-9a-f]{64}$")
-OUTPUT_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*\.webp$")
+OUTPUT_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*\.webp$")  # also matches the -sm thumbnails
 CREDIT_KEYS = ("title", "author", "sourceUrl", "license", "licenseUrl")
-INT_SETTINGS = ("maxLongSide", "minLongSide", "quality", "minQuality", "qualityStep", "maxBytes")
-SETTING_KEYS = (*INT_SETTINGS, "sizeStep", "referenceAspect", "toneRegions", "darkTextMinLuminance", "containLayout")
+INT_SETTINGS = ("maxLongSide", "minLongSide", "quality", "minQuality", "qualityStep", "maxBytes", "thumbLongSide",
+                "thumbQuality")
+SETTING_KEYS = (*INT_SETTINGS, "sizeStep")
 LIMITS = {"title": 48, "subtitle": 70}
 TONE_SAMPLE_WIDTH = 480  # px; luminance is a mean, so a small render is exact enough
 
 
 class ManifestError(ValueError):
     pass
+
+
+@dataclass(frozen=True)
+class Layout:
+    toneRegions: dict[str, dict[str, float]]
+    contain: dict
 
 
 @dataclass(frozen=True)
@@ -93,16 +110,17 @@ class Settings:
     minQuality: int
     qualityStep: int
     maxBytes: int
+    thumbLongSide: int
+    thumbQuality: int
     referenceAspect: tuple[int, int]
-    toneRegions: dict[str, dict[str, float]]
     darkTextMinLuminance: float
-    containLayout: dict
+    layouts: dict[str, Layout]
 
 
 # ---------------------------------------------------------------- manifest
 
 def app_categories(path: Path) -> dict[str, str]:
-    """GALLERY_CATEGORIES (id -> label, in declaration order) from the app's settings module."""
+    """Photo categories (id -> label, in declaration order) from GALLERY_CATEGORIES in the app's settings module."""
     src = path.read_text(encoding="utf-8")
     m = re.search(r"GALLERY_CATEGORIES\s*=\s*\{(?P<body>[^}]*)\}", src)
     if not m:
@@ -110,7 +128,16 @@ def app_categories(path: Path) -> dict[str, str]:
     cats = dict(re.findall(r"^\s*([a-z]+)\s*:\s*'([^']*)'", m["body"], flags=re.MULTILINE))
     if not cats:
         raise ManifestError(f"GALLERY_CATEGORIES in {path} has no entries")
-    return cats
+    return {k: v for k, v in cats.items() if k not in NOT_PHOTO_CATEGORIES}
+
+
+def app_slots(path: Path) -> list[str]:
+    """BG_SLOTS from the app's settings module."""
+    m = re.search(r"BG_SLOTS\s*=\s*\[(?P<body>[^\]]*)\]", path.read_text(encoding="utf-8"))
+    slots = re.findall(r"'([a-z]+)'", m["body"]) if m else []
+    if not slots:
+        raise ManifestError(f"BG_SLOTS not found in {path}")
+    return slots
 
 
 def _unit(v: object) -> bool:
@@ -129,28 +156,45 @@ def _check_defaults(d: dict) -> None:
     for key in INT_SETTINGS:
         if not (isinstance(d[key], int) and not isinstance(d[key], bool) and d[key] > 0):
             raise ManifestError(f"defaults.{key} must be a positive integer")
-    if not 1 <= d["minQuality"] <= d["quality"] <= 100:
-        raise ManifestError("defaults need 1 <= minQuality <= quality <= 100")
+    if not 1 <= d["minQuality"] <= d["quality"] <= 100 or d["thumbQuality"] > 100:
+        raise ManifestError("defaults need 1 <= minQuality <= quality <= 100 and thumbQuality <= 100")
     if d["minLongSide"] > d["maxLongSide"]:
         raise ManifestError("defaults need minLongSide <= maxLongSide")
     if not (_unit(d["sizeStep"]) and 0 < d["sizeStep"] < 1):
         raise ManifestError("defaults.sizeStep must be between 0 and 1 (exclusive)")
-    aspect = d["referenceAspect"]
+
+
+def load_layouts(path: Path) -> tuple[tuple[int, int], float, dict[str, Layout]]:
+    """referenceAspect, darkTextMinLuminance and the per-theme layouts from photo-layout.json."""
+    try:
+        d = json.loads(path.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        raise ManifestError(f"{path}: {e}") from None
+    aspect = d.get("referenceAspect")
     if not (isinstance(aspect, list) and len(aspect) == 2 and all(isinstance(a, int) and a > 0 for a in aspect)):
-        raise ManifestError("defaults.referenceAspect must be [width, height] positive integers")
-    regions = d["toneRegions"]
-    if not (isinstance(regions, dict) and regions and all(_region_ok(r) for r in regions.values())):
-        raise ManifestError("defaults.toneRegions must map names to {x0, y0, x1, y1} boxes (0..1, x0 < x1, y0 < y1)")
-    if not (_unit(d["darkTextMinLuminance"]) and 0 < d["darkTextMinLuminance"] < 1):
-        raise ManifestError("defaults.darkTextMinLuminance must be between 0 and 1 (exclusive)")
-    cl = d["containLayout"]
-    if not (isinstance(cl, dict) and set(cl) == {"objectBox", "backdropBrightness", "backdropBlur"}
-            and _region_ok(cl["objectBox"]) and _unit(cl["backdropBrightness"]) and _unit(cl["backdropBlur"])):
-        raise ManifestError("defaults.containLayout needs objectBox {x0, y0, x1, y1}, backdropBrightness (0..1) "
-                            "and backdropBlur (blur radius as a fraction of the screen width, 0..1)")
+        raise ManifestError(f"{path}: referenceAspect must be [width, height] positive integers")
+    threshold = d.get("darkTextMinLuminance")
+    if not (_unit(threshold) and 0 < threshold < 1):
+        raise ManifestError(f"{path}: darkTextMinLuminance must be between 0 and 1 (exclusive)")
+    layouts = d.get("layouts")
+    if not (isinstance(layouts, dict) and set(layouts) == {"gallery", "calligraphy"}):
+        raise ManifestError(f"{path}: layouts must define exactly 'gallery' and 'calligraphy'")
+    out = {}
+    for name, lay in layouts.items():
+        regions, cl = lay.get("toneRegions"), lay.get("contain")
+        if not (isinstance(regions, dict) and regions and all(_region_ok(r) for r in regions.values())):
+            raise ManifestError(f"{path}: layouts.{name}.toneRegions must map names to {{x0, y0, x1, y1}} boxes "
+                                "(0..1, x0 < x1, y0 < y1)")
+        if not (isinstance(cl, dict) and set(cl) == {"objectBox", "backdropBrightness", "backdropBlur"}
+                and _region_ok(cl["objectBox"]) and _unit(cl["backdropBrightness"]) and _unit(cl["backdropBlur"])):
+            raise ManifestError(f"{path}: layouts.{name}.contain needs objectBox {{x0, y0, x1, y1}}, "
+                                "backdropBrightness (0..1) and backdropBlur (blur radius as a fraction of the "
+                                "screen width, 0..1)")
+        out[name] = Layout(toneRegions=regions, contain=cl)
+    return tuple(aspect), threshold, out
 
 
-def _check_entry(e: dict, where: str, categories: dict[str, str], allow_unpinned: bool) -> None:
+def _check_entry(e: dict, where: str, categories: dict[str, str], slots: list[str], allow_unpinned: bool) -> None:
     for key in ("id", "category", "title", "subtitle", "fit", "source", "credit", "captionSource"):
         if key not in e:
             raise ManifestError(f"{where}: missing '{key}'")
@@ -169,6 +213,12 @@ def _check_entry(e: dict, where: str, categories: dict[str, str], allow_unpinned
             raise ManifestError(f"{where}: cover entries need focus 'X% Y%' with X, Y in 0..100")
     elif "focus" in e:
         raise ManifestError(f"{where}: contain entries are shown whole; drop 'focus'")
+    if "mirror" in e and e["mirror"] is not True:
+        raise ManifestError(f"{where}: mirror is either true or absent")
+    if "slots" in e:
+        sl = e["slots"]
+        if not (isinstance(sl, list) and sl and len(set(sl)) == len(sl) and all(x in slots for x in sl)):
+            raise ManifestError(f"{where}: slots must be a non-empty list of distinct ids from {', '.join(slots)}")
     if "crop" in e:
         if e["fit"] == "contain":
             raise ManifestError(f"{where}: contain entries (museum objects) are never cropped; drop 'crop'")
@@ -193,7 +243,8 @@ def _check_entry(e: dict, where: str, categories: dict[str, str], allow_unpinned
         raise ManifestError(f"{where}: captionSource must say where the title and subtitle facts come from")
 
 
-def load_manifest(path: Path, categories: dict[str, str], allow_unpinned: bool) -> tuple[Settings, list[dict]]:
+def load_manifest(path: Path, categories: dict[str, str], slots: list[str], layout_path: Path,
+                  allow_unpinned: bool) -> tuple[Settings, list[dict]]:
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
     except FileNotFoundError:
@@ -207,12 +258,16 @@ def load_manifest(path: Path, categories: dict[str, str], allow_unpinned: bool) 
     seen: set[str] = set()
     for i, e in enumerate(entries):
         where = f"entries[{i}] ({e.get('id', '?')})"
-        _check_entry(e, where, categories, allow_unpinned)
+        _check_entry(e, where, categories, slots, allow_unpinned)
         if e["id"] in seen:
             raise ManifestError(f"{where}: duplicate id")
         seen.add(e["id"])
-    settings = Settings(**{k: defaults[k] for k in SETTING_KEYS if k != "referenceAspect"},
-                        referenceAspect=tuple(defaults["referenceAspect"]))
+    for slot in slots:
+        if not any(slot in e.get("slots", ()) for e in entries):
+            raise ManifestError(f"no entry is a default background for '{slot}'")
+    aspect, threshold, layouts = load_layouts(layout_path)
+    settings = Settings(**{k: defaults[k] for k in SETTING_KEYS}, referenceAspect=aspect,
+                        darkTextMinLuminance=threshold, layouts=layouts)
     return settings, entries
 
 
@@ -319,11 +374,11 @@ def cover_frame(im: Image.Image, aspect: tuple[int, int], focus: tuple[float, fl
     return im.resize((width, height), Image.Resampling.LANCZOS, box=(x0, y0, x0 + cw, y0 + ch))
 
 
-def display_frame(im: Image.Image, fit: str, focus: str | None, s: Settings, width: int) -> Image.Image:
-    """What the Gallery theme shows on a referenceAspect screen `width` px wide (before its scrims)."""
+def display_frame(im: Image.Image, fit: str, focus: str | None, s: Settings, layout: str, width: int) -> Image.Image:
+    """What a theme layout shows on a referenceAspect screen `width` px wide (before its scrims)."""
     if fit == "cover":
         return cover_frame(im, s.referenceAspect, parse_focus(focus), width)
-    cl = s.containLayout
+    cl = s.layouts[layout].contain
     back = cover_frame(im, s.referenceAspect, (0.5, 0.5), width)
     back = back.filter(ImageFilter.GaussianBlur(cl["backdropBlur"] * width))
     frame = back.point(lambda v: round(v * cl["backdropBrightness"]))
@@ -378,9 +433,9 @@ def mean_luminance(im: Image.Image) -> float:
     return total / (len(data) // 3)
 
 
-def text_tone(frame: Image.Image, s: Settings) -> tuple[str, dict[str, float]]:
+def text_tone(frame: Image.Image, s: Settings, layout: str) -> tuple[str, dict[str, float]]:
     w, h = frame.size
-    lum = {name: mean_luminance(frame.crop(crop_box(w, h, r))) for name, r in s.toneRegions.items()}
+    lum = {name: mean_luminance(frame.crop(crop_box(w, h, r))) for name, r in s.layouts[layout].toneRegions.items()}
     y = sum(lum.values()) / len(lum)
     return ("dark" if y >= s.darkTextMinLuminance else "light"), lum
 
@@ -391,19 +446,26 @@ def process_entry(entry: dict, s: Settings, out_dir: Path, cache: Path) -> tuple
     span = max(crop["x1"] - crop["x0"], crop["y1"] - crop["y0"]) if crop else 1.0
     im = open_srgb(src_path, math.ceil(2 * s.maxLongSide / span))
     decoded = im.size
+    if entry.get("mirror"):
+        im = ImageOps.mirror(im)
     if crop:
         im = im.crop(crop_box(*im.size, crop))
 
     eid = entry["id"]
-    file = f"{eid}.webp"
+    file, file_sm = f"{eid}.webp", f"{eid}-sm.webp"
     data, out, q = encode_fitting(im, s)
     (out_dir / file).write_bytes(data)
+    thumb = out.copy()
+    thumb.thumbnail((s.thumbLongSide, s.thumbLongSide), Image.Resampling.LANCZOS)
+    (out_dir / file_sm).write_bytes(encode_webp(thumb, s.thumbQuality))
 
     focus = entry.get("focus")
-    tone, lum = text_tone(display_frame(out, entry["fit"], focus, s, TONE_SAMPLE_WIDTH), s)
-    lum_txt = " ".join(f"{k}={v:.3f}" for k, v in lum.items())
+    tones, lums = {}, []
+    for layout in s.layouts:
+        tones[layout], lum = text_tone(display_frame(out, entry["fit"], focus, s, layout, TONE_SAMPLE_WIDTH), s, layout)
+        lums.append(" ".join(f"{k}={v:.2f}" for k, v in lum.items()))
     print(f"{eid:22} {decoded[0]}x{decoded[1]} -> {out.width}x{out.height} {len(data) / 1024:.0f} KiB q{q} "
-          f"{entry['fit']:7} textTone={tone} ({lum_txt})")
+          f"{entry['fit']:7} " + " ".join(f"{k}={v}" for k, v in tones.items()) + f" ({'; '.join(lums)})")
     if max(out.size) < s.minLongSide:
         print(f"warning: {file} is only {max(out.size)} px on its long side (source too small)", file=sys.stderr)
     if len(data) > s.maxBytes:
@@ -416,9 +478,11 @@ def process_entry(entry: dict, s: Settings, out_dir: Path, cache: Path) -> tuple
         "category": entry["category"],
         "title": entry["title"],
         "subtitle": entry["subtitle"],
+        "fileSm": file_sm,
         "fit": entry["fit"],
-        "textTone": tone,
+        "tones": tones,
         **({"focus": focus} if focus else {}),
+        **({"slots": entry["slots"]} if "slots" in entry else {}),
         "credit": {k: credit.get(k) for k in CREDIT_KEYS},
     }
     return item, out
@@ -429,7 +493,7 @@ def process_entry(entry: dict, s: Settings, out_dir: Path, cache: Path) -> tuple
 def write_credits(path: Path, items: list[dict], entries: dict[str, dict], categories: dict[str, str],
                   sizes: dict[str, tuple[int, int]]) -> None:
     lines = [
-        "# Gallery photo credits",
+        "# Photo library credits",
         "",
         "Generated by `scripts/gallery/process.py` from `scripts/gallery/manifest.json`. Do not edit by hand.",
         "",
@@ -451,6 +515,8 @@ def write_credits(path: Path, items: list[dict], entries: dict[str, dict], categ
                 cr = e["crop"]
                 change = (f"cropped to x {cr['x0']:.2f}–{cr['x1']:.2f}, y {cr['y0']:.2f}–{cr['y1']:.2f} "
                           f"of the frame, {change}")
+            if e.get("mirror"):
+                change = f"mirrored horizontally, {change}"
             lines += [
                 f"### `{it['file']}` — {it['title']}",
                 "",
@@ -476,9 +542,9 @@ def _font(size: int) -> ImageFont.ImageFont:
     return ImageFont.load_default()
 
 
-def contact_sheet(path: Path, items: list[dict], images: dict[str, Image.Image], s: Settings,
+def contact_sheet(path: Path, items: list[dict], images: dict[str, Image.Image], s: Settings, layout: str,
                   categories: dict[str, str], cols: int = 4, tile_w: int = 480) -> None:
-    """Each item as the theme frames it (display_frame), labelled, with the tone regions outlined."""
+    """Each item as a theme layout frames it (display_frame), labelled, with the tone regions outlined."""
     tile_h = round(tile_w * s.referenceAspect[1] / s.referenceAspect[0])
     label_h = 64
     rows = math.ceil(len(items) / cols)
@@ -486,16 +552,18 @@ def contact_sheet(path: Path, items: list[dict], images: dict[str, Image.Image],
     draw = ImageDraw.Draw(sheet)
     f_big, f_small = _font(15), _font(12)
     for i, it in enumerate(items):
-        tile = display_frame(images[it["id"]], it["fit"], it.get("focus"), s, tile_w)
+        tile = display_frame(images[it["id"]], it["fit"], it.get("focus"), s, layout, tile_w)
         td = ImageDraw.Draw(tile)
-        for r in s.toneRegions.values():
-            td.rectangle(crop_box(tile_w, tile_h, r), outline=(255, 210, 90) if it["textTone"] == "dark" else (120, 200, 255))
+        tone = it["tones"][layout]
+        for r in s.layouts[layout].toneRegions.values():
+            td.rectangle(crop_box(tile_w, tile_h, r), outline=(255, 210, 90) if tone == "dark" else (120, 200, 255))
         r, c = divmod(i, cols)
         x, y = c * tile_w, r * (tile_h + label_h)
         sheet.paste(tile, (x, y))
         draw.text((x + 6, y + tile_h + 4), it["title"], fill=(255, 255, 255), font=f_big)
         draw.text((x + 6, y + tile_h + 24), it["subtitle"], fill=(200, 200, 200), font=f_small)
-        draw.text((x + 6, y + tile_h + 42), f"{it['id']} · {categories[it['category']]} · {it['fit']} · {it['textTone']}",
+        slots = ",".join(it.get("slots", ()))
+        draw.text((x + 6, y + tile_h + 42), f"{it['id']} · {categories[it['category']]} · {it['fit']} · {tone} {slots}",
                   fill=(150, 170, 190), font=f_small)
     sheet.save(path)
     print(f"contact sheet: {path} ({sheet.width}x{sheet.height})")
@@ -512,11 +580,14 @@ def main(argv: list[str] | None = None) -> int:
                     help="download entries whose source.sha256 is null and write their hashes into the manifest")
     ap.add_argument("--contact-sheet", type=Path, metavar="PNG",
                     help="also write a labelled contact sheet of every item (needs a full build)")
+    ap.add_argument("--sheet-layout", choices=("gallery", "calligraphy"), default="gallery",
+                    help="which theme's framing the contact sheet shows (default: gallery)")
     args = ap.parse_args(argv)
 
     try:
         categories = app_categories(SETTINGS_TS)
-        settings, entries = load_manifest(args.manifest, categories, allow_unpinned=args.pin)
+        settings, entries = load_manifest(args.manifest, categories, app_slots(SETTINGS_TS), LAYOUT_JSON,
+                                          allow_unpinned=args.pin)
     except ManifestError as e:
         ap.error(str(e))
     if args.only and args.contact_sheet:
@@ -566,7 +637,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.contact_sheet:
             images[e["id"]] = out
 
-    expected = {it["file"] for it in items}
+    expected = {f for it in items for f in (it["file"], it["fileSm"])}
     for stale in sorted(p for p in args.out_dir.iterdir() if OUTPUT_RE.match(p.name) and p.name not in expected):
         print(f"removing stale {stale.name}")
         stale.unlink()
@@ -576,7 +647,7 @@ def main(argv: list[str] | None = None) -> int:
     total = sum((args.out_dir / it["file"]).stat().st_size for it in items)
     print(f"wrote {index_path} ({len(items)} items: {counts}; {total / 2**20:.1f} MiB of WebP) and CREDITS.md")
     if args.contact_sheet:
-        contact_sheet(args.contact_sheet, items, images, settings, categories)
+        contact_sheet(args.contact_sheet, items, images, settings, args.sheet_layout, categories)
     return 0
 
 

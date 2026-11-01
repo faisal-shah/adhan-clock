@@ -6,7 +6,8 @@ import { PERIOD_ARABIC, type ClockState, type Countdown, type PeriodKey } from '
 import { PERIOD_NAMES } from '../core/schedule';
 import type { CalligraphyFont } from '../core/settings';
 import { describeWeather, toUnit, type WeatherKind } from '../core/weather';
-import type { CalligraphyArt } from '../core/media';
+import type { CalligraphyArt, Photo, PhotoLayout } from '../core/media';
+import photoLayout from '../core/photo-layout.json';
 import { calligraphyArt, settings, weather } from '../store';
 
 export function Clock({ d }: { d: Date }) {
@@ -276,4 +277,42 @@ export function useWeather(): { temp: string; label: string; kind: WeatherKind; 
     kind: d.kind,
     night: !w.isDay,
   };
+}
+
+const pct = (v: number) => `${v * 100}%`;
+
+/**
+ * A photo as a theme lays it out: cover scenes fill the frame at their focus;
+ * contain objects sit whole in the layout's box over a blurred, darkened copy.
+ * The numbers come from photo-layout.json, which the build script measures
+ * tones against.
+ */
+export function PhotoView({ photo, layout }: { photo: Photo; layout: PhotoLayout }) {
+  if (photo.fit === 'cover') {
+    return (
+      <div class="ph">
+        <img class="ph-cover" src={photo.url} alt="" decoding="async" style={{ objectPosition: photo.focus ?? '50% 50%' }} />
+      </div>
+    );
+  }
+  const c = photoLayout.layouts[layout].contain;
+  const b = c.objectBox;
+  return (
+    <div class="ph contain">
+      <img
+        class="ph-blur"
+        src={photo.url}
+        alt=""
+        decoding="async"
+        style={{ filter: `blur(${c.backdropBlur * 100}vw) brightness(${c.backdropBrightness}) saturate(1.2)` }}
+      />
+      <img
+        class="ph-object"
+        src={photo.url}
+        alt=""
+        decoding="async"
+        style={{ left: pct(b.x0), top: pct(b.y0), width: pct(b.x1 - b.x0), height: pct(b.y1 - b.y0) }}
+      />
+    </div>
+  );
 }

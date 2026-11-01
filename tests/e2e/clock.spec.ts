@@ -106,12 +106,14 @@ test('Fajr uses the Fajr athan', async ({ page }) => {
 test('gallery rotates captioned photos by the configured interval', async ({ page }) => {
   const items = ['a', 'b', 'c'].map((id) => ({
     id,
-    file: '../backgrounds/isha-1.webp',
+    file: 'kul-sharif.webp',
+    fileSm: 'kul-sharif-sm.webp',
     category: 'mosques',
     title: `Title ${id}`,
     subtitle: 'Somewhere',
     fit: 'cover',
-    textTone: 'light',
+    focus: '50% 50%',
+    tones: { gallery: 'light', calligraphy: 'dark' },
     credit: {},
   }));
   await page.route('**/gallery/index.json', (r) => r.fulfill({ json: items }));
@@ -177,19 +179,74 @@ test('showcase: browse calligraphy full screen with keys', async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
-test('showcase: pin a background from the viewer', async ({ page }) => {
-  await open(page, '2026-10-29T14:53:00');
+async function openSettings(page: Page, section: string) {
   await page.getByRole('button', { name: 'Settings' }).click();
-  await page.locator('.panel-nav').getByRole('button', { name: 'Preview' }).click();
+  await page.locator('.panel-nav').getByRole('button', { name: section }).click();
+}
+
+const stored = (page: Page) => page.evaluate(() => JSON.parse(localStorage.getItem('adhan-clock:settings')!));
+
+test('backgrounds: choose any gallery photo for a prayer', async ({ page }) => {
+  const errors = await open(page, '2026-10-29T06:30:00', { dayTheme: 'calligraphy' });
+  await openSettings(page, 'Backgrounds');
+  const fajr = page.locator('.bg-slot').first();
+  await expect(fajr.locator('.bg-slot-count')).toHaveText('2 photos · suggested');
+  await fajr.getByRole('button', { name: 'Choose photos' }).click();
+
+  const picker = page.getByRole('dialog', { name: 'Fajr backgrounds' });
+  await picker.getByRole('button', { name: 'Sheikh Lotfollah Mosque', exact: true }).click();
+  await picker.getByRole('button', { name: 'Ortaköy Mosque', exact: true }).click();
+  await picker.getByRole('button', { name: 'Lakeside Mosque', exact: true }).click();
+  await expect(picker.getByText('Keep at least one photo')).toHaveCount(0);
+  expect((await stored(page)).backgrounds.fajr).toEqual(['sheikh-lotfollah']);
+  // The last photo stays: a part of the day always has one.
+  await picker.getByRole('button', { name: 'Sheikh Lotfollah Mosque', exact: true }).click();
+  await expect(picker.getByText('Keep at least one photo')).toBeVisible();
+
+  // Preview it full screen as the calligraphy theme lays it out.
+  await picker.getByRole('button', { name: 'Preview Sheikh Lotfollah Mosque' }).click();
+  await expect(page.locator('.viewer .ct .ph-cover')).toHaveAttribute('src', '/gallery/sheikh-lotfollah.webp');
+  await expect(page.locator('.viewer-use')).toHaveText('In the Fajr set');
+  await page.keyboard.press('Escape');
+  await picker.getByRole('button', { name: 'Done' }).click();
+  await page.getByRole('button', { name: 'Close settings' }).click();
+  // The new photo crossfades in over the old one.
+  await expect(page.locator('.ct .ct-photo .ph-cover').last()).toHaveAttribute('src', '/gallery/sheikh-lotfollah.webp');
+
+  await openSettings(page, 'Backgrounds');
+  await page.locator('.bg-slot').first().getByRole('button', { name: 'Choose photos' }).click();
+  await picker.getByRole('button', { name: 'Use the suggested' }).click();
+  expect((await stored(page)).backgrounds.fajr).toBeNull();
+  expect(errors).toEqual([]);
+});
+
+test('gallery: upload a photo, make it a background, delete it', async ({ page }) => {
+  const errors = await open(page, '2026-10-29T14:53:00');
+  await openSettings(page, 'Preview');
   await page
     .locator('.pv-tabs')
-    .getByRole('button', { name: /Backgrounds/ })
+    .getByRole('button', { name: /Gallery/ })
     .click();
-  await page.locator('.pv-tile').first().click();
-  await expect(page.locator('.viewer .ct')).toBeVisible();
-  await page.locator('.viewer-use').click();
-  const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('adhan-clock:settings')!));
-  expect(stored.backgrounds.fajr).toBe('fajr-1');
+  await page.locator('.up-tile input').setInputFiles('public/gallery/kul-sharif.webp');
+  const tile = page.locator('.pv-group', { has: page.locator('.up-tile') }).locator('.pv-cell');
+  await expect(tile).toBeVisible();
+
+  await tile.locator('.pv-tile').click();
+  await expect(page.locator('.viewer .gl-title')).toHaveText('kul sharif');
+  await expect(page.locator('.viewer .gl-cat')).toHaveText('Your Photos');
+  await page.locator('.viewer-slots').getByRole('button', { name: 'Isha' }).click();
+  await expect(page.locator('.viewer-slots').getByRole('button', { name: 'Isha' })).toHaveAttribute('aria-pressed', 'true');
+  const isha = (await stored(page)).backgrounds.isha as string[];
+  expect(isha).toHaveLength(3);
+  expect(isha[2]).toMatch(/^upload:/);
+  await page.keyboard.press('Escape');
+  await expect(tile.locator('.pv-note')).toHaveText('Isha');
+
+  page.once('dialog', (d) => d.accept());
+  await tile.getByRole('button', { name: 'Delete kul sharif' }).click();
+  await expect(tile).toHaveCount(0);
+  expect((await stored(page)).backgrounds.isha).toEqual(['suleymaniye', 'shah-alam']);
+  expect(errors).toEqual([]);
 });
 
 test('moments: Ramadan before iftar lands on a real Ramadan date', async ({ page }) => {

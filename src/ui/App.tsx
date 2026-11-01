@@ -1,7 +1,18 @@
 import { getSpeed, isPreviewing, setSpeed, travelTo } from '../core/clock';
 import { unlockAudio } from '../audio';
-import { audioBlocked, backgroundFor, clock, previewTheme, settings, settingsOpen, updateSettings, viewer } from '../store';
+import {
+  audioBlocked,
+  backgroundFor,
+  clock,
+  picking,
+  previewTheme,
+  settings,
+  settingsOpen,
+  updateSettings,
+  viewer,
+} from '../store';
 import { Crossfade, GearIcon, Phrase, SpeakerIcon, findArt } from './parts';
+import { BackgroundPicker } from './settings/Library';
 import { LocationPicker } from './settings/LocationPicker';
 import { SettingsPanel } from './settings/SettingsPanel';
 import { TakeoverLayer } from './Takeover';
@@ -66,6 +77,7 @@ export function App() {
         </div>
       )}
       {settingsOpen.value && <SettingsPanel />}
+      {settingsOpen.value && picking.value && <BackgroundPicker />}
       {viewer.value && <Viewer />}
     </div>
   );

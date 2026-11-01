@@ -1,12 +1,232 @@
 [
   {
+    "id": "ortakoy",
+    "file": "ortakoy.webp",
+    "category": "mosques",
+    "title": "Ortaköy Mosque",
+    "subtitle": "Istanbul, Türkiye · 1854–1856 · at blue hour",
+    "fileSm": "ortakoy-sm.webp",
+    "fit": "cover",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
+    "focus": "50% 8%",
+    "slots": [
+      "fajr"
+    ],
+    "credit": {
+      "title": "a building with towers by a body of water",
+      "author": "Osman Özavcı",
+      "sourceUrl": "https://unsplash.com/photos/a-building-with-towers-by-a-body-of-water-1o-GiUs-6x4",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license"
+    }
+  },
+  {
+    "id": "puchong-lake",
+    "file": "puchong-lake.webp",
+    "category": "mosques",
+    "title": "Lakeside Mosque",
+    "subtitle": "Puchong, Selangor, Malaysia · at dusk",
+    "fileSm": "puchong-lake-sm.webp",
+    "fit": "cover",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
+    "focus": "50% 50%",
+    "slots": [
+      "fajr"
+    ],
+    "credit": {
+      "title": "white dome building near body of water during sunset",
+      "author": "Esmonde Yong",
+      "sourceUrl": "https://unsplash.com/photos/white-dome-building-near-body-of-water-during-sunset-7_COgbItdkQ",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license"
+    }
+  },
+  {
+    "id": "putra",
+    "file": "putra.webp",
+    "category": "mosques",
+    "title": "Putra Mosque",
+    "subtitle": "Putrajaya, Malaysia · 1997–1999 · in morning light",
+    "fileSm": "putra-sm.webp",
+    "fit": "cover",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
+    "focus": "50% 50%",
+    "slots": [
+      "sunrise"
+    ],
+    "credit": {
+      "title": "Beautiful scene of Putra Mosque reflecting on calm lake waters under a vibrant morning sky.",
+      "author": "Zukiman Mohamad",
+      "sourceUrl": "https://www.pexels.com/photo/reflection-of-building-in-lake-338416/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/"
+    }
+  },
+  {
+    "id": "kul-sharif",
+    "file": "kul-sharif.webp",
+    "category": "mosques",
+    "title": "Kul Sharif Mosque",
+    "subtitle": "Kazan Kremlin, Russia · completed 2005",
+    "fileSm": "kul-sharif-sm.webp",
+    "fit": "cover",
+    "tones": {
+      "gallery": "dark",
+      "calligraphy": "dark"
+    },
+    "focus": "50% 50%",
+    "slots": [
+      "dhuhr"
+    ],
+    "credit": {
+      "title": "A white mosque with blue domes and minarets",
+      "author": "ekrem osmanoglu",
+      "sourceUrl": "https://unsplash.com/photos/a-white-mosque-with-blue-domes-and-minarets-Xg5Y-X2yQVk",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license"
+    }
+  },
+  {
+    "id": "mardin-grand",
+    "file": "mardin-grand.webp",
+    "category": "mosques",
+    "title": "Grand Mosque of Mardin",
+    "subtitle": "Mardin, Türkiye · above the Mesopotamian plain",
+    "fileSm": "mardin-grand-sm.webp",
+    "fit": "cover",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
+    "focus": "50% 50%",
+    "slots": [
+      "asr"
+    ],
+    "credit": {
+      "title": "Captivating aerial shot of a historic minaret in Mardin, Türkiye, set against a vast golden landscape at sunset.",
+      "author": "burcubyzt_85",
+      "sourceUrl": "https://www.pexels.com/photo/aerial-view-of-historic-mardin-minaret-at-sunset-38981896/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/"
+    }
+  },
+  {
+    "id": "badshahi",
+    "file": "badshahi.webp",
+    "category": "mosques",
+    "title": "Badshahi Mosque",
+    "subtitle": "Lahore, Pakistan · 1671–1673 · in afternoon light",
+    "fileSm": "badshahi-sm.webp",
+    "fit": "cover",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "dark"
+    },
+    "focus": "50% 50%",
+    "slots": [
+      "asr"
+    ],
+    "credit": {
+      "title": "brown and white dome building",
+      "author": "Aryan Ghauri",
+      "sourceUrl": "https://unsplash.com/photos/brown-and-white-dome-building-5F98r2fRgJE",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license"
+    }
+  },
+  {
+    "id": "suleymaniye",
+    "file": "suleymaniye.webp",
+    "category": "mosques",
+    "title": "Süleymaniye Mosque",
+    "subtitle": "Istanbul, Türkiye · 1550–1557 · under a crescent moon",
+    "fileSm": "suleymaniye-sm.webp",
+    "fit": "cover",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
+    "focus": "50% 50%",
+    "slots": [
+      "isha"
+    ],
+    "credit": {
+      "title": "Beautiful night view of Suleymaniye Mosque with illuminated crescent moon in Istanbul, Turkey.",
+      "author": "Vitaly Gariev",
+      "sourceUrl": "https://www.pexels.com/photo/view-of-illuminated-mosque-in-istanbul-at-night-23227976/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/"
+    }
+  },
+  {
+    "id": "shah-alam",
+    "file": "shah-alam.webp",
+    "category": "mosques",
+    "title": "Sultan Salahuddin Abdul Aziz Mosque",
+    "subtitle": "Shah Alam, Malaysia · 1988 · at blue hour",
+    "fileSm": "shah-alam-sm.webp",
+    "fit": "cover",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
+    "focus": "50% 50%",
+    "slots": [
+      "isha"
+    ],
+    "credit": {
+      "title": "Illuminated view of the stunning Blue Mosque in Shah Alam, Malaysia, reflecting in tranquil waters.",
+      "author": "Wee Keng Bee",
+      "sourceUrl": "https://www.pexels.com/photo/sultan-salahuddin-abdul-aziz-mosque-20502452/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/"
+    }
+  },
+  {
+    "id": "taksim",
+    "file": "taksim.webp",
+    "category": "mosques",
+    "title": "Taksim Mosque",
+    "subtitle": "Istanbul, Türkiye · 2021 · under a night sky",
+    "fileSm": "taksim-sm.webp",
+    "fit": "cover",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
+    "focus": "50% 50%",
+    "slots": [
+      "night"
+    ],
+    "credit": {
+      "title": "Stunning night view of Taksim Mosque in Istanbul, beautifully lit under a dramatic sky.",
+      "author": "Rabia Kule",
+      "sourceUrl": "https://www.pexels.com/photo/taksim-mosque-at-night-16942661/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/"
+    }
+  },
+  {
     "id": "sheikh-lotfollah",
     "file": "sheikh-lotfollah.webp",
     "category": "mosques",
     "title": "Sheikh Lotfollah Mosque",
     "subtitle": "Prayer hall · Isfahan, Iran · begun 1603",
+    "fileSm": "sheikh-lotfollah-sm.webp",
     "fit": "cover",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "focus": "50% 45%",
     "credit": {
       "title": "Sheikh Lotfollah Mosque2, Isfahan, Iran",
@@ -22,8 +242,12 @@
     "category": "mosques",
     "title": "Nasir-ol-Molk Mosque",
     "subtitle": "Shiraz, Iran · 1876–1888",
+    "fileSm": "nasir-ol-molk-sm.webp",
     "fit": "cover",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "focus": "50% 50%",
     "credit": {
       "title": "Mezquita de Nasirolmolk, Shiraz, Irán, 2016-09-24, DD 66-68 HDR",
@@ -39,8 +263,12 @@
     "category": "mosques",
     "title": "Dome of the Rock",
     "subtitle": "Jerusalem · 691 · the Dome of the Chain in front",
+    "fileSm": "dome-of-the-rock-sm.webp",
     "fit": "cover",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "focus": "50% 55%",
     "credit": {
       "title": "Jerusalem-2013-Temple Mount-Dome of the Rock & Chain",
@@ -56,8 +284,12 @@
     "category": "mosques",
     "title": "Mosque of Ibn Tulun",
     "subtitle": "Courtyard and minaret · Cairo, Egypt · 879",
+    "fileSm": "ibn-tulun-sm.webp",
     "fit": "cover",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "focus": "50% 60%",
     "credit": {
       "title": "Kairo Ibn Tulun Moschee BW 5",
@@ -73,8 +305,12 @@
     "category": "mosques",
     "title": "Great Mosque of Córdoba",
     "subtitle": "Hypostyle hall · Córdoba, Spain · begun 786",
+    "fileSm": "cordoba-sm.webp",
     "fit": "cover",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "focus": "50% 35%",
     "credit": {
       "title": "Mosque–Cathedral of Córdoba - Hypostyle hall (6)",
@@ -90,8 +326,12 @@
     "category": "mosques",
     "title": "Shah Jahan Mosque",
     "subtitle": "Dome interior · Thatta, Sindh, Pakistan · 1659",
+    "fileSm": "shah-jahan-thatta-sm.webp",
     "fit": "cover",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "focus": "50% 50%",
     "credit": {
       "title": "PK Thatta asv2020-02 img03 Shah Jahan Mosque",
@@ -107,8 +347,12 @@
     "category": "mosques",
     "title": "Great Mosque of Kairouan",
     "subtitle": "The minaret from the prayer hall · Tunisia · founded 670",
+    "fileSm": "kairouan-sm.webp",
     "fit": "cover",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "focus": "50% 55%",
     "credit": {
       "title": "Great Mosque of Kairouan minaret view 01",
@@ -124,8 +368,12 @@
     "category": "mosques",
     "title": "Bibi-Khanym Mosque",
     "subtitle": "Northern dome · Samarkand, Uzbekistan · 1404",
+    "fileSm": "bibi-khanym-sm.webp",
     "fit": "cover",
-    "textTone": "dark",
+    "tones": {
+      "gallery": "dark",
+      "calligraphy": "dark"
+    },
     "focus": "50% 22%",
     "credit": {
       "title": "Northern dome of Bibi-Khanym Mosque 01",
@@ -141,8 +389,12 @@
     "category": "mosques",
     "title": "Great Mosque of Xi'an",
     "subtitle": "Garden pavilions · Xi'an, China",
+    "fileSm": "xian-sm.webp",
     "fit": "cover",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "focus": "50% 50%",
     "credit": {
       "title": "1 great mosque xian 2011",
@@ -158,8 +410,12 @@
     "category": "mosques",
     "title": "Hassan II Mosque",
     "subtitle": "The minaret at dusk · Casablanca, Morocco · 1993",
+    "fileSm": "hassan-ii-sm.webp",
     "fit": "cover",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "focus": "50% 40%",
     "credit": {
       "title": "Whispers of Gold - Hassan II Mosque at Dusk",
@@ -175,8 +431,12 @@
     "category": "mosques",
     "title": "Sultan Omar Ali Saifuddien Mosque",
     "subtitle": "At dusk on the eve of Ramadan · Brunei",
+    "fileSm": "omar-ali-saifuddien-sm.webp",
     "fit": "cover",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "focus": "55% 50%",
     "credit": {
       "title": "Sultan Omar Ali Saifuddin Mosque 02",
@@ -192,8 +452,12 @@
     "category": "mosques",
     "title": "The Prophet's Mosque",
     "subtitle": "The Green Dome · Madinah, Saudi Arabia",
+    "fileSm": "masjid-nabawi-sm.webp",
     "fit": "cover",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "focus": "40% 70%",
     "credit": {
       "title": "Medium shot of the Green Dome at The Prophet's Mosque (Al Masjid-e-Nabawi)",
@@ -209,8 +473,12 @@
     "category": "mosques",
     "title": "Great Mosque of Djenné",
     "subtitle": "Djenné, Mali · present building 1906",
+    "fileSm": "djenne-sm.webp",
     "fit": "cover",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "focus": "70% 50%",
     "credit": {
       "title": "MaliDjennéMosquée",
@@ -226,8 +494,12 @@
     "category": "learning",
     "title": "The Birmingham Qur'an",
     "subtitle": "Surahs 18–20 · parchment carbon-dated to 568–645",
+    "fileSm": "birmingham-quran-sm.webp",
     "fit": "contain",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "credit": {
       "title": "Birmingham Quran manuscript full",
       "author": "Unknown author (via thehistoryblog.com)",
@@ -242,8 +514,12 @@
     "category": "learning",
     "title": "Stand for a Qur'an Manuscript",
     "subtitle": "Iran, dated 761 AH / 1360 CE · The Met",
+    "fileSm": "quran-stand-sm.webp",
     "fit": "contain",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "credit": {
       "title": "Stand for a Qur'an Manuscript",
       "author": "The Metropolitan Museum of Art",
@@ -258,8 +534,12 @@
     "category": "learning",
     "title": "Qur'an Manuscript",
     "subtitle": "Kashmir, late 18th–early 19th century · The Met",
+    "fileSm": "kashmir-quran-sm.webp",
     "fit": "contain",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "credit": {
       "title": "Qur'an Manuscript",
       "author": "The Metropolitan Museum of Art",
@@ -274,8 +554,12 @@
     "category": "learning",
     "title": "Qur'an on a Rahle",
     "subtitle": "Ottoman Turkey, 1818–19, copied by Ibrahim al-Sururi · Hermitage",
+    "fileSm": "hermitage-rahle-sm.webp",
     "fit": "cover",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "focus": "50% 20%",
     "credit": {
       "title": "Hermitage hall 389 - 05",
@@ -291,8 +575,12 @@
     "category": "learning",
     "title": "Al-Attarine Madrasa",
     "subtitle": "Courtyard · Fez, Morocco · c. 1323",
+    "fileSm": "al-attarine-sm.webp",
     "fit": "cover",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "focus": "50% 50%",
     "credit": {
       "title": "Al-Attarine Madrasa YAC 2017",
@@ -308,8 +596,12 @@
     "category": "learning",
     "title": "Ben Youssef Madrasa",
     "subtitle": "Main courtyard · Marrakesh, Morocco · 1565",
+    "fileSm": "ben-youssef-sm.webp",
     "fit": "cover",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "focus": "50% 50%",
     "credit": {
       "title": "Ben Youssef Madrasa DSCF5986",
@@ -325,8 +617,12 @@
     "category": "learning",
     "title": "Qur'an Manuscript Folio",
     "subtitle": "North Africa, 9th century · Cleveland Museum of Art",
+    "fileSm": "kufic-folio-sm.webp",
     "fit": "contain",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "credit": {
       "title": "Qur'an Manuscript Folio",
       "author": "The Cleveland Museum of Art",
@@ -341,8 +637,12 @@
     "category": "treasures",
     "title": "Tughra of Sultan Süleiman the Magnificent",
     "subtitle": "Istanbul, ca. 1555–60 · The Met",
+    "fileSm": "tughra-suleiman-sm.webp",
     "fit": "contain",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "credit": {
       "title": "Tughra (Insignia) of Sultan Süleiman the Magnificent (r. 1520–66)",
       "author": "The Metropolitan Museum of Art",
@@ -357,8 +657,12 @@
     "category": "treasures",
     "title": "Turban Helmet",
     "subtitle": "Turkish, possibly Istanbul, late 15th–16th century · The Met",
+    "fileSm": "turban-helmet-sm.webp",
     "fit": "contain",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "credit": {
       "title": "Turban Helmet",
       "author": "The Metropolitan Museum of Art",
@@ -373,8 +677,12 @@
     "category": "treasures",
     "title": "Saber",
     "subtitle": "Turkish, probably Istanbul, 1522–66 · The Met",
+    "fileSm": "ottoman-saber-sm.webp",
     "fit": "contain",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "credit": {
       "title": "Saber",
       "author": "The Metropolitan Museum of Art",
@@ -389,8 +697,12 @@
     "category": "treasures",
     "title": "Astrolabe of ‘Umar ibn Yusuf al-Muzaffari",
     "subtitle": "Yemen, dated 690 AH / 1291 CE · The Met",
+    "fileSm": "rasulid-astrolabe-sm.webp",
     "fit": "contain",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "credit": {
       "title": "Astrolabe of ‘Umar ibn Yusuf ibn ‘Umar ibn ‘Ali ibn Rasul al-Muzaffari",
       "author": "The Metropolitan Museum of Art",
@@ -405,8 +717,12 @@
     "category": "treasures",
     "title": "Mosque Lamp of Sultan Barquq",
     "subtitle": "Egypt or Syria, ca. 1382–99 · The Met",
+    "fileSm": "barquq-lamp-sm.webp",
     "fit": "contain",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "credit": {
       "title": "Mosque Lamp of Sultan Barquq",
       "author": "The Metropolitan Museum of Art",
@@ -421,8 +737,12 @@
     "category": "treasures",
     "title": "Mihrab (Prayer Niche)",
     "subtitle": "Isfahan, Iran, dated 755 AH / 1354–55 CE · The Met",
+    "fileSm": "isfahan-mihrab-sm.webp",
     "fit": "contain",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "credit": {
       "title": "Mihrab (Prayer Niche)",
       "author": "The Metropolitan Museum of Art",
@@ -437,8 +757,12 @@
     "category": "treasures",
     "title": "Curtain for the Door of the Ka'bah",
     "subtitle": "Cairo, Egypt, 1015 AH / 1606 CE · Khalili Collections",
+    "fileSm": "kaaba-curtain-sm.webp",
     "fit": "contain",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "credit": {
       "title": "Khalili Collection Hajj Kabah curtain",
       "author": "Khalili Collections",
@@ -453,8 +777,12 @@
     "category": "treasures",
     "title": "Folio from the Blue Qur'an",
     "subtitle": "Possibly Qairawan, Tunisia, 9th–10th century · The Met",
+    "fileSm": "blue-quran-sm.webp",
     "fit": "contain",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "credit": {
       "title": "Folio from the \"Blue Qur'an\"",
       "author": "The Metropolitan Museum of Art",
@@ -469,8 +797,12 @@
     "category": "treasures",
     "title": "Iznik Wall Tiles",
     "subtitle": "Iznik, Turkey, Ottoman, 1600s · Cleveland Museum of Art",
+    "fileSm": "iznik-tiles-sm.webp",
     "fit": "contain",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "credit": {
       "title": "Wall Tiles",
       "author": "The Cleveland Museum of Art",
@@ -485,8 +817,12 @@
     "category": "treasures",
     "title": "\"Senneh\" Prayer Rug",
     "subtitle": "Sanandaj, northwestern Iran, late 18th–early 19th century · The Met",
+    "fileSm": "senneh-prayer-rug-sm.webp",
     "fit": "contain",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "credit": {
       "title": "\"Senneh\" Prayer Rug",
       "author": "The Metropolitan Museum of Art",
@@ -501,8 +837,12 @@
     "category": "treasures",
     "title": "Rosette Bearing the Titles of Shah Jahan",
     "subtitle": "Shah Jahan Album · India, ca. 1645 · The Met",
+    "fileSm": "shah-jahan-rosette-sm.webp",
     "fit": "contain",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "credit": {
       "title": "\"Rosette Bearing the Names and Titles of Shah Jahan\", Folio from the Shah Jahan Album",
       "author": "The Metropolitan Museum of Art",
@@ -517,8 +857,12 @@
     "category": "treasures",
     "title": "The Topkapı Dagger",
     "subtitle": "Ottoman, 1746 · Topkapı Palace Museum, Istanbul",
+    "fileSm": "topkapi-dagger-sm.webp",
     "fit": "contain",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "credit": {
       "title": "Topkapı Dagger",
       "author": "Joseolgon",
@@ -528,13 +872,137 @@
     }
   },
   {
+    "id": "taj-mahal",
+    "file": "taj-mahal.webp",
+    "category": "landscapes",
+    "title": "Taj Mahal",
+    "subtitle": "Agra, India · 1632–1653 · in the morning mist",
+    "fileSm": "taj-mahal-sm.webp",
+    "fit": "cover",
+    "tones": {
+      "gallery": "dark",
+      "calligraphy": "dark"
+    },
+    "focus": "100% 50%",
+    "slots": [
+      "sunrise"
+    ],
+    "credit": {
+      "title": "Taj mahal monument emerges from morning mist",
+      "author": "qin liu",
+      "sourceUrl": "https://unsplash.com/photos/taj-mahal-monument-emerges-from-morning-mist-fU_RObkfzSs",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license"
+    }
+  },
+  {
+    "id": "mardin-haze",
+    "file": "mardin-haze.webp",
+    "category": "landscapes",
+    "title": "Mardin",
+    "subtitle": "A minaret rising out of the haze · Türkiye",
+    "fileSm": "mardin-haze-sm.webp",
+    "fit": "cover",
+    "tones": {
+      "gallery": "dark",
+      "calligraphy": "dark"
+    },
+    "focus": "50% 50%",
+    "slots": [
+      "dhuhr"
+    ],
+    "credit": {
+      "title": "Captivating view of a historic minaret tower in Mardin, Turkey surrounded by fog. A serene architectural marvel.",
+      "author": "Caner Cankisi",
+      "sourceUrl": "https://www.pexels.com/photo/concrete-tower-3999933/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/"
+    }
+  },
+  {
+    "id": "sundown-minaret",
+    "file": "sundown-minaret.webp",
+    "category": "landscapes",
+    "title": "Minaret at Sundown",
+    "subtitle": "Dome and minaret before the mountains",
+    "fileSm": "sundown-minaret-sm.webp",
+    "fit": "cover",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
+    "focus": "50% 50%",
+    "slots": [
+      "maghrib"
+    ],
+    "credit": {
+      "title": "A stunning silhouette of a mosque tower against a vibrant sunset with mountain silhouettes in the background.",
+      "author": "i.am.anatolia",
+      "sourceUrl": "https://www.pexels.com/photo/silhouette-of-a-tall-building-8062986/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/"
+    }
+  },
+  {
+    "id": "istanbul-sunset",
+    "file": "istanbul-sunset.webp",
+    "category": "landscapes",
+    "title": "Istanbul at Sunset",
+    "subtitle": "Dome and minaret against the evening sky",
+    "fileSm": "istanbul-sunset-sm.webp",
+    "fit": "cover",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
+    "focus": "50% 50%",
+    "slots": [
+      "maghrib"
+    ],
+    "credit": {
+      "title": "silhouette of town buildings",
+      "author": "nurhan",
+      "sourceUrl": "https://unsplash.com/photos/silhouette-of-town-buildings-yC70QqvrPRk",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license"
+    }
+  },
+  {
+    "id": "lahore-stars",
+    "file": "lahore-stars.webp",
+    "category": "landscapes",
+    "title": "Lahore by Starlight",
+    "subtitle": "The Milky Way over a mosque skyline · Pakistan",
+    "fileSm": "lahore-stars-sm.webp",
+    "fit": "cover",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
+    "focus": "50% 50%",
+    "slots": [
+      "night"
+    ],
+    "credit": {
+      "title": "A breathtaking view of the Milky Way illuminating the night sky over a mosque silhouette in Lahore, Pakistan.",
+      "author": "Waleed ilyas",
+      "sourceUrl": "https://www.pexels.com/photo/silhouette-of-building-during-nighttime-14829579/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/"
+    }
+  },
+  {
     "id": "minaret-of-jam",
     "file": "minaret-of-jam.webp",
     "category": "landscapes",
     "title": "Minaret of Jam",
     "subtitle": "Ghor Province, Afghanistan · 1194",
+    "fileSm": "minaret-of-jam-sm.webp",
     "fit": "cover",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "focus": "50% 50%",
     "credit": {
       "title": "Jam minaret ghor province Afghanistan",
@@ -550,8 +1018,12 @@
     "category": "landscapes",
     "title": "Ishak Pasha Palace",
     "subtitle": "Doğubayazıt, eastern Turkey · 1685–1784",
+    "fileSm": "ishak-pasha-sm.webp",
     "fit": "cover",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "focus": "60% 70%",
     "credit": {
       "title": "Doğubayazıt, palazzo di ishak pasha, 1685-1784, veduta esterna da est 02",
@@ -567,8 +1039,12 @@
     "category": "landscapes",
     "title": "Friday Mosque, Nizwa",
     "subtitle": "The minaret from Nizwa Fort · Oman",
+    "fileSm": "nizwa-sm.webp",
     "fit": "cover",
-    "textTone": "dark",
+    "tones": {
+      "gallery": "dark",
+      "calligraphy": "dark"
+    },
     "focus": "35% 60%",
     "credit": {
       "title": "Nizwa Fort and Minaret of Friday Mosque",
@@ -584,8 +1060,12 @@
     "category": "landscapes",
     "title": "Umm al-Fahm",
     "subtitle": "The skyline at sunset",
+    "fileSm": "umm-al-fahm-sm.webp",
     "fit": "cover",
-    "textTone": "light",
+    "tones": {
+      "gallery": "light",
+      "calligraphy": "light"
+    },
     "focus": "60% 50%",
     "credit": {
       "title": "Sunsets of Umm al-Fahm6",
@@ -601,8 +1081,12 @@
     "category": "landscapes",
     "title": "Chinguetti Mosque",
     "subtitle": "Adrar, Mauritania · 13th or 14th century",
+    "fileSm": "chinguetti-sm.webp",
     "fit": "cover",
-    "textTone": "dark",
+    "tones": {
+      "gallery": "dark",
+      "calligraphy": "light"
+    },
     "focus": "50% 40%",
     "credit": {
       "title": "مسجد شنقيط التاريخي",
@@ -618,8 +1102,12 @@
     "category": "landscapes",
     "title": "Kalyan Minaret",
     "subtitle": "Bukhara, Uzbekistan · 1127 · beside the Mir-i-Arab Madrasa dome",
+    "fileSm": "kalyan-minaret-sm.webp",
     "fit": "cover",
-    "textTone": "dark",
+    "tones": {
+      "gallery": "dark",
+      "calligraphy": "dark"
+    },
     "focus": "50% 60%",
     "credit": {
       "title": "Kalan Minaret 02",

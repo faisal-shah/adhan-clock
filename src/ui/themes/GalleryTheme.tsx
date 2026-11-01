@@ -1,12 +1,12 @@
-import type { CalligraphyArt, GalleryItem } from '../../core/media';
+import type { CalligraphyArt, Photo } from '../../core/media';
 import { startOfDay } from '../../core/prayer';
 import { PERIOD_NAMES, type ClockState, type PeriodKey } from '../../core/schedule';
 import { GALLERY_CATEGORIES } from '../../core/settings';
-import { calligraphyArt, gallery, settings } from '../../store';
-import { Clock, CountdownPill, Crossfade, GreetingMark, MakruhBadge, Phrase, T, dateLine } from '../parts';
+import { calligraphyArt, photos, settings } from '../../store';
+import { Clock, CountdownPill, Crossfade, GreetingMark, MakruhBadge, Phrase, PhotoView, T, dateLine } from '../parts';
 
-/** A photograph, or a calligraphy piece from the artwork set. */
-export type Piece = { kind: 'photo'; id: string; item: GalleryItem } | { kind: 'art'; id: string; art: CalligraphyArt };
+/** A photograph (bundled or uploaded), or a calligraphy piece from the artwork set. */
+export type Piece = { kind: 'photo'; id: string; photo: Photo } | { kind: 'art'; id: string; art: CalligraphyArt };
 
 /** Today's order: a seeded shuffle, so each day walks the collection differently. */
 function todaysOrder<T>(items: T[], day: number): T[] {
@@ -30,7 +30,7 @@ function todaysOrder<T>(items: T[], day: number): T[] {
 export function currentPiece(now: Date): Piece | null {
   const g = settings.value.gallery;
   const pool: Piece[] = [
-    ...gallery.value.filter((x) => g.categories[x.category]).map((item) => ({ kind: 'photo' as const, id: item.id, item })),
+    ...photos.value.filter((p) => g.categories[p.category]).map((photo) => ({ kind: 'photo' as const, id: photo.id, photo })),
     ...(g.categories.calligraphy
       ? calligraphyArt.value.filter((a) => a.kind === 'gallery').map((art) => ({ kind: 'art' as const, id: art.id, art }))
       : []),
@@ -40,23 +40,6 @@ export function currentPiece(now: Date): Piece | null {
   const order = todaysOrder(pool, day);
   const slot = Math.floor((now.getTime() - startOfDay(now).getTime()) / (g.minutes * 60_000));
   return order[slot % order.length];
-}
-
-function Photo({ item }: { item: GalleryItem }) {
-  const url = `/gallery/${item.file}`;
-  if (item.fit === 'contain') {
-    return (
-      <div class="gl-photo contain">
-        <img class="gl-blur" src={url} alt="" />
-        <img class="gl-object" src={url} alt="" />
-      </div>
-    );
-  }
-  return (
-    <div class="gl-photo">
-      <img class="gl-cover" src={url} alt="" style={{ objectPosition: item.focus ?? '50% 50%' }} />
-    </div>
-  );
 }
 
 function ArtPiece({ art }: { art: CalligraphyArt }) {
@@ -71,7 +54,7 @@ function ArtPiece({ art }: { art: CalligraphyArt }) {
 }
 
 function caption(p: Piece): { cat: string; title: string; sub: string } {
-  if (p.kind === 'photo') return { cat: GALLERY_CATEGORIES[p.item.category], title: p.item.title, sub: p.item.subtitle };
+  if (p.kind === 'photo') return { cat: GALLERY_CATEGORIES[p.photo.category], title: p.photo.title, sub: p.photo.subtitle };
   const a = p.art;
   if (a.kind !== 'gallery') {
     const name = a.id in PERIOD_NAMES ? PERIOD_NAMES[a.id as PeriodKey] : a.id.replace(/-/g, ' ');
@@ -89,12 +72,12 @@ function caption(p: Piece): { cat: string; title: string; sub: string } {
 /** `piece` pins what is shown (the showcase); otherwise the rotation decides. */
 export function GalleryTheme({ st, piece: pinned }: { st: ClockState; piece?: Piece }) {
   const piece = pinned ?? currentPiece(st.now);
-  const item = piece?.kind === 'photo' ? piece.item : null;
+  const photo = piece?.kind === 'photo' ? piece.photo : null;
   const cap = piece && caption(piece);
   return (
-    <div class={`gl ${item?.fit ?? ''} ${piece?.kind === 'art' ? 'art' : ''}`}>
+    <div class={`gl ${photo?.fit ?? ''} ${piece?.kind === 'art' ? 'art' : ''}`}>
       <Crossfade k={piece?.id ?? 'none'} ms={2500}>
-        {piece && (piece.kind === 'photo' ? <Photo item={piece.item} /> : <ArtPiece art={piece.art} />)}
+        {piece && (piece.kind === 'photo' ? <PhotoView photo={piece.photo} layout="gallery" /> : <ArtPiece art={piece.art} />)}
       </Crossfade>
       <div class="gl-scrim" />
 

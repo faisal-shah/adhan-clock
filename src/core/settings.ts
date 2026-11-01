@@ -43,12 +43,23 @@ export const GALLERY_CATEGORIES = {
   treasures: 'Treasures of Islamic Civilization',
   landscapes: 'Lands of Islam',
   calligraphy: 'Calligraphy',
+  uploads: 'Your Photos',
 } as const;
 export type GalleryCategory = keyof typeof GALLERY_CATEGORIES;
 
 /** Background slots: each prayer period maps to one (see schedule.ts). */
 export const BG_SLOTS = ['fajr', 'sunrise', 'dhuhr', 'asr', 'maghrib', 'isha', 'night'] as const;
 export type BgSlot = (typeof BG_SLOTS)[number];
+
+export const BG_SLOT_NAMES: Record<BgSlot, string> = {
+  fajr: 'Fajr',
+  sunrise: 'Sunrise & Duha',
+  dhuhr: "Dhuhr & Jumu'ah",
+  asr: 'Asr',
+  maghrib: 'Maghrib',
+  isha: 'Isha',
+  night: 'Night & Tahajjud',
+};
 
 export interface Place {
   name: string;
@@ -91,8 +102,11 @@ export interface Settings {
   sounds: Record<PrayerKey, SoundChoice>;
   tahajjud: SoundChoice;
   chime: { enabled: boolean; volume: number };
-  /** Per-slot background: 'auto' rotates the bundled set, otherwise a bundled id or `upload:<id>`. */
-  backgrounds: Record<BgSlot, string>;
+  /**
+   * Per slot, the photos (bundled id or `upload:<id>`) the calligraphy theme
+   * rotates through, one a day; null means the library's defaults for the slot.
+   */
+  backgrounds: Record<BgSlot, string[] | null>;
   clock24h: boolean;
   hijriOffset: number;
   weather: { enabled: boolean; unit: 'f' | 'c' };
@@ -123,14 +137,17 @@ export const DEFAULT_SETTINGS: Settings = {
   sounds: perPrayer((p) => ({ enabled: true, audioId: p === 'fajr' ? 'fajr-1' : 'athan-1', volume: p === 'fajr' ? 0.6 : 0.8 })),
   tahajjud: { enabled: false, audioId: 'athan-1', volume: 0.3 },
   chime: { enabled: true, volume: 0.5 },
-  backgrounds: Object.fromEntries(BG_SLOTS.map((s) => [s, 'auto'])) as Record<BgSlot, string>,
+  backgrounds: Object.fromEntries(BG_SLOTS.map((s) => [s, null])) as Record<BgSlot, string[] | null>,
   clock24h: false,
   hijriOffset: 0,
   weather: { enabled: true, unit: 'f' },
   ramadan: 'auto',
   showDaily: true,
   makruhBadge: true,
-  gallery: { minutes: 5, categories: { mosques: true, learning: true, treasures: true, landscapes: true, calligraphy: true } },
+  gallery: {
+    minutes: 5,
+    categories: { mosques: true, learning: true, treasures: true, landscapes: true, calligraphy: true, uploads: true },
+  },
   title: 'Home',
   motion: 'full',
 };
@@ -182,9 +199,19 @@ function parsePlace(raw: unknown): Place | null {
   };
 }
 
+/** A slot's photo list: distinct ids, or null (the defaults) for anything else, including an empty list. */
+function parsePhotoIds(raw: unknown): string[] | null {
+  if (!Array.isArray(raw) || !raw.length || !raw.every((v) => typeof v === 'string' && v.length > 0 && v.length <= 80))
+    return null;
+  return [...new Set(raw as string[])].slice(0, 500);
+}
+
 export function sanitizeSettings(raw: unknown): Settings {
   const s = overlay(DEFAULT_SETTINGS, raw);
-  s.place = parsePlace((raw as Record<string, unknown> | null)?.place);
+  const r = raw as Record<string, unknown> | null;
+  s.place = parsePlace(r?.place);
+  const bgs = (r?.backgrounds ?? {}) as Record<string, unknown>;
+  s.backgrounds = Object.fromEntries(BG_SLOTS.map((slot) => [slot, parsePhotoIds(bgs[slot])])) as Settings['backgrounds'];
   s.jumuah.times = s.jumuah.times.filter((t) => /^([01]\d|2[0-3]):[0-5]\d$/.test(t)).slice(0, 2);
   return s;
 }

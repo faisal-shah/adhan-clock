@@ -13,34 +13,8 @@
   inset: 0;
 }
 
-.gl-cover {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.gl .ph-cover {
   animation: kenburns 90s ease-in-out infinite alternate;
-}
-
-/* Museum objects: shown whole, floating over a blurred, darkened copy. */
-.gl-blur {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: blur(4rem) brightness(0.45) saturate(1.2);
-  transform: scale(1.2);
-}
-
-.gl-object {
-  position: absolute;
-  left: 36rem;
-  top: 5rem;
-  width: calc(100% - 72rem);
-  height: calc(100% - 19rem);
-  object-fit: contain;
-  filter: drop-shadow(0 2.4rem 4rem rgba(0, 0, 0, 0.55));
 }
 
 .gl-scrim {

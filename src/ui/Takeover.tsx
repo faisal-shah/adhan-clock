@@ -3,7 +3,7 @@ import { EVENTS, isUthmani, taglineFor } from '../core/content';
 import { PERIOD_NAMES, type ClockState, type PeriodKey, type Takeover as TakeoverState } from '../core/schedule';
 import type { BgSlot } from '../core/settings';
 import { backgroundFor, dismiss, resolveAudio, settings } from '../store';
-import { Calligraphy, Clock, Phrase, SpeakerIcon, dateLine, findArt } from './parts';
+import { Calligraphy, Clock, Phrase, PhotoView, SpeakerIcon, dateLine, findArt } from './parts';
 import { splitTagline } from './themes/CalligraphyTheme';
 
 const BG_OF: Record<PeriodKey, BgSlot> = {
@@ -32,7 +32,7 @@ const MOTES = Array.from({ length: 18 }, (_, i) => {
 
 function Backdrop({ slot, now, blur }: { slot: BgSlot; now: Date; blur: boolean }) {
   const bg = backgroundFor(slot, now);
-  return <div class={`tk-bg p-${slot} ${blur ? 'blur' : ''}`}>{bg && <img src={bg.url} alt="" />}</div>;
+  return <div class={`tk-bg p-${slot} ${blur ? 'blur' : ''}`}>{bg && <PhotoView photo={bg} layout="calligraphy" />}</div>;
 }
 
 function Ring({ t, now, label, sub }: { t: TakeoverState; now: Date; label: string; sub: string }) {
@@ -121,7 +121,7 @@ export function TakeoverLayer({ st }: { st: ClockState }) {
   }
 
   const tagline = taglineFor(t.name);
-  const bright = backgroundFor(slot, st.now)?.textTone === 'dark';
+  const bright = backgroundFor(slot, st.now)?.tones.calligraphy === 'dark';
   return (
     <div class={`tk tk-athan ${t.kind === 'tahajjud' ? 'night' : ''} ${bright ? 'bright' : ''}`}>
       <Backdrop slot={slot} now={st.now} blur={false} />

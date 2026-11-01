@@ -476,8 +476,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1.6rem;
   margin-bottom: 1.2rem;
+}
+
+.bg-slot-name {
   font-weight: 500;
+}
+
+.bg-slot-count {
+  font-size: 0.8em;
+  color: rgba(238, 230, 214, 0.55);
 }
 
 .chip {
@@ -494,62 +503,100 @@
   border-color: transparent;
 }
 
+.chip:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
 .bg-thumbs {
   display: flex;
-  flex-wrap: wrap;
   gap: 1.2rem;
+  overflow-x: auto;
+  padding: 0.4rem 0.4rem 0.8rem;
+  margin: -0.4rem;
+  scrollbar-width: thin;
 }
 
 .bg-thumb {
   position: relative;
-}
-
-.bg-thumb > button:first-child {
-  display: block;
+  flex: none;
   width: 19.2rem;
-  height: 12rem;
-  border: 0.3rem solid transparent;
-  border-radius: 1.2rem;
-  background-size: cover;
-  background-position: center;
-  cursor: pointer;
-}
-
-.bg-thumb.showing > button:first-child {
-  border-color: rgba(255, 255, 255, 0.45);
-}
-
-.bg-thumb.pinned > button:first-child {
-  border-color: var(--gold);
-}
-
-.bg-del {
-  position: absolute;
-  top: -1rem;
-  right: -1rem;
-  width: 3.4rem;
-  height: 3.4rem;
+  aspect-ratio: 16 / 10;
   border: 0;
-  border-radius: 50%;
-  background: #8a2a20;
-  font-size: 2.2rem;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.bg-add {
-  display: grid;
-  place-items: center;
-  width: 19.2rem;
-  height: 12rem;
-  border: 0.2rem dashed rgba(255, 255, 255, 0.25);
   border-radius: 1.2rem;
-  font-size: 4rem;
-  color: rgba(255, 255, 255, 0.5);
+  padding: 0;
+  overflow: hidden;
+  background: #0b1328;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
   cursor: pointer;
 }
 
-.bg-add.busy {
+.bg-thumb.showing {
+  box-shadow: 0 0 0 0.3rem var(--gold);
+}
+
+.bg-today {
+  position: absolute;
+  left: 0.8rem;
+  bottom: 0.8rem;
+  padding: 0.3rem 0.9rem;
+  border-radius: 99rem;
+  background: rgba(8, 12, 24, 0.72);
+  color: var(--gold-soft);
+  font: 600 1.15rem var(--sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* A photo thumbnail: scenes cropped at their focus, objects shown whole. */
+.ph-thumb {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition:
+    filter 0.25s ease,
+    transform 0.35s var(--ease-out);
+}
+
+.ph-thumb.contain {
+  background-color: #0e1426;
+  background-size: contain;
+  background-origin: content-box;
+  padding: 0.8rem;
+}
+
+/* A tile that adds photos from the tablet. */
+.up-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  aspect-ratio: 16 / 10;
+  border: 0.2rem dashed rgba(227, 181, 94, 0.45);
+  border-radius: 1.2rem;
+  color: var(--gold-soft);
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.up-tile:hover {
+  background: rgba(227, 181, 94, 0.06);
+}
+
+.up-plus {
+  font: 300 4.4rem/1 var(--sans);
+}
+
+.up-text {
+  padding: 0 1rem;
+  font-size: 0.82em;
+}
+
+.up-tile.busy {
   animation: pulse 1.2s infinite;
 }
 
@@ -599,6 +646,7 @@
 .pv-tile {
   display: flex;
   flex-direction: column;
+  width: 100%;
   gap: 0.7rem;
   border: 0;
   padding: 0;
@@ -623,6 +671,32 @@
 
 .pv-tile:active .pv-thumb {
   transform: scale(0.97);
+}
+
+.pv-cell {
+  position: relative;
+}
+
+.pv-note {
+  margin-top: -0.4rem;
+  font-size: 0.72em;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+}
+
+.pv-del {
+  position: absolute;
+  top: -1rem;
+  right: -1rem;
+  width: 3.6rem;
+  height: 3.6rem;
+  border: 0;
+  border-radius: 50%;
+  background: #8a2a20;
+  box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.4);
+  font-size: 2.2rem;
+  line-height: 1;
+  cursor: pointer;
 }
 
 .pv-label {
@@ -652,7 +726,7 @@
 }
 
 .pv-swatch.t-calligraphy {
-  background: url('/backgrounds/dhuhr-1-sm.webp') center / cover;
+  background: url('/gallery/kul-sharif-sm.webp') center / cover;
 }
 
 .pv-swatch.t-classic {
@@ -665,7 +739,7 @@
 }
 
 .pv-swatch.t-gallery {
-  background: url('/gallery/nasir-ol-molk.webp') center / cover;
+  background: url('/gallery/nasir-ol-molk-sm.webp') center / cover;
 }
 
 .pv-swatch.t-night {
@@ -737,6 +811,48 @@
   color: #fff;
 }
 
+.viewer-use:disabled {
+  cursor: default;
+}
+
+/* Which parts of the day a photo is a background for. */
+.viewer-slots {
+  position: absolute;
+  z-index: 2;
+  top: 9rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+  width: max-content;
+  max-width: 94vw;
+  padding: 0.8rem 0.9rem 0.8rem 2.2rem;
+  border-radius: 3rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(8, 12, 24, 0.78);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font: 500 1.7rem var(--sans);
+}
+
+.viewer-slots > span {
+  margin-right: 0.6rem;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.viewer-slots .chip {
+  padding: 0.6rem 1.5rem;
+  color: #fff;
+  font: inherit;
+}
+
+.viewer-slots .chip.on {
+  color: var(--navy);
+}
+
 .viewer-close {
   width: 4.6rem;
   height: 4.6rem;
@@ -783,6 +899,168 @@
 
 /* A single artwork or photo is shown on its own, without today's greeting. */
 .viewer-content.k-art .greeting,
-.viewer-content.k-gallery .greeting {
+.viewer-content.k-photo .greeting {
   display: none;
+}
+
+/* --- Background picker ------------------------------------------------------------ */
+
+.picker {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(90rem 40rem at 50% -10%, rgba(227, 181, 94, 0.1), transparent 70%), linear-gradient(180deg, #121c33, #0b1224);
+  color: #eee6d6;
+  font-size: max(1.9rem, 14px);
+  animation: xf-in 0.25s ease both;
+}
+
+.picker-head {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  padding: 2.4rem 4rem 2rem;
+  border-bottom: 1px solid rgba(227, 181, 94, 0.22);
+}
+
+.picker-head > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.picker-head h2 {
+  margin: 0;
+  font: 400 3.4rem var(--serif-caps);
+  letter-spacing: 0.03em;
+  color: #fff;
+}
+
+.picker-head p {
+  margin: 0.4rem 0 0;
+  color: rgba(238, 230, 214, 0.68);
+}
+
+.picker-head p.warn {
+  color: #ffc9b0;
+}
+
+.picker-body {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 4rem 6rem;
+}
+
+.pk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));
+  gap: 1.8rem 1.6rem;
+  margin-top: 1.2rem;
+}
+
+.pk-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.pk-pick {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  border: 0;
+  border-radius: 1.2rem;
+  padding: 0;
+  overflow: hidden;
+  background: #0b1328;
+  box-shadow:
+    0 0.6rem 1.6rem rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+}
+
+.pk-tile:not(.on) .ph-thumb {
+  filter: saturate(0.8) brightness(0.78);
+}
+
+.pk-tile.on .pk-pick {
+  box-shadow:
+    0 0 0 0.35rem var(--gold),
+    0 0.8rem 2rem rgba(0, 0, 0, 0.45);
+}
+
+.pk-pick:active .ph-thumb {
+  transform: scale(0.97);
+}
+
+.pk-check {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  width: 3.4rem;
+  height: 3.4rem;
+  border: 0.2rem solid rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.35);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.pk-tile.on .pk-check {
+  border-color: var(--gold);
+  background: var(--gold);
+}
+
+.pk-tile.on .pk-check::after {
+  content: '';
+  position: absolute;
+  left: 1.05rem;
+  top: 0.5rem;
+  width: 0.8rem;
+  height: 1.5rem;
+  border: solid var(--navy);
+  border-width: 0 0.3rem 0.3rem 0;
+  transform: rotate(45deg);
+}
+
+.pk-look {
+  position: absolute;
+  top: 0.9rem;
+  left: 0.9rem;
+  display: grid;
+  place-items: center;
+  width: 4rem;
+  height: 4rem;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(8, 12, 24, 0.55);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  cursor: pointer;
+}
+
+.pk-look svg {
+  width: 2rem;
+  height: 2rem;
+}
+
+.pk-label {
+  font-size: 0.85em;
+  line-height: 1.35;
+  color: rgba(238, 230, 214, 0.72);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pk-tile.on .pk-label {
+  color: var(--gold-soft);
 }
