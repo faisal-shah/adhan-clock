@@ -35,8 +35,15 @@ flowchart LR
   `athan` [athan, athan+recording length), `dua` 75 s, `iqamah`
   [iqamah−60 s, iqamah). A reload mid-athan rejoins the recording at the right
   offset (`audio.ts`).
-- `core/clock.ts` reads `?now=` / `?speed=`; settings previews call
-  `travelTo()`, which also raises the preview bar.
+- Dismissed ids end things early: a takeover (`slot.id`, tahajjud ids) or a
+  prayer's calligraphy window (`calligraphyWindowId(slot)`, added by
+  `setDayTheme` so a newly chosen daytime theme shows at once).
+  `ClockState.themeUntil` is when the calligraphy window or night hours hand
+  back to the daytime theme.
+- `core/clock.ts` reads `?now=` / `?speed=`. Settings previews go through
+  `startPreview()` / `endPreview()` in the store: they travel the clock
+  (which raises the preview bar) and run with their own dismissals, restoring
+  the real ones on exit.
 - Settings are parsed at the localStorage boundary by `sanitizeSettings`
   (type-checked overlay onto defaults, enum validation, place validation).
   Inside the app, settings are trusted.

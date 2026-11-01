@@ -1,9 +1,10 @@
-import { getSpeed, isPreviewing, setSpeed, travelTo } from '../core/clock';
+import { getSpeed, isPreviewing, setSpeed } from '../core/clock';
 import { unlockAudio } from '../audio';
 import {
   audioBlocked,
   backgroundFor,
   clock,
+  endPreview,
   picking,
   previewTheme,
   settings,
@@ -65,13 +66,7 @@ export function App() {
           <button class={getSpeed() > 1 ? 'on' : ''} onClick={() => setSpeed(getSpeed() > 1 ? 1 : 60)}>
             {getSpeed() > 1 ? '60× · back to 1×' : 'Fast-forward 60×'}
           </button>
-          <button
-            class="primary"
-            onClick={() => {
-              travelTo(null);
-              previewTheme.value = null;
-            }}
-          >
+          <button class="primary" onClick={endPreview}>
             Exit
           </button>
         </div>

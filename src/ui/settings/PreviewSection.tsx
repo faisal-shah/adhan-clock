@@ -1,22 +1,11 @@
 import { useState } from 'preact/hooks';
 import { stopAthan } from '../../audio';
 import { nextHijriDate } from '../../core/calendar';
-import { travelTo } from '../../core/clock';
 import type { CalligraphyArt } from '../../core/media';
 import { addDays, computeDay, startOfDay } from '../../core/prayer';
 import { PERIOD_NAMES, type ClockState, type PeriodKey } from '../../core/schedule';
 import { GALLERY_CATEGORIES, type ThemeKey } from '../../core/settings';
-import {
-  calligraphyArt,
-  dismissed,
-  photos,
-  previewTheme,
-  removeUpload,
-  settings,
-  settingsOpen,
-  viewer,
-  type ViewItem,
-} from '../../store';
+import { calligraphyArt, photos, removeUpload, settings, settingsOpen, startPreview, viewer, type ViewItem } from '../../store';
 import { Phrase } from '../parts';
 import { viewLabel } from '../Viewer';
 import { Segmented } from './controls';
@@ -91,10 +80,8 @@ function moments(st: ClockState): { title: string; note: string; items: Moment[]
 
 function MomentsTab({ st }: { st: ClockState }) {
   const go = (m: Moment) => {
-    dismissed.value = new Set();
     stopAthan();
-    previewTheme.value = m.theme ?? null;
-    travelTo(m.at);
+    startPreview(m.at, m.theme ?? null);
     settingsOpen.value = false;
   };
   return (

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { clockState, computeDays, type AthanLength } from '../../src/core/schedule';
+import { calligraphyWindowId, clockState, computeDays, type AthanLength } from '../../src/core/schedule';
 import type { Settings } from '../../src/core/settings';
 import { CHICAGO } from './prayer.test';
 
@@ -58,6 +58,21 @@ describe('clockState', () => {
     const long: AthanLength = () => 280;
     expect(state(new Date(maghrib + 5.5 * 60_000), CHICAGO, long).takeover?.phase).toBe('dua');
     expect(state(new Date(maghrib + 6 * 60_000), CHICAGO, long).takeover).toBeNull();
+  });
+
+  it('ends a calligraphy window early once dismissed, and says when an override ends', () => {
+    const st = state(at('12:50'));
+    expect(st.theme).toBe('calligraphy');
+    expect(st.themeUntil!.getTime() - st.current.athan.getTime()).toBe(45 * 60_000);
+    const ended = state(at('12:50'), CHICAGO, athan200, new Set([calligraphyWindowId(st.current)]));
+    expect(ended.theme).toBe('classic');
+    expect(ended.themeUntil).toBeNull();
+    // Only that prayer's window: Asr's still shows.
+    expect(state(at('16:20'), CHICAGO, athan200, new Set([calligraphyWindowId(st.current)])).theme).toBe('calligraphy');
+    const night = state(at('23:00'));
+    expect(night.theme).toBe('night');
+    expect(night.themeUntil!.getTime()).toBe(night.next.athan.getTime());
+    expect(state(at('14:00')).themeUntil).toBeNull();
   });
 
   it('picks the night theme between Isha+60 and Fajr, calligraphy after each athan', () => {

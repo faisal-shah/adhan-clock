@@ -290,6 +290,28 @@ test('backgrounds: select every photo, or a whole group', async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
+test('display: a new daytime theme shows at once, even in the calligraphy window', async ({ page }) => {
+  // 25 minutes after the Dhuhr athan (12:35), inside its 45-minute calligraphy window.
+  const errors = await open(page, '2026-10-29T13:00:00');
+  await expect(page.locator('.stage')).toHaveClass(/theme-calligraphy/);
+  await openSettings(page, 'Display');
+  const row = page.locator('.row', { hasText: 'Daytime theme' });
+  await expect(row.locator('.row-hint')).toContainText('Calligraphy is on after the Dhuhr athan until 1:20');
+  await row.getByRole('button', { name: 'Kids' }).click();
+  await expect(row.locator('.row-hint')).toHaveText('Shown outside the calligraphy window and the night hours.');
+  await page.getByRole('button', { name: 'Close settings' }).click();
+  await expect(page.locator('.stage')).toHaveClass(/theme-kids/);
+
+  // A preview runs and ends without bringing the window back.
+  await openSettings(page, 'Preview');
+  await page.getByRole('button', { name: /Ramadan · before iftar/ }).click();
+  await expect(page.locator('.preview-bar')).toBeVisible();
+  await page.locator('.preview-bar').getByRole('button', { name: 'Exit' }).click();
+  await expect(page.locator('.preview-bar')).toHaveCount(0);
+  await expect(page.locator('.stage')).toHaveClass(/theme-kids/);
+  expect(errors).toEqual([]);
+});
+
 test('moments: Ramadan before iftar lands on a real Ramadan date', async ({ page }) => {
   await open(page, '2026-10-29T14:53:00');
   await page.getByRole('button', { name: 'Settings' }).click();

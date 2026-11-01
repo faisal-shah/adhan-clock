@@ -50,3 +50,13 @@ Added
   athan sequences.
 - GitHub Actions: unit tests, build, Playwright e2e, keyless deploy to
   Firebase Hosting.
+
+Fixed
+~~~~~
+
+- Choosing a daytime theme during the calligraphy time after an athan had
+  no visible effect until that time ended; it now ends the calligraphy time
+  and shows the chosen theme. Settings → Display says when the calligraphy
+  or night theme is covering the daytime theme, and until when.
+- Ending a preview no longer brings back an athan screen or calligraphy
+  time that had been closed before the preview.

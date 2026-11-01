@@ -109,6 +109,11 @@ export interface ClockState {
   countdown: Countdown;
   takeover: Takeover | null;
   theme: ThemeKey;
+  /**
+   * While the calligraphy window or the night hours cover the daytime theme,
+   * the moment they end; null otherwise.
+   */
+  themeUntil: Date | null;
   makruh: Makruh | null;
   ramadan: boolean;
   hijri: HijriDate;
@@ -267,17 +272,23 @@ function isRamadan(d: Date, s: Settings): boolean {
   return hijriDate(d, s.hijriOffset).month === 9;
 }
 
-function nightAt(now: Date, days: Days, s: Settings): boolean {
-  if (!s.night.enabled) return false;
+/** The end of the night hours `now` falls in, or null outside them. */
+function nightEnd(now: Date, days: Days, s: Settings): Date | null {
+  if (!s.night.enabled) return null;
   const windows: [Date, Date][] = [
     [days.yesterday.isha, days.today.fajr],
     [days.today.isha, days.tomorrow.fajr],
   ];
   const n = now.getTime();
-  return windows.some(
-    ([isha, fajr]) => n >= isha.getTime() + s.night.startAfterIsha * MIN && n < fajr.getTime() - s.night.endBeforeFajr * MIN,
-  );
+  for (const [isha, fajr] of windows) {
+    const end = fajr.getTime() - s.night.endBeforeFajr * MIN;
+    if (n >= isha.getTime() + s.night.startAfterIsha * MIN && n < end) return new Date(end);
+  }
+  return null;
 }
+
+/** Dismissal id that ends a prayer's calligraphy window early. */
+export const calligraphyWindowId = (slot: Slot) => `${slot.id}:calligraphy`;
 
 function upcomingFriday(now: Date): Date {
   return addDays(startOfDay(now), (5 - now.getDay() + 7) % 7);
@@ -314,8 +325,13 @@ export function clockState(
   const takeover = takeoverAt(now, all, days, s, athanLength, dismissed);
 
   let theme: ThemeKey = s.dayTheme;
-  if (nightAt(now, days, s)) theme = 'night';
-  else if (n < current.athan.getTime() + s.calligraphyMinutes * MIN) theme = 'calligraphy';
+  let themeUntil = nightEnd(now, days, s);
+  const calligraphyEnd = current.athan.getTime() + s.calligraphyMinutes * MIN;
+  if (themeUntil) theme = 'night';
+  else if (n < calligraphyEnd && !dismissed.has(calligraphyWindowId(current))) {
+    theme = 'calligraphy';
+    themeUntil = new Date(calligraphyEnd);
+  }
 
   const friday = upcomingFriday(now);
   const tahajjud =
@@ -335,6 +351,7 @@ export function clockState(
     countdown,
     takeover,
     theme,
+    themeUntil,
     makruh: makruhAt(now, days.today),
     ramadan: isRamadan(now, s) || countdown.kind === 'suhoor',
     hijri: hijriDate(now, s.hijriOffset),

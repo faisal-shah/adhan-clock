@@ -16,7 +16,7 @@ no account and no server.
 | Screen | When |
 |---|---|
 | **Calligraphy** | From each athan for a set time (45 min by default): a photo for the time of day, the prayer's name in gold calligraphy, "It's Dhuhr time", the current and next prayer in a dial, sunrise/sunset, weather. |
-| **Classic**, **Kids** or **Gallery** | The rest of the day (your choice). Classic: clock card, five prayer cards, countdown medallion, verse/hadith/dua of the day. Kids: cartoon sky, cards, reminders on the grass. Gallery: a calendar-style rotation of captioned photographs (mosques of the world, treasures of Islamic civilization, manuscripts, lands of Islam, your own photos) and calligraphy pieces, with the prayer times along the foot. |
+| **Classic**, **Kids** or **Gallery** | The rest of the day (your choice in Settings → Display; choosing one during the calligraphy time switches to it straight away). Classic: clock card, five prayer cards, countdown medallion, verse/hadith/dua of the day. Kids: cartoon sky, cards, reminders on the grass. Gallery: a calendar-style rotation of captioned photographs (mosques of the world, treasures of Islamic civilization, manuscripts, lands of Islam, your own photos) and calligraphy pieces, with the prayer times along the foot. |
 | **Night** | From an hour after Isha until Fajr: a dim, drifting clock with the Fajr and last-third-of-night times. |
 | **Athan sequence** | One-minute countdown, then the athan with "It's Dhuhr time", then the dua after the athan, then the final minute before iqamah. |
 

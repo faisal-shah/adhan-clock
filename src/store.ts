@@ -1,5 +1,5 @@
 import { computed, effect, signal } from '@preact/signals';
-import { now } from './core/clock';
+import { now, travelTo } from './core/clock';
 import { bundledPhoto, defaultIds, photoForDay, rotation, upcoming } from './core/library';
 import {
   deleteUpload,
@@ -18,7 +18,7 @@ import {
   type Upload,
 } from './core/media';
 import { startOfDay } from './core/prayer';
-import { clockState, computeDays, type AthanLength, type ClockState, type Days } from './core/schedule';
+import { calligraphyWindowId, clockState, computeDays, type AthanLength, type ClockState, type Days } from './core/schedule';
 import {
   BG_SLOTS,
   DEFAULT_SETTINGS,
@@ -88,6 +88,31 @@ export async function loadMedia(): Promise<void> {
 
 export function dismiss(id: string): void {
   dismissed.value = new Set([...dismissed.value, id]);
+}
+
+/** The real clock's dismissals, set aside while a preview keeps its own. */
+let liveDismissed: ReadonlySet<string> | null = null;
+
+/** Moves the clock to a preview moment, where nothing has been dismissed yet. */
+export function startPreview(at: Date, theme: ThemeKey | null): void {
+  liveDismissed ??= dismissed.value;
+  dismissed.value = new Set();
+  previewTheme.value = theme;
+  travelTo(at);
+}
+
+/** Returns to the real clock and what was dismissed there. */
+export function endPreview(): void {
+  travelTo(null);
+  previewTheme.value = null;
+  if (liveDismissed) dismissed.value = liveDismissed;
+  liveDismissed = null;
+}
+
+/** Sets the daytime theme and shows it now: a calligraphy window in progress ends early. */
+export function setDayTheme(dayTheme: Settings['dayTheme']): void {
+  dismiss(calligraphyWindowId(clock.value!.current));
+  updateSettings(() => ({ dayTheme }));
 }
 
 // --- Derived clock state ----------------------------------------------------

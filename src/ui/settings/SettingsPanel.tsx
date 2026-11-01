@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { previewSound, stopAthan } from '../../audio';
+import { clockFace } from '../../core/calendar';
 import { deviceTimezone } from '../../core/geo';
 import { toggleFullscreen, underFully } from '../../core/kiosk';
 import { audioDuration, type AudioUpload } from '../../core/media';
-import { PERIOD_NAMES } from '../../core/schedule';
+import { PERIOD_NAMES, type ClockState } from '../../core/schedule';
 import {
   BG_SLOT_NAMES,
   BG_SLOTS,
@@ -26,6 +27,7 @@ import {
   picking,
   removeUpload,
   settings,
+  setDayTheme,
   settingsOpen,
   upcomingBackgrounds,
   updateSettings,
@@ -199,12 +201,21 @@ function bump(hhmm: string, minutes: number): string {
   return `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`;
 }
 
+/** What is covering the daytime theme right now, if anything. */
+function themeNote(st: ClockState, s: Settings): string {
+  if (!st.themeUntil || st.theme === s.dayTheme) return 'Shown outside the calligraphy window and the night hours.';
+  const f = clockFace(st.themeUntil, s.clock24h);
+  const until = f.ampm ? `${f.hm}\u00a0${f.ampm}` : f.hm;
+  if (st.theme === 'night') return `The night theme is on until ${until}, then this one.`;
+  return `Calligraphy is on after the ${PERIOD_NAMES[st.current.name]} athan until ${until}. Choosing a theme here ends it now.`;
+}
+
 function DisplaySection() {
   const s = settings.value;
   const hasArt = calligraphyArt.value.length > 0;
   return (
     <>
-      <Row label="Daytime theme" hint="Shown outside the calligraphy window and the night hours.">
+      <Row label="Daytime theme" hint={themeNote(clock.value!, s)}>
         <Segmented
           value={s.dayTheme}
           options={[
@@ -213,7 +224,7 @@ function DisplaySection() {
             ['kids', 'Kids'],
             ['gallery', 'Gallery'],
           ]}
-          onChange={(dayTheme) => set(() => ({ dayTheme }))}
+          onChange={setDayTheme}
         />
       </Row>
       {s.dayTheme === 'gallery' && (
