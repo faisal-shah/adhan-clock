@@ -60,6 +60,14 @@ describe('clockState', () => {
     expect(state(new Date(maghrib + 6 * 60_000), CHICAGO, long).takeover).toBeNull();
   });
 
+  it('keeps the evening going when Isha falls after midnight', () => {
+    const late: Settings = { ...CHICAGO, adjust: { ...CHICAGO.adjust, isha: 330 } }; // Isha 00:36
+    const st = state(at('00:10', 30), late);
+    expect(st.period.key).toBe('maghrib');
+    expect(st.current.prayer).toBe('maghrib');
+    expect(state(at('00:40', 30), late).period.key).toBe('isha');
+  });
+
   it('ends a calligraphy window early once dismissed, and says when an override ends', () => {
     const st = state(at('12:50'));
     expect(st.theme).toBe('calligraphy');

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { previewSound, stopAthan } from '../../audio';
 import { clockFace } from '../../core/calendar';
-import { deviceTimezone } from '../../core/geo';
+import { deviceTimezone, isDeviceTimezone } from '../../core/geo';
 import { toggleFullscreen, underFully } from '../../core/kiosk';
 import { audioDuration, type AudioUpload } from '../../core/media';
 import { PERIOD_NAMES, type ClockState } from '../../core/schedule';
@@ -15,6 +15,7 @@ import {
   type GalleryCategory,
   HIGH_LAT_RULES,
   PRAYERS,
+  limits,
   type CalligraphyFont,
   type Settings,
   type SoundChoice,
@@ -65,7 +66,7 @@ function PlaceSection() {
       <Row label="This clock is in" hint={s.place && `${s.place.latitude.toFixed(4)}, ${s.place.longitude.toFixed(4)}`}>
         <span class="row-value">{s.place?.name}</span>
       </Row>
-      {s.place?.timezone && s.place.timezone !== deviceTimezone() && (
+      {s.place?.timezone && !isDeviceTimezone(s.place.timezone) && (
         <p class="panel-warn">
           This tablet's time zone is {deviceTimezone()}, but {s.place.name} uses {s.place.timezone}. Times are shown on the
           tablet's clock, so set the tablet's time zone to match.
@@ -135,8 +136,7 @@ function TimesSection() {
         <Row label={PERIOD_NAMES[p]}>
           <Stepper
             value={s.adjust[p]}
-            min={-30}
-            max={30}
+            {...limits('adjust.*')}
             unit="min"
             signed
             onChange={(v) => set((x) => ({ adjust: { ...x.adjust, [p]: v } }))}
@@ -158,8 +158,7 @@ function IqamahSection() {
         <Row label={PERIOD_NAMES[p]}>
           <Stepper
             value={s.iqamah[p]}
-            min={0}
-            max={90}
+            {...limits('iqamah.*')}
             unit="min"
             onChange={(v) => set((x) => ({ iqamah: { ...x.iqamah, [p]: v } }))}
           />
@@ -233,8 +232,7 @@ function DisplaySection() {
           <Row label="Change the photo every">
             <Stepper
               value={s.gallery.minutes}
-              min={1}
-              max={60}
+              {...limits('gallery.minutes')}
               unit="min"
               onChange={(minutes) => set((x) => ({ gallery: { ...x.gallery, minutes } }))}
             />
@@ -252,8 +250,7 @@ function DisplaySection() {
       <Row label="Calligraphy after each athan" hint="How long the calligraphy theme stays after the athan.">
         <Stepper
           value={s.calligraphyMinutes}
-          min={0}
-          max={120}
+          {...limits('calligraphyMinutes')}
           step={5}
           unit="min"
           onChange={(calligraphyMinutes) => set(() => ({ calligraphyMinutes }))}
@@ -272,8 +269,7 @@ function DisplaySection() {
       <Row label="Hijri date adjustment" hint="Shift to match local moonsighting.">
         <Stepper
           value={s.hijriOffset}
-          min={-2}
-          max={2}
+          {...limits('hijriOffset')}
           unit="days"
           signed
           onChange={(hijriOffset) => set(() => ({ hijriOffset }))}
@@ -347,8 +343,7 @@ function NightSection() {
           <Row label="Starts after Isha">
             <Stepper
               value={n.startAfterIsha}
-              min={0}
-              max={240}
+              {...limits('night.startAfterIsha')}
               step={15}
               unit="min"
               onChange={(startAfterIsha) => setNight({ startAfterIsha })}
@@ -357,8 +352,7 @@ function NightSection() {
           <Row label="Ends before Fajr" hint="0 keeps it dark until the Fajr athan.">
             <Stepper
               value={n.endBeforeFajr}
-              min={0}
-              max={120}
+              {...limits('night.endBeforeFajr')}
               step={5}
               unit="min"
               onChange={(endBeforeFajr) => setNight({ endBeforeFajr })}

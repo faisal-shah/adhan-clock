@@ -17,7 +17,7 @@ import {
   type Photo,
   type Upload,
 } from './core/media';
-import { startOfDay } from './core/prayer';
+import { placeDay } from './core/prayer';
 import { calligraphyWindowId, clockState, computeDays, type AthanLength, type ClockState, type Days } from './core/schedule';
 import {
   BG_SLOTS,
@@ -83,7 +83,27 @@ export async function loadMedia(): Promise<void> {
   if (art.status === 'fulfilled') calligraphyArt.value = art.value;
   if (gal.status === 'fulfilled') gallery.value = gal.value;
   if (audio.status === 'fulfilled') bundledAudio.value = audio.value;
-  if (ups.status === 'fulfilled') uploads.value = ups.value;
+  if (ups.status === 'fulfilled') {
+    uploads.value = ups.value;
+    forgetMissingSounds();
+  }
+}
+
+/** A sound choice whose recording is not stored (storage cleared or a write lost) goes back to its default. */
+function forgetMissingSounds(): void {
+  const have = new Set(uploads.value.map((u) => `upload:${u.id}`));
+  const missing = (c: SoundChoice) => c.audioId.startsWith('upload:') && !have.has(c.audioId);
+  const s = settings.value;
+  if (!PRAYERS.some((p) => missing(s.sounds[p])) && !missing(s.tahajjud)) return;
+  updateSettings((x) => ({
+    sounds: Object.fromEntries(
+      PRAYERS.map((p) => [
+        p,
+        missing(x.sounds[p]) ? { ...x.sounds[p], audioId: DEFAULT_SETTINGS.sounds[p].audioId } : x.sounds[p],
+      ]),
+    ) as Settings['sounds'],
+    tahajjud: missing(x.tahajjud) ? { ...x.tahajjud, audioId: DEFAULT_SETTINGS.tahajjud.audioId } : x.tahajjud,
+  }));
 }
 
 export function dismiss(id: string): void {
@@ -122,7 +142,14 @@ let daysCache: { key: string; days: Days } | null = null;
 const days = computed<Days | null>(() => {
   const s = settings.value;
   if (!s.place) return null;
-  const key = JSON.stringify([startOfDay(tick.value).getTime(), s.place, s.method, s.madhab, s.highLatRule, s.adjust]);
+  const key = JSON.stringify([
+    placeDay(tick.value, s.place.timezone).getTime(),
+    s.place,
+    s.method,
+    s.madhab,
+    s.highLatRule,
+    s.adjust,
+  ]);
   if (daysCache?.key !== key) daysCache = { key, days: computeDays(tick.value, s) };
   return daysCache.days;
 });
@@ -262,15 +289,20 @@ const photoName = (file: string) =>
     .trim()
     .slice(0, 48) || 'Photo';
 
-/** Adds photos to the library; returns their ids. */
-export async function uploadPhotos(files: File[]): Promise<string[]> {
+/** Adds photos to the library: the ids of those added, and the names of files that could not be. */
+export async function uploadPhotos(files: File[]): Promise<{ ids: string[]; failed: string[] }> {
   const ids: string[] = [];
+  const failed: string[] = [];
   for (const file of files) {
-    const img = await processImage(file);
-    const u = await addUpload<ImageUpload>({ kind: 'image', name: photoName(file.name), ...img });
-    ids.push(`upload:${u.id}`);
+    try {
+      const img = await processImage(file);
+      const u = await addUpload<ImageUpload>({ kind: 'image', name: photoName(file.name), ...img });
+      ids.push(`upload:${u.id}`);
+    } catch {
+      failed.push(file.name);
+    }
   }
-  return ids;
+  return { ids, failed };
 }
 
 /** Deletes an upload and every reference to it. */
@@ -282,31 +314,35 @@ export async function removeUpload(id: string): Promise<void> {
   thumbUrls.delete(id);
   uploads.value = uploads.value.filter((u) => u.id !== id);
   const ref = `upload:${id}`;
-  updateSettings((x) => {
-    const sound = (c: SoundChoice, d: SoundChoice) => (c.audioId === ref ? { ...c, audioId: d.audioId } : c);
-    const backgrounds = Object.fromEntries(
+  forgetMissingSounds();
+  updateSettings((x) => ({
+    backgrounds: Object.fromEntries(
       BG_SLOTS.map((slot) => {
         const choice = x.backgrounds[slot];
         return [slot, Array.isArray(choice) ? choice.filter((i) => i !== ref) : choice];
       }),
-    ) as Settings['backgrounds'];
-    return {
-      sounds: Object.fromEntries(PRAYERS.map((p) => [p, sound(x.sounds[p], DEFAULT_SETTINGS.sounds[p])])) as Settings['sounds'],
-      tahajjud: sound(x.tahajjud, DEFAULT_SETTINGS.tahajjud),
-      backgrounds,
-    };
-  });
+    ) as Settings['backgrounds'],
+  }));
 }
 
 // --- Weather ----------------------------------------------------------------
 
 const WEATHER_KEY = 'adhan-clock:weather';
 const WEATHER_REFRESH = 15 * 60_000;
+/** Older readings are not shown (the network may be down for hours). */
+export const WEATHER_MAX_AGE = 3 * 3600_000;
 
+const placeKey = (p: NonNullable<Settings['place']>) => `${p.latitude},${p.longitude}`;
+
+/** The last reading, if it was taken at this place recently enough to show. */
 function cachedWeather(): Weather | null {
   try {
-    const w = JSON.parse(localStorage.getItem(WEATHER_KEY) ?? 'null');
-    return typeof w?.tempC === 'number' && Date.now() - w.fetchedAt < 3 * 3600_000 ? w : null;
+    const c = JSON.parse(localStorage.getItem(WEATHER_KEY) ?? 'null');
+    const place = settings.value.place;
+    const w = c?.weather;
+    return place && c.place === placeKey(place) && typeof w?.tempC === 'number' && Date.now() - w.fetchedAt < WEATHER_MAX_AGE
+      ? w
+      : null;
   } catch {
     return null;
   }
@@ -319,8 +355,9 @@ export function startWeather(): void {
     if (!place) return;
     fetchWeather(place.latitude, place.longitude)
       .then((w) => {
+        if (settings.value.place && placeKey(settings.value.place) !== placeKey(place)) return;
         weather.value = w;
-        localStorage.setItem(WEATHER_KEY, JSON.stringify(w));
+        localStorage.setItem(WEATHER_KEY, JSON.stringify({ place: placeKey(place), weather: w }));
       })
       .catch(() => {});
   };
@@ -329,10 +366,11 @@ export function startWeather(): void {
   let lastKey = '';
   effect(() => {
     const { place, weather: w } = settings.value;
-    const key = w.enabled && place ? `${place.latitude},${place.longitude}` : '';
+    const key = w.enabled && place ? placeKey(place) : '';
     if (key === lastKey) return;
     const first = lastKey === '';
     lastKey = key;
+    if (!first) weather.value = null;
     if (key && !(first && weather.value)) refresh(place);
   });
   setInterval(() => settings.value.weather.enabled && refresh(settings.value.place), WEATHER_REFRESH);

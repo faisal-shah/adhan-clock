@@ -1,5 +1,5 @@
 import { useState } from 'preact/hooks';
-import { deviceTimezone, locateDevice, searchPlaces } from '../../core/geo';
+import { deviceTimezone, isDeviceTimezone, locateDevice, searchPlaces } from '../../core/geo';
 import type { Place } from '../../core/settings';
 
 export function LocationPicker({ onPick }: { onPick: (p: Place) => void }) {
@@ -59,7 +59,7 @@ export function LocationPicker({ onPick }: { onPick: (p: Place) => void }) {
                 <span>{p.name}</span>
                 <small>
                   {p.latitude.toFixed(2)}, {p.longitude.toFixed(2)}
-                  {p.timezone && p.timezone !== deviceTimezone() && ` · ${p.timezone} (tablet is ${deviceTimezone()})`}
+                  {p.timezone && !isDeviceTimezone(p.timezone) && ` · ${p.timezone} (tablet is ${deviceTimezone()})`}
                 </small>
               </button>
             </li>

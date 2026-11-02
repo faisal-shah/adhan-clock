@@ -1,5 +1,5 @@
 import type { CalligraphyArt, Photo } from '../../core/media';
-import { startOfDay } from '../../core/prayer';
+import { dayNumber, startOfDay } from '../../core/prayer';
 import { PERIOD_NAMES, type ClockState, type PeriodKey } from '../../core/schedule';
 import { GALLERY_CATEGORIES } from '../../core/settings';
 import { calligraphyArt, photos, settings } from '../../store';
@@ -36,7 +36,7 @@ export function currentPiece(now: Date): Piece | null {
       : []),
   ];
   if (!pool.length) return null;
-  const day = Math.floor(startOfDay(now).getTime() / 86_400_000);
+  const day = dayNumber(now);
   const order = todaysOrder(pool, day);
   const slot = Math.floor((now.getTime() - startOfDay(now).getTime()) / (g.minutes * 60_000));
   return order[slot % order.length];

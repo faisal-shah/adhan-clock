@@ -1,5 +1,5 @@
 import type { GalleryItem, Photo } from './media';
-import { startOfDay } from './prayer';
+import { dayNumber } from './prayer';
 import { BG_SLOTS, type BgSlot, type PhotoChoice } from './settings';
 
 export function bundledPhoto(g: GalleryItem): Photo {
@@ -38,12 +38,6 @@ export function rotation(choice: PhotoChoice, defaults: string[], byId: Readonly
   const pick = (ids: string[]) => ids.flatMap((id) => byId.get(id) ?? []);
   const pool = choice === 'all' ? [...byId.values()] : choice ? pick(choice) : [];
   return (pool.length ? pool : pick(defaults)).toSorted((a, b) => mix(a.id) - mix(b.id));
-}
-
-/** Days since 1970-01-01 on the local calendar. */
-function dayNumber(d: Date): number {
-  const m = startOfDay(d);
-  return Math.round(m.getTime() / 86_400_000 - m.getTimezoneOffset() / 1440);
 }
 
 /**

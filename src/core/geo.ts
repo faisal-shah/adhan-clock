@@ -48,3 +48,12 @@ export async function locateDevice(): Promise<Place> {
 }
 
 export const deviceTimezone = () => Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+/** Whether a zone is the tablet's, under either of its names (Asia/Kolkata is Asia/Calcutta). */
+export function isDeviceTimezone(tz: string): boolean {
+  try {
+    return new Intl.DateTimeFormat('en-US', { timeZone: tz }).resolvedOptions().timeZone === deviceTimezone();
+  } catch {
+    return tz === deviceTimezone();
+  }
+}

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { bundledPhoto, defaultIds, photoForDay, rotation, upcoming } from '../../src/core/library';
 import type { GalleryItem, Photo } from '../../src/core/media';
+import { dayNumber } from '../../src/core/prayer';
 import { BG_SLOTS, GALLERY_CATEGORIES, sanitizeSettings } from '../../src/core/settings';
 import indexJson from '../../public/gallery/index.json';
 
@@ -43,6 +44,15 @@ describe('background rotation', () => {
     expect(ids(rotation(['c', 'upload:x', 'b', 'a'], [], byId)).filter((id) => id !== 'upload:x')).toEqual(abc);
   });
 
+  it('numbers days one apart across both clock changes', () => {
+    for (const [y, m, d] of [
+      [2026, 2, 7],
+      [2026, 9, 31],
+    ])
+      for (let i = 0; i < 3; i++)
+        expect(dayNumber(new Date(y, m, d + i + 1, 12)) - dayNumber(new Date(y, m, d + i, 23, 59))).toBe(1);
+  });
+
   it('shows one photo all day and walks the rotation day by day, across DST', () => {
     const pool = ['a', 'b', 'c'].map(photo);
     const morning = photoForDay(pool, new Date(2026, 10, 1, 0, 30), 'fajr')!.id;
@@ -83,6 +93,23 @@ describe('background settings', () => {
     expect(s.backgrounds.isha).toBeNull();
     expect(s.backgrounds.night).toBeNull();
     expect(sanitizeSettings('junk').backgrounds.maghrib).toBeNull();
+  });
+
+  it("holds numbers to the ranges the controls allow, and keeps a Jumu'ah time", () => {
+    const s = sanitizeSettings({
+      hijriOffset: 1e9,
+      gallery: { minutes: 0 },
+      iqamah: { fajr: 500 },
+      adjust: { isha: -99 },
+      sounds: { fajr: { volume: 3 } },
+      jumuah: { times: [''] },
+    });
+    expect(s.hijriOffset).toBe(2);
+    expect(s.gallery.minutes).toBe(1);
+    expect(s.iqamah.fajr).toBe(90);
+    expect(s.adjust.isha).toBe(-30);
+    expect(s.sounds.fajr.volume).toBe(1);
+    expect(s.jumuah.times).toEqual(['13:30']);
   });
 
   it('shows uploads in the Gallery theme by default', () => {

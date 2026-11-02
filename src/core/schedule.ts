@@ -1,5 +1,5 @@
 import { hijriDate, parseHHMM, type HijriDate } from './calendar';
-import { addDays, computeDay, startOfDay, type DayTimes } from './prayer';
+import { addDays, computeDay, placeDay, startOfDay, type DayTimes } from './prayer';
 import { PRAYERS, type BgSlot, type PrayerKey, type Settings, type ThemeKey } from './settings';
 
 export type PeriodKey = 'fajr' | 'sunrise' | 'duha' | 'dhuhr' | 'jumuah' | 'asr' | 'maghrib' | 'isha' | 'tahajjud';
@@ -131,8 +131,9 @@ export interface Days {
   tomorrow: DayTimes;
 }
 
+/** Prayer times for the place's yesterday, today and tomorrow. */
 export function computeDays(now: Date, s: Settings): Days {
-  const d = startOfDay(now);
+  const d = placeDay(now, s.place?.timezone ?? null);
   return {
     yesterday: computeDay(addDays(d, -1), s),
     today: computeDay(d, s),
@@ -163,6 +164,8 @@ function periodAt(now: Date, days: Days, slots: Slot[]): Period {
   const duha = new Date(t.sunrise.getTime() + SUNRISE_MAKRUH);
   const dhuhrName = slots[1].name;
   const bounds: [PeriodKey, Date, Date][] = [
+    // Yesterday's evening runs past midnight where Isha comes after it.
+    ['maghrib', y.maghrib, y.isha],
     ['isha', y.isha, y.lastThird],
     ['tahajjud', y.lastThird, t.fajr],
     ['fajr', t.fajr, t.sunrise],

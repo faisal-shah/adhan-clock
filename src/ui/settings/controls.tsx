@@ -1,3 +1,4 @@
+import { HHMM } from '../../core/settings';
 import type { ComponentChildren } from 'preact';
 
 export function Row({ label, hint, children }: { label: string; hint?: ComponentChildren; children: ComponentChildren }) {
@@ -109,6 +110,18 @@ export function Slider({ value, onChange }: { value: number; onChange: (v: numbe
   );
 }
 
+/** A time of day; clearing the field keeps the last time. */
 export function TimeInput({ value, onChange }: { value: string; onChange: (v: string) => void }) {
-  return <input class="time-input" type="time" value={value} onChange={(e) => onChange((e.target as HTMLInputElement).value)} />;
+  return (
+    <input
+      class="time-input"
+      type="time"
+      value={value}
+      onChange={(e) => {
+        const input = e.target as HTMLInputElement;
+        if (HHMM.test(input.value)) onChange(input.value);
+        else input.value = value;
+      }}
+    />
+  );
 }

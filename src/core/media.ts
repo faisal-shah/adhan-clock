@@ -108,22 +108,35 @@ export const loadCalligraphyArt = () => fetchJson<CalligraphyArt[]>('/calligraph
 const DB_NAME = 'adhan-clock';
 const STORE = 'uploads';
 
+let db: Promise<IDBDatabase> | null = null;
+
+/** One connection for the page's lifetime; a failed open is retried on the next call. */
 function openDb(): Promise<IDBDatabase> {
-  return new Promise((resolve, reject) => {
+  db ??= new Promise<IDBDatabase>((resolve, reject) => {
     const req = indexedDB.open(DB_NAME, 1);
     req.onupgradeneeded = () => req.result.createObjectStore(STORE, { keyPath: 'id' });
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);
+  }).catch((e: unknown) => {
+    db = null;
+    throw e;
   });
+  return db;
 }
 
+/**
+ * Runs one request and settles when its transaction does: a write is only
+ * stored once the transaction commits (a full disk aborts it after the
+ * request itself has succeeded).
+ */
 function tx<T>(mode: IDBTransactionMode, run: (s: IDBObjectStore) => IDBRequest<T>): Promise<T> {
   return openDb().then(
-    (db) =>
+    (conn) =>
       new Promise<T>((resolve, reject) => {
-        const req = run(db.transaction(STORE, mode).objectStore(STORE));
-        req.onsuccess = () => resolve(req.result);
-        req.onerror = () => reject(req.error);
+        const t = conn.transaction(STORE, mode);
+        const req = run(t.objectStore(STORE));
+        t.oncomplete = () => resolve(req.result);
+        t.onabort = () => reject(t.error ?? req.error);
       }),
   );
 }

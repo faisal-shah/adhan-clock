@@ -63,14 +63,10 @@ export function UploadTile({ onAdded }: { onAdded?: (ids: string[]) => void }) {
           if (!files.length) return;
           setBusy(true);
           setError('');
-          try {
-            const ids = await uploadPhotos(files);
-            onAdded?.(ids);
-          } catch {
-            setError('That file could not be read as a photo');
-          } finally {
-            setBusy(false);
-          }
+          const { ids, failed } = await uploadPhotos(files);
+          setBusy(false);
+          if (ids.length) onAdded?.(ids);
+          if (failed.length) setError(`Could not add ${failed.join(', ')}`);
         }}
       />
     </label>

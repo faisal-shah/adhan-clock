@@ -168,11 +168,43 @@ const ENUMS: Record<string, readonly string[]> = {
 };
 
 /**
- * Overlays `raw` onto `defaults`, keeping only values whose type matches the
- * default (and whose value is allowed, for enums). localStorage is external
- * input: a stale or hand-edited blob must never crash the clock.
+ * The allowed range of each number setting, by path (`*` stands for any
+ * prayer); the settings controls use the same bounds.
  */
-function overlay<T>(defaults: T, raw: unknown, key = ''): T {
+export const RANGES = {
+  'adjust.*': [-30, 30],
+  'iqamah.*': [0, 90],
+  calligraphyMinutes: [0, 120],
+  hijriOffset: [-2, 2],
+  'gallery.minutes': [1, 60],
+  'night.startAfterIsha': [0, 240],
+  'night.endBeforeFajr': [0, 120],
+  'night.brightness': [0, 100],
+  'night.dayBrightness': [0, 100],
+  'sounds.*.volume': [0, 1],
+  'tahajjud.volume': [0, 1],
+  'chime.volume': [0, 1],
+} as const satisfies Record<string, readonly [number, number]>;
+
+/** Bounds for a Stepper. */
+export const limits = (path: keyof typeof RANGES) => ({ min: RANGES[path][0], max: RANGES[path][1] });
+
+function rangeOf(path: string): readonly [number, number] | undefined {
+  const parts = path.split('.');
+  const wild = [parts[0], '*', ...parts.slice(2)].join('.');
+  const ranges: Record<string, readonly [number, number]> = RANGES;
+  return ranges[path] ?? ranges[wild];
+}
+
+/** "HH:MM", 24-hour. */
+export const HHMM = /^([01]\d|2[0-3]):[0-5]\d$/;
+
+/**
+ * Overlays `raw` onto `defaults`, keeping only values whose type matches the
+ * default (and whose value is allowed, for enums and ranges). localStorage is
+ * external input: a stale or hand-edited blob must never crash the clock.
+ */
+function overlay<T>(defaults: T, raw: unknown, path = ''): T {
   if (raw === undefined) return defaults;
   if (Array.isArray(defaults)) {
     return (Array.isArray(raw) && raw.every((v) => typeof v === typeof defaults[0]) ? raw : defaults) as T;
@@ -180,11 +212,17 @@ function overlay<T>(defaults: T, raw: unknown, key = ''): T {
   if (defaults !== null && typeof defaults === 'object') {
     if (raw === null || typeof raw !== 'object' || Array.isArray(raw)) return defaults;
     const out: Record<string, unknown> = {};
-    for (const [k, v] of Object.entries(defaults)) out[k] = overlay(v, (raw as Record<string, unknown>)[k], k);
+    for (const [k, v] of Object.entries(defaults))
+      out[k] = overlay(v, (raw as Record<string, unknown>)[k], path ? `${path}.${k}` : k);
     return out as T;
   }
   if (typeof raw !== typeof defaults) return defaults;
-  if (typeof raw === 'number' && !Number.isFinite(raw)) return defaults;
+  if (typeof raw === 'number') {
+    if (!Number.isFinite(raw)) return defaults;
+    const range = rangeOf(path);
+    return (range ? Math.min(range[1], Math.max(range[0], raw)) : raw) as T;
+  }
+  const key = path.slice(path.lastIndexOf('.') + 1);
   if (ENUMS[key] && !ENUMS[key].includes(raw as string)) return defaults;
   return raw as T;
 }
@@ -216,7 +254,8 @@ export function sanitizeSettings(raw: unknown): Settings {
   s.place = parsePlace(r?.place);
   const bgs = (r?.backgrounds ?? {}) as Record<string, unknown>;
   s.backgrounds = Object.fromEntries(BG_SLOTS.map((slot) => [slot, parsePhotoChoice(bgs[slot])])) as Settings['backgrounds'];
-  s.jumuah.times = s.jumuah.times.filter((t) => /^([01]\d|2[0-3]):[0-5]\d$/.test(t)).slice(0, 2);
+  s.jumuah.times = s.jumuah.times.filter((t) => HHMM.test(t)).slice(0, 2);
+  if (!s.jumuah.times.length) s.jumuah.times = DEFAULT_SETTINGS.jumuah.times;
   return s;
 }
 
@@ -231,6 +270,11 @@ export function loadSettings(): Settings {
   }
 }
 
+/** Saves settings; when the browser refuses (storage blocked or full) the clock runs on without saving. */
 export function saveSettings(s: Settings): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+  } catch {
+    // Nothing to do: the settings stay in memory for this session.
+  }
 }

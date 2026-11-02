@@ -1,4 +1,4 @@
-import { CalculationMethod, Coordinates, HighLatitudeRule, Madhab, PrayerTimes, SunnahTimes } from 'adhan';
+import { CalculationMethod, Coordinates, HighLatitudeRule, Madhab, PolarCircleResolution, PrayerTimes, SunnahTimes } from 'adhan';
 import type { PrayerKey, Settings } from './settings';
 
 export interface DayTimes {
@@ -18,6 +18,33 @@ export function startOfDay(d: Date): Date {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate());
 }
 
+const dayFormats = new Map<string, Intl.DateTimeFormat>();
+
+/**
+ * The place's calendar day at `now`, as local midnight of that date (the
+ * form computeDay takes). It differs from the tablet's own date only when the
+ * tablet is set to another time zone.
+ */
+export function placeDay(now: Date, timezone: string | null): Date {
+  if (!timezone) return startOfDay(now);
+  let f = dayFormats.get(timezone);
+  if (!f) {
+    try {
+      f = new Intl.DateTimeFormat('en-US', { timeZone: timezone, year: 'numeric', month: 'numeric', day: 'numeric' });
+    } catch {
+      return startOfDay(now); // not a zone this browser knows
+    }
+    dayFormats.set(timezone, f);
+  }
+  const parts = Object.fromEntries(f.formatToParts(now).map((p) => [p.type, Number(p.value)]));
+  return new Date(parts.year, parts.month - 1, parts.day);
+}
+
+/** Days since 1970-01-01 on the local calendar: one step per date, whatever the clocks did. */
+export function dayNumber(d: Date): number {
+  return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86_400_000;
+}
+
 export function addDays(d: Date, n: number): Date {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
 }
@@ -30,6 +57,8 @@ export function computeDay(day: Date, s: CalcSettings): DayTimes {
   const params = CalculationMethod[s.method]();
   params.madhab = s.madhab === 'hanafi' ? Madhab.Hanafi : Madhab.Shafi;
   params.highLatitudeRule = s.highLatRule === 'recommended' ? HighLatitudeRule.recommended(coords) : s.highLatRule;
+  // Inside the polar circles some days have no sunrise or sunset; take those times from the nearest latitude that has them.
+  params.polarCircleResolution = PolarCircleResolution.AqrabBalad;
   params.adjustments = { ...params.adjustments, ...s.adjust };
   const date = startOfDay(day);
   const pt = new PrayerTimes(coords, date, params);

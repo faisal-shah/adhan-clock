@@ -1,6 +1,7 @@
 import daily from '../content/daily.json';
 import events from '../content/events.json';
 import { PERIOD_NAMES, type PeriodKey, type Slot } from './schedule';
+import { dayNumber } from './prayer';
 
 export interface TextItem {
   arabic: string;
@@ -41,7 +42,7 @@ export const DAILY_LABEL: Record<DailyItem['type'], string> = {
 export function dailyItem(now: Date, minutes = 4, type?: DailyItem['type'], maxEnglish = Infinity): DailyItem | null {
   const pool = DAILY.filter((d) => (!type || d.type === type) && d.english.length <= maxEnglish);
   if (!pool.length) return null;
-  const day = Math.floor(new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime() / 86_400_000);
+  const day = dayNumber(now);
   const slot = Math.floor((now.getHours() * 60 + now.getMinutes()) / minutes);
   return pool[(day * 7 + slot) % pool.length];
 }

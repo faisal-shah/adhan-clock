@@ -8,7 +8,7 @@ import type { CalligraphyFont } from '../core/settings';
 import { describeWeather, toUnit, type WeatherKind } from '../core/weather';
 import type { CalligraphyArt, Photo, PhotoLayout } from '../core/media';
 import photoLayout from '../core/photo-layout.json';
-import { calligraphyArt, settings, weather } from '../store';
+import { calligraphyArt, settings, weather, WEATHER_MAX_AGE } from '../store';
 
 export function Clock({ d }: { d: Date }) {
   const f = clockFace(d, settings.value.clock24h);
@@ -269,7 +269,7 @@ export function WeatherGlyph({ kind, night }: { kind: WeatherKind; night: boolea
 export function useWeather(): { temp: string; label: string; kind: WeatherKind; night: boolean } | null {
   const w = weather.value;
   const s = settings.value;
-  if (!w || !s.weather.enabled) return null;
+  if (!w || !s.weather.enabled || Date.now() - w.fetchedAt > WEATHER_MAX_AGE) return null;
   const d = describeWeather(w.code);
   return {
     temp: `${toUnit(w.tempC, s.weather.unit)}°${s.weather.unit.toUpperCase()}`,
