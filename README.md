@@ -28,8 +28,12 @@ flowchart LR
     D -->|75 s| T2[Theme]
     T2 -->|iqamah − 60 s| I[Iqamah<br/>countdown]
     I -->|iqamah| T3[Theme]
-    A -.->|Stop the athan| T2
+    A -.->|Stop the athan| Q[Theme, quiet]
+    Q -->|recording would have ended| D
 ```
+
+*Stop the athan* and the × on the other screens close only that screen; the
+screens after it still come.
 
 ## Photos and backgrounds
 
@@ -84,7 +88,8 @@ dua, and the Hijri date with a day adjustment.
 
 - *Moments* jumps to any athan sequence, any part of the day, Jumu'ah, Ramadan
   (suhoor, before iftar, the iftar athan) and both Eids on their real dates;
-  the preview bar can fast-forward the clock 60x.
+  the preview bar can fast-forward the clock 60x. A preview ends by itself
+  after 20 minutes, and never affects the real athans.
 - *Themes*, *Gallery* and *Calligraphy* open every theme, photo and
   calligraphy piece full screen (swipe or arrow keys to browse).
 

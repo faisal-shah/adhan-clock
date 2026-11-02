@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { previewSound, stopAthan } from '../../audio';
+import { previewSound, setPreviewVolume, stopPreview } from '../../audio';
 import { clockFace } from '../../core/calendar';
 import { deviceTimezone, isDeviceTimezone } from '../../core/geo';
 import { toggleFullscreen, underFully } from '../../core/kiosk';
@@ -403,7 +403,13 @@ function SoundPicker({
       {choice.enabled && (
         <>
           <Select value={choice.audioId} options={opts} onChange={(audioId) => onChange({ ...choice, audioId })} />
-          <Slider value={choice.volume} onChange={(volume) => onChange({ ...choice, volume })} />
+          <Slider
+            value={choice.volume}
+            onChange={(volume) => {
+              if (playing) setPreviewVolume(volume);
+              onChange({ ...choice, volume });
+            }}
+          />
           <button
             class="btn small"
             onClick={() => {
@@ -412,7 +418,7 @@ function SoundPicker({
                 setPlaying(false);
               } else {
                 stopRef.current = previewSound(choice.audioId, choice.volume);
-                setPlaying(true);
+                setPlaying(stopRef.current !== null);
               }
             }}
           >
@@ -611,7 +617,7 @@ export function SettingsPanel() {
   const [section, setSection] = useState<Section>('display');
   const Body = RENDER[section];
   const close = () => {
-    stopAthan();
+    stopPreview();
     picking.value = null;
     settingsOpen.value = false;
   };

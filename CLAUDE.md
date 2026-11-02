@@ -28,6 +28,8 @@ flowchart LR
 
 - `src/core/schedule.ts` is the heart: a pure function from (now, three days
   of prayer times, settings, athan lengths, dismissed ids) to `ClockState` —
+  the days are the place's yesterday, today and tomorrow (`placeDay`), so a
+  tablet set to another zone still has a current and next prayer —
   current/next prayer, countdown, period, takeover phase, theme. Everything
   time-based is derived here and unit-tested in `tests/unit/schedule.test.ts`
   (run with `TZ=America/Chicago`; `npm test` sets it).
@@ -35,18 +37,29 @@ flowchart LR
   `athan` [athan, athan+recording length), `dua` 75 s, `iqamah`
   [iqamah−60 s, iqamah). A reload mid-athan rejoins the recording at the right
   offset (`audio.ts`).
-- Dismissed ids end things early: a takeover (`slot.id`, tahajjud ids) or a
-  prayer's calligraphy window (`calligraphyWindowId(slot)`, added by
-  `setDayTheme` so a newly chosen daytime theme shows at once).
-  `ClockState.themeUntil` is when the calligraphy window or night hours hand
-  back to the daytime theme.
+- Dismissed ids end things early: one takeover phase (`phaseId(t)`,
+  `<slot id>:<phase>`; the phases after it still come) or a prayer's
+  calligraphy window (`calligraphyWindowId(slot)`, added by `setDayTheme` so a
+  newly chosen daytime theme shows at once). They are kept in localStorage,
+  pruned to yesterday on, so a reload or update can't bring back an athan the
+  user stopped. `ClockState.themeUntil` is when the calligraphy window or
+  night hours hand back to the daytime theme.
 - `core/clock.ts` reads `?now=` / `?speed=`. Settings previews go through
-  `startPreview()` / `endPreview()` in the store: they travel the clock
-  (which raises the preview bar) and run with their own dismissals, restoring
-  the real ones on exit.
+  `startPreview()` / `endPreview()` in the store, which move the clock, the
+  tick, the preview theme and the dismissals in one batch (an effect that saw
+  preview time as wall time would mark the real athan as played). A preview
+  has its own dismissals (not saved) and its own `previewRun()` number, which
+  keys what the audio controller has played; it ends itself after 20 minutes.
+- New deploys reload only when nothing would be interrupted: no takeover,
+  settings, viewer or preview (`main.tsx`).
+- `recordingFor` gives an athan's recording, falling back to the default
+  athan when an uploaded one can't be read once `mediaLoaded`; `loadMedia`
+  retries failed loads a minute later. Upload writes resolve when the
+  IndexedDB transaction commits.
 - Settings are parsed at the localStorage boundary by `sanitizeSettings`
-  (type-checked overlay onto defaults, enum validation, place validation).
-  Inside the app, settings are trusted.
+  (type-checked overlay onto defaults, enum validation, numbers clamped to
+  `RANGES`, place validation). The settings steppers take their bounds from
+  `limits()`, so the two agree. Inside the app, settings are trusted.
 
 ## Layout system
 
@@ -123,5 +136,7 @@ flowchart LR
   content is empty (takeover ending).
 - Bundled asset indexes (`public/*/index.json`) are produced by the scripts in
   `scripts/*/`; regenerate rather than hand-edit.
+- Leaving a preview returns to wall time, not to `?now=`: e2e tests that
+  exit a preview fake the wall clock with `page.clock.install` instead.
 - Run prettier on `src` and `tests` only: the manifests under `scripts/` are
   written by the scripts themselves (`--pin`) in Python's JSON layout.

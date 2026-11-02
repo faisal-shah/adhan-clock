@@ -27,7 +27,8 @@ import { registerSW } from 'virtual:pwa-register';
 import { startAudioController } from './audio';
 import { holdWakeLock } from './core/kiosk';
 import { effect } from '@preact/signals';
-import { clock, loadMedia, settings, startWeather } from './store';
+import { isPreviewing } from './core/clock';
+import { clock, loadMedia, settings, settingsOpen, startWeather, viewer } from './store';
 import { App } from './ui/App';
 
 effect(() => {
@@ -39,11 +40,14 @@ startWeather();
 startAudioController();
 holdWakeLock();
 
-// New deploys install in the background; reload only when no athan sequence is on screen.
+// New deploys install in the background; reload only when nothing is on
+// screen that a reload would interrupt: an athan sequence, settings, the
+// full-screen viewer or a preview.
+const busy = () => !!clock.value?.takeover || settingsOpen.value || !!viewer.value || isPreviewing();
 const updateSW = registerSW({
   onNeedRefresh() {
     const tryReload = () => {
-      if (clock.value?.takeover) setTimeout(tryReload, 60_000);
+      if (busy()) setTimeout(tryReload, 60_000);
       else void updateSW(true);
     };
     tryReload();

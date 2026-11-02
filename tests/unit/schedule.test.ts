@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { calligraphyWindowId, clockState, computeDays, type AthanLength } from '../../src/core/schedule';
+import { calligraphyWindowId, clockState, computeDays, phaseId, type AthanLength } from '../../src/core/schedule';
 import type { Settings } from '../../src/core/settings';
 import { CHICAGO } from './prayer.test';
 
@@ -47,8 +47,18 @@ describe('clockState', () => {
     const dhuhr = state(at('12:00')).slots[1].athan.getTime();
     expect(state(new Date(dhuhr + 89_000), CHICAGO, silent).takeover?.phase).toBe('athan');
     expect(state(new Date(dhuhr + 91_000), CHICAGO, silent).takeover?.phase).toBe('dua');
-    const id = state(new Date(dhuhr)).takeover!.id;
-    expect(state(new Date(dhuhr + 5000), CHICAGO, athan200, new Set([id])).takeover).toBeNull();
+  });
+
+  it('closes one phase at a time: the athan still comes after the countdown is closed', () => {
+    const dhuhr = state(at('12:00')).slots[1].athan.getTime();
+    const at_ = (sec: number, ids: string[]) => state(new Date(dhuhr + sec * 1000), CHICAGO, athan200, new Set(ids)).takeover;
+    const pre = phaseId(at_(-30, [])!);
+    expect(at_(-20, [pre])).toBeNull();
+    expect(at_(5, [pre])?.phase).toBe('athan');
+    const athan = phaseId(at_(5, [])!);
+    expect(at_(10, [pre, athan])).toBeNull();
+    expect(at_(210, [pre, athan])?.phase).toBe('dua');
+    expect(at_(15 * 60 - 30, [pre, athan])?.phase).toBe('iqamah');
   });
 
   it('shortens or drops the iqamah countdown when the dua runs into iqamah (Maghrib +5)', () => {

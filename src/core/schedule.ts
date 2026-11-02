@@ -141,7 +141,8 @@ export function computeDays(now: Date, s: Settings): Days {
   };
 }
 
-const dayKey = (d: Date) =>
+/** yyyy-mm-dd on the local calendar: the prefix of every slot id. */
+export const dayKey = (d: Date) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
 function slotsFor(day: DayTimes, s: Settings): Slot[] {
@@ -230,9 +231,8 @@ function takeoverAt(
 ): Takeover | null {
   const n = now.getTime();
   for (const slot of allSlots) {
-    if (dismissed.has(slot.id)) continue;
     const span = prayerPhases(slot, s, athanLength).find((p) => n >= p.start && n < p.end);
-    if (span) {
+    if (span && !dismissed.has(phaseId({ id: slot.id, phase: span.phase }))) {
       return {
         id: slot.id,
         kind: 'prayer',
@@ -252,7 +252,7 @@ function takeoverAt(
       const start = day.lastThird.getTime();
       const len = athanLength('tahajjud');
       const end = start + (len === null ? SILENT_ATHAN_SCREEN : len > 0 ? len * SEC : FALLBACK_ATHAN_LENGTH);
-      if (!dismissed.has(id) && n >= start && n < end) {
+      if (!dismissed.has(phaseId({ id, phase: 'athan' })) && n >= start && n < end) {
         return {
           id,
           kind: 'tahajjud',
@@ -289,6 +289,9 @@ function nightEnd(now: Date, days: Days, s: Settings): Date | null {
   }
   return null;
 }
+
+/** Dismissal id that closes one phase of a sequence; the phases after it still come. */
+export const phaseId = (t: Pick<Takeover, 'id' | 'phase'>) => `${t.id}:${t.phase}`;
 
 /** Dismissal id that ends a prayer's calligraphy window early. */
 export const calligraphyWindowId = (slot: Slot) => `${slot.id}:calligraphy`;

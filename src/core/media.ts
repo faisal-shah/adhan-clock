@@ -150,7 +150,7 @@ function parseUpload(raw: unknown): Upload | null {
       id: r.id,
       kind: 'audio',
       name: r.name,
-      durationSec: typeof r.durationSec === 'number' ? r.durationSec : 0,
+      durationSec: typeof r.durationSec === 'number' && Number.isFinite(r.durationSec) ? r.durationSec : 0,
       blob: r.blob,
     };
   }
@@ -249,7 +249,8 @@ export function audioDuration(blob: Blob): Promise<number> {
     a.preload = 'metadata';
     a.onloadedmetadata = () => {
       URL.revokeObjectURL(url);
-      resolve(a.duration);
+      // Some recordings report no length (Infinity); 0 means "unknown" to the schedule.
+      resolve(Number.isFinite(a.duration) ? a.duration : 0);
     };
     a.onerror = () => {
       URL.revokeObjectURL(url);

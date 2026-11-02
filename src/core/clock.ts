@@ -17,9 +17,13 @@ const sp = Number(params.get('speed'));
 if (Number.isFinite(sp) && sp > 0) speed = sp;
 
 let previewing = false;
+let run = 0;
 
 /** True while a settings preview has moved the clock (URL overrides are a dev tool, not a preview). */
 export const isPreviewing = () => previewing;
+
+/** Which preview the clock is in, or 0 on wall time: what sounded in one preview has not sounded in another, or for real. */
+export const previewRun = () => (previewing ? run : 0);
 
 export function now(): Date {
   return new Date(anchorVirtual + (Date.now() - anchorReal) * speed);
@@ -39,5 +43,6 @@ export function travelTo(t: Date | null): void {
   anchorReal = Date.now();
   anchorVirtual = t ? t.getTime() : anchorReal;
   previewing = t !== null;
-  if (!t) speed = 1;
+  if (t) run++;
+  else speed = 1;
 }

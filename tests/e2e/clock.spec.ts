@@ -10,7 +10,8 @@ async function open(page: Page, now: string, settings: Record<string, unknown> =
     place: CHICAGO,
     ...settings,
   });
-  await page.goto(`/?now=${now}`);
+  // An empty `now` runs on the page's wall clock (which a test may fake).
+  await page.goto(now ? `/?now=${now}` : '/');
   return errors;
 }
 
@@ -94,6 +95,69 @@ test('plays the Dhuhr athan from the right offset and stops on dismiss', async (
   await expect.poll(() => page.evaluate(() => (window as any).__plays[0].paused())).toBe(false);
   await page.getByRole('button', { name: 'Stop the athan' }).click();
   await expect.poll(() => page.evaluate(() => (window as any).__plays[0].paused())).toBe(true);
+});
+
+test('closing the countdown still brings the athan; settings do not stop it; a reload keeps it stopped', async ({ page }) => {
+  await page.addInitScript(() => {
+    const w = window as unknown as { __played: Set<HTMLMediaElement> };
+    w.__played = new Set();
+    const orig = HTMLMediaElement.prototype.play;
+    HTMLMediaElement.prototype.play = function (this: HTMLMediaElement) {
+      w.__played.add(this);
+      return orig.call(this);
+    };
+  });
+  const errors = await open(page, '2026-10-29T12:34:52');
+  // The chime is short; once it ends, anything still sounding is the athan.
+  const paused = () => page.evaluate(() => [...(window as any).__played].every((el: HTMLMediaElement) => el.paused));
+  await page.locator('.tk-count').getByRole('button', { name: 'Close' }).click();
+  await expect(page.locator('.tk-count')).toHaveCount(0);
+  await expect(page.locator('.tk-athan')).toBeVisible({ timeout: 15_000 });
+  await expect.poll(paused).toBe(false);
+
+  await page.getByRole('button', { name: 'Settings' }).click();
+  await page.getByRole('button', { name: 'Close settings' }).click();
+  await page.waitForTimeout(1500);
+  expect(await paused()).toBe(false);
+
+  await page.getByRole('button', { name: 'Stop the athan' }).click();
+  await expect(page.locator('.tk-athan')).toHaveCount(0);
+  // The page starts again at 12:34:52; the countdown and athan it closed stay closed.
+  await page.reload();
+  await page.waitForTimeout(12_000);
+  await expect(page.locator('.tk')).toHaveCount(0);
+  expect(errors).toEqual([]);
+});
+
+test('a preview does not silence the real athan later that day', async ({ page }) => {
+  // A fake wall clock: Exit returns to wall time, and the real Asr (16:06) follows the preview.
+  await page.clock.install({ time: new Date('2026-10-29T16:03:00-05:00') });
+  await page.addInitScript(() => {
+    const w = window as unknown as { __played: Set<HTMLMediaElement> };
+    w.__played = new Set();
+    const orig = HTMLMediaElement.prototype.play;
+    HTMLMediaElement.prototype.play = function (this: HTMLMediaElement) {
+      w.__played.add(this);
+      return orig.call(this);
+    };
+  });
+  await page.addInitScript((s) => localStorage.setItem('adhan-clock:settings', JSON.stringify(s)), { place: CHICAGO });
+  await page.goto('/');
+  const sounding = () => page.evaluate(() => [...(window as any).__played].some((el: HTMLMediaElement) => !el.paused));
+
+  await page.getByRole('button', { name: 'Settings' }).click();
+  await page.locator('.panel-nav').getByRole('button', { name: 'Preview' }).click();
+  await page.getByRole('button', { name: 'Asr athan' }).click();
+  await page.clock.runFor(70_000);
+  await expect(page.locator('.tk-athan')).toBeVisible();
+  await expect.poll(sounding).toBe(true);
+  await page.locator('.preview-bar').getByRole('button', { name: 'Exit' }).click();
+  await page.clock.runFor(2_000);
+  await expect.poll(sounding).toBe(false);
+
+  await page.clock.runFor(125_000); // to 16:06:15 on the wall clock
+  await expect(page.locator('.tk-athan')).toBeVisible();
+  await expect.poll(sounding).toBe(true);
 });
 
 test('Fajr uses the Fajr athan', async ({ page }) => {
@@ -298,8 +362,10 @@ test('backgrounds: select every photo, or a whole group', async ({ page }) => {
 });
 
 test('display: a new daytime theme shows at once, even in the calligraphy window', async ({ page }) => {
-  // 25 minutes after the Dhuhr athan (12:35), inside its 45-minute calligraphy window.
-  const errors = await open(page, '2026-10-29T13:00:00');
+  // 25 minutes after the Dhuhr athan (12:35), inside its 45-minute calligraphy window. A fake
+  // wall clock rather than ?now=, because exiting the preview returns to wall time.
+  await page.clock.install({ time: new Date('2026-10-29T13:00:00-05:00') });
+  const errors = await open(page, '');
   await expect(page.locator('.stage')).toHaveClass(/theme-calligraphy/);
   await openSettings(page, 'Display');
   const row = page.locator('.row', { hasText: 'Daytime theme' });

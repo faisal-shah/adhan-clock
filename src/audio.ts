@@ -1,6 +1,7 @@
 import { effect } from '@preact/signals';
 import { setBrightness, wakeScreen } from './core/kiosk';
-import { audioBlocked, clock, resolveAudio, settings, tick } from './store';
+import { previewRun } from './core/clock';
+import { audioBlocked, clock, recordingFor, resolveAudio, settings, tick } from './store';
 
 const athanEl = new Audio();
 athanEl.preload = 'auto';
@@ -50,11 +51,34 @@ export function preloadSounds(): void {
   }
 }
 
-async function start(el: HTMLAudioElement, url: string, volume: number, offsetSec = 0): Promise<void> {
-  const src = await playable(url);
+const clampVolume = (v: number) => Math.min(1, Math.max(0, v));
+
+/** Bumped by every start and stop, so a recording still loading when it is stopped or replaced never plays. */
+const generation = new Map<HTMLAudioElement, number>();
+const nextGeneration = (el: HTMLAudioElement) => {
+  const g = (generation.get(el) ?? 0) + 1;
+  generation.set(el, g);
+  return g;
+};
+
+/**
+ * Plays `url` on `el`. With `offsetSec` the recording keeps time with the
+ * clock (an athan joined part-way stays in step however long it takes to
+ * load); without, it plays from the start.
+ */
+async function start(el: HTMLAudioElement, url: string, volume: number, offsetSec?: number): Promise<void> {
+  const gen = nextGeneration(el);
+  const asked = Date.now();
+  let src: string;
+  try {
+    src = await playable(url);
+  } catch {
+    return; // the file could not be fetched; nothing to play
+  }
+  if (generation.get(el) !== gen) return;
   if (el.src !== src) el.src = src;
-  el.volume = Math.min(1, Math.max(0, volume));
-  el.currentTime = offsetSec;
+  el.volume = clampVolume(volume);
+  el.currentTime = offsetSec === undefined ? 0 : offsetSec + (Date.now() - asked) / 1000;
   try {
     await el.play();
     audioBlocked.value = false;
@@ -63,24 +87,40 @@ async function start(el: HTMLAudioElement, url: string, volume: number, offsetSe
     if ((e as DOMException).name === 'NotAllowedError') {
       const blockedAt = Date.now();
       audioBlocked.value = true;
-      retry = () => void start(el, url, volume, offsetSec + (Date.now() - blockedAt) / 1000);
+      retry = () =>
+        void start(el, url, volume, offsetSec === undefined ? undefined : offsetSec + (Date.now() - blockedAt) / 1000);
     }
   }
 }
 
 export function stopAthan(): void {
+  nextGeneration(athanEl);
   athanEl.pause();
   playingId = null;
   retry = null;
 }
 
-/** Plays a sound once for the settings screen; returns a stopper. */
-export function previewSound(audioId: string, volume: number): () => void {
+/**
+ * Plays a sound once for the settings screen and returns a stopper, or
+ * returns null while a real athan is playing (a preview would cut it off).
+ */
+export function previewSound(audioId: string, volume: number): (() => void) | null {
+  if (playingId && playingId !== 'preview') return null;
   const a = resolveAudio(audioId);
-  if (!a) return () => {};
+  if (!a) return null;
   void start(athanEl, a.url, volume);
   playingId = 'preview';
-  return stopAthan;
+  return stopPreview;
+}
+
+/** Follows the volume slider while a preview plays. */
+export function setPreviewVolume(volume: number): void {
+  if (playingId === 'preview') athanEl.volume = clampVolume(volume);
+}
+
+/** Stops a settings preview, leaving an athan that has since started playing. */
+export function stopPreview(): void {
+  if (playingId === 'preview') stopAthan();
 }
 
 /** First tap after a blocked autoplay replays what should be sounding. */
@@ -108,7 +148,12 @@ export function startAudioController(): void {
     setBrightness(st.theme === 'night' && !t ? s.night.brightness : s.night.dayBrightness);
     if (!t) return;
 
-    const key = `${t.id}:${t.phase}`;
+    const kind = t.kind === 'tahajjud' ? 'tahajjud' : t.prayer;
+    const choice = kind === 'tahajjud' ? s.tahajjud : kind ? s.sounds[kind] : null;
+    // The volume follows the settings while the athan plays.
+    if (playingId === t.id && choice) athanEl.volume = clampVolume(choice.volume);
+
+    const key = `${previewRun()}:${t.id}:${t.phase}`;
     if (handled.has(key)) return;
 
     if (t.phase === 'pre' && s.chime.enabled && n - t.phaseStart.getTime() < 5000) {
@@ -116,16 +161,13 @@ export function startAudioController(): void {
       if (!chime) return; // audio index still loading; retry next tick
       void start(chimeEl, chime.url, s.chime.volume);
     }
-    if (t.phase === 'athan') {
-      const choice = t.kind === 'tahajjud' ? s.tahajjud : t.prayer ? s.sounds[t.prayer] : null;
-      if (choice?.enabled) {
-        const a = resolveAudio(choice.audioId);
-        if (!a) return; // audio index (or uploads) still loading; retry next tick
-        const offset = (n - t.athan.getTime()) / 1000;
-        if (a.durationSec === 0 || offset < a.durationSec - 1) {
-          playingId = t.id;
-          void start(athanEl, a.url, choice.volume, Math.max(0, offset));
-        }
+    if (t.phase === 'athan' && kind && choice?.enabled) {
+      const a = recordingFor(kind);
+      if (!a) return; // audio index (or uploads) still loading; retry next tick
+      const offset = (n - t.athan.getTime()) / 1000;
+      if (a.durationSec === 0 || offset < a.durationSec - 1) {
+        playingId = t.id;
+        void start(athanEl, a.url, choice.volume, Math.max(0, offset));
       }
     }
     handled.add(key);

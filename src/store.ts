@@ -1,5 +1,5 @@
-import { computed, effect, signal } from '@preact/signals';
-import { now, travelTo } from './core/clock';
+import { batch, computed, effect, signal } from '@preact/signals';
+import { isPreviewing, now, travelTo } from './core/clock';
 import { bundledPhoto, defaultIds, photoForDay, rotation, upcoming } from './core/library';
 import {
   deleteUpload,
@@ -17,8 +17,16 @@ import {
   type Photo,
   type Upload,
 } from './core/media';
-import { placeDay } from './core/prayer';
-import { calligraphyWindowId, clockState, computeDays, type AthanLength, type ClockState, type Days } from './core/schedule';
+import { addDays, placeDay } from './core/prayer';
+import {
+  calligraphyWindowId,
+  clockState,
+  computeDays,
+  dayKey,
+  type AthanLength,
+  type ClockState,
+  type Days,
+} from './core/schedule';
 import {
   BG_SLOTS,
   DEFAULT_SETTINGS,
@@ -27,6 +35,7 @@ import {
   saveSettings,
   type BgSlot,
   type Settings,
+  type PrayerKey,
   type SoundChoice,
   type ThemeKey,
 } from './core/settings';
@@ -43,6 +52,7 @@ export function updateSettings(patch: (s: Settings) => Partial<Settings>): void 
 export const tick = signal<Date>(now());
 let lastSecond = Math.floor(tick.value.getTime() / 1000);
 setInterval(() => {
+  if (isPreviewing() && Date.now() > previewEndsAt) endPreview();
   const n = now();
   const sec = Math.floor(n.getTime() / 1000);
   if (sec !== lastSecond) {
@@ -55,7 +65,32 @@ export const bundledAudio = signal<BundledAudio[]>([]);
 export const gallery = signal<GalleryItem[]>([]);
 export const calligraphyArt = signal<CalligraphyArt[]>([]);
 export const uploads = signal<Upload[]>([]);
-export const dismissed = signal<ReadonlySet<string>>(new Set());
+const DISMISSED_KEY = 'adhan-clock:dismissed';
+
+/**
+ * What was closed this session, kept across a reload so a background update
+ * can't bring back an athan the user stopped. Ids start with their day;
+ * anything before yesterday is dropped.
+ */
+function loadDismissed(): ReadonlySet<string> {
+  try {
+    const ids: unknown = JSON.parse(localStorage.getItem(DISMISSED_KEY) ?? '[]');
+    const since = dayKey(addDays(now(), -1));
+    return new Set(Array.isArray(ids) ? ids.filter((id): id is string => typeof id === 'string' && id >= since) : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function saveDismissed(ids: ReadonlySet<string>): void {
+  try {
+    localStorage.setItem(DISMISSED_KEY, JSON.stringify([...ids]));
+  } catch {
+    // Not kept across a reload; nothing else depends on it.
+  }
+}
+
+export const dismissed = signal<ReadonlySet<string>>(loadDismissed());
 export const settingsOpen = signal(false);
 /** Forces a theme while a settings preview is running. */
 export const previewTheme = signal<ThemeKey | null>(null);
@@ -73,6 +108,10 @@ export const viewer = signal<{ items: ViewItem[]; index: number } | null>(null);
 export const picking = signal<BgSlot | null>(null);
 export const audioBlocked = signal(false);
 
+/** True once the first attempt to load the media indexes and uploads has finished, whatever its outcome. */
+export const mediaLoaded = signal(false);
+
+/** Loads the media indexes and uploads; anything that failed is tried again a minute later. */
 export async function loadMedia(): Promise<void> {
   const [audio, ups, gal, art] = await Promise.allSettled([
     loadBundledAudio(),
@@ -87,6 +126,8 @@ export async function loadMedia(): Promise<void> {
     uploads.value = ups.value;
     forgetMissingSounds();
   }
+  mediaLoaded.value = true;
+  if ([audio, ups, gal, art].some((r) => r.status === 'rejected')) setTimeout(() => void loadMedia(), 60_000);
 }
 
 /** A sound choice whose recording is not stored (storage cleared or a write lost) goes back to its default. */
@@ -108,24 +149,41 @@ function forgetMissingSounds(): void {
 
 export function dismiss(id: string): void {
   dismissed.value = new Set([...dismissed.value, id]);
+  // A preview's dismissals are its own and end with it.
+  if (!liveDismissed) saveDismissed(dismissed.value);
 }
 
 /** The real clock's dismissals, set aside while a preview keeps its own. */
 let liveDismissed: ReadonlySet<string> | null = null;
 
 /** Moves the clock to a preview moment, where nothing has been dismissed yet. */
+/** A preview left running ends on its own, so it can't hold off the real athans for long. */
+const PREVIEW_LIMIT = 20 * 60_000;
+let previewEndsAt = 0;
+
+/**
+ * Moves the clock and the state derived from it in one step: effects never
+ * see a preview's time as wall time or the reverse (the audio controller
+ * would mark a real athan as played).
+ */
+function travel(at: Date | null, theme: ThemeKey | null, ids: ReadonlySet<string>): void {
+  batch(() => {
+    travelTo(at);
+    tick.value = now();
+    previewTheme.value = theme;
+    dismissed.value = ids;
+  });
+}
+
 export function startPreview(at: Date, theme: ThemeKey | null): void {
+  previewEndsAt = Date.now() + PREVIEW_LIMIT;
   liveDismissed ??= dismissed.value;
-  dismissed.value = new Set();
-  previewTheme.value = theme;
-  travelTo(at);
+  travel(at, theme, new Set());
 }
 
 /** Returns to the real clock and what was dismissed there. */
 export function endPreview(): void {
-  travelTo(null);
-  previewTheme.value = null;
-  if (liveDismissed) dismissed.value = liveDismissed;
+  travel(null, null, liveDismissed ?? dismissed.value);
   liveDismissed = null;
 }
 
@@ -181,15 +239,27 @@ export function resolveAudio(audioId: string): { url: string; durationSec: numbe
   return b ? { url: `/audio/${b.file}`, durationSec: b.durationSec } : null;
 }
 
+/**
+ * The recording an athan plays: the chosen one, or the default athan when
+ * the chosen upload can't be read once loading has finished.
+ */
+export function recordingFor(kind: PrayerKey | 'tahajjud'): { url: string; durationSec: number } | null {
+  const s = settings.value;
+  const [choice, fallback] =
+    kind === 'tahajjud' ? [s.tahajjud, DEFAULT_SETTINGS.tahajjud] : [s.sounds[kind], DEFAULT_SETTINGS.sounds[kind]];
+  return resolveAudio(choice.audioId) ?? (mediaLoaded.value ? resolveAudio(fallback.audioId) : null);
+}
+
 const athanLength = computed<AthanLength>(() => {
   const s = settings.value;
   // Touch the media signals so lengths update once indexes load.
   void bundledAudio.value;
   void uploads.value;
+  void mediaLoaded.value;
   return (p) => {
     const choice = p === 'tahajjud' ? s.tahajjud : s.sounds[p];
     if (!choice.enabled) return null;
-    return resolveAudio(choice.audioId)?.durationSec ?? 0;
+    return recordingFor(p)?.durationSec ?? 0;
   };
 });
 

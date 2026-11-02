@@ -1,8 +1,8 @@
 import { countdownFace } from '../core/calendar';
 import { EVENTS, isUthmani, taglineFor } from '../core/content';
-import { PERIOD_NAMES, type ClockState, type PeriodKey, type Takeover as TakeoverState } from '../core/schedule';
+import { PERIOD_NAMES, phaseId, type ClockState, type PeriodKey, type Takeover as TakeoverState } from '../core/schedule';
 import type { BgSlot } from '../core/settings';
-import { backgroundFor, dismiss, resolveAudio, settings } from '../store';
+import { backgroundFor, dismiss, recordingFor, settings } from '../store';
 import { Calligraphy, Clock, Phrase, PhotoView, SpeakerIcon, dateLine, findArt } from './parts';
 import { splitTagline } from './themes/CalligraphyTheme';
 
@@ -58,10 +58,11 @@ function Ring({ t, now, label, sub }: { t: TakeoverState; now: Date; label: stri
 
 function SoundPill({ t }: { t: TakeoverState }) {
   const s = settings.value;
-  const choice = t.kind === 'tahajjud' ? s.tahajjud : t.prayer ? s.sounds[t.prayer] : null;
-  const playing = choice?.enabled && resolveAudio(choice.audioId);
+  const kind = t.kind === 'tahajjud' ? 'tahajjud' : t.prayer;
+  const choice = kind === 'tahajjud' ? s.tahajjud : kind ? s.sounds[kind] : null;
+  const playing = kind && choice?.enabled && recordingFor(kind);
   return (
-    <button class="tk-stop" onClick={() => dismiss(t.id)}>
+    <button class="tk-stop" onClick={() => dismiss(phaseId(t))}>
       <SpeakerIcon off={!playing} />
       {playing ? 'Stop the athan' : 'Close'}
     </button>
@@ -86,7 +87,7 @@ export function TakeoverLayer({ st }: { st: ClockState }) {
         <div class="tk-count-foot rise" style={{ animationDelay: '0.3s' }}>
           {t.phase === 'pre' ? 'Prepare for prayer' : 'Stand for prayer · straighten the rows'}
         </div>
-        <button class="tk-close" aria-label="Close" onClick={() => dismiss(t.id)}>
+        <button class="tk-close" aria-label="Close" onClick={() => dismiss(phaseId(t))}>
           ×
         </button>
       </div>
@@ -113,7 +114,7 @@ export function TakeoverLayer({ st }: { st: ClockState }) {
             <div class="tk-dua-ref">{dua.ref}</div>
           </div>
         )}
-        <button class="tk-close" aria-label="Close" onClick={() => dismiss(t.id)}>
+        <button class="tk-close" aria-label="Close" onClick={() => dismiss(phaseId(t))}>
           ×
         </button>
       </div>

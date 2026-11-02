@@ -61,3 +61,29 @@ Fixed
   or night theme is covering the daytime theme, and until when.
 - Ending a preview no longer brings back an athan screen or calligraphy
   time that had been closed before the preview.
+- A preview no longer silences that prayer's real chime and athan later in
+  the day; a preview left running ends itself after 20 minutes.
+- Closing Settings during the athan no longer stops it, and pressing Play
+  on a sound while the athan plays no longer cuts it off.
+- The × on the countdown, dua and iqamah screens, and *Stop the athan*,
+  close only that screen; closing the countdown used to cancel the athan.
+- A stopped athan stays stopped after a reload or an update, and updates
+  wait until Settings, the viewer and previews are closed.
+- An athan stopped while its recording was still loading no longer starts
+  afterwards; volume changes reach a sound that is already playing.
+- An uploaded athan that can't be read falls back to the default athan
+  instead of silence; failed media loads are retried.
+- Uploads are only reported saved once stored (a full disk lost them
+  silently); sounds pointing at a lost upload return to their defaults.
+- Clearing a Jumu'ah time keeps the previous one; out-of-range numbers in
+  stored settings are clamped; a browser that refuses to save settings no
+  longer shows a blank page.
+- No false time-zone warning for zones with two names (Asia/Kolkata and
+  Asia/Calcutta); stale weather is hidden after three hours.
+- Adding several photos at once no longer stops at the first unreadable
+  file, and names the files it skipped.
+- Prayer days follow the place's calendar, so a tablet set to a far-off
+  zone no longer crashes; Isha after midnight no longer shows Tahajjud
+  before it; places inside the polar circles get times on every day.
+- The daily verse, Gallery order and background rotation no longer repeat
+  or skip a day at a clock change in zones on UTC+0 in winter.
