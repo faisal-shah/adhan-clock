@@ -23,6 +23,7 @@ import {
   addUpload,
   bundledAudio,
   calligraphyArt,
+  chosenBackgrounds,
   clock,
   picking,
   removeUpload,
@@ -526,7 +527,7 @@ function BackgroundsSection() {
                 <div class="bg-slot-count">
                   {choice === 'all' ? 'All ' : ''}
                   {set.length} {set.length === 1 ? 'photo' : 'photos'}
-                  {choice === null ? ' · suggested' : ''}
+                  {choice === null || !chosenBackgrounds(slot).length ? ' · suggested' : ''}
                 </div>
               </div>
               <button class="btn small" onClick={() => (picking.value = slot)}>

@@ -34,6 +34,7 @@ describe('background rotation', () => {
   it('drops photos that no longer exist, falling back to the defaults when none remain', () => {
     expect(ids(rotation(['upload:gone', 'c'], ['a'], byId))).toEqual(['c']);
     expect(ids(rotation(['upload:gone'], ['a'], byId))).toEqual(['a']);
+    expect(ids(rotation([], ['a'], byId))).toEqual(['a']);
   });
 
   it('keeps each photo in its place, whatever order it was chosen in', () => {
@@ -71,14 +72,14 @@ describe('background rotation', () => {
 });
 
 describe('background settings', () => {
-  it('keeps all or distinct photo ids and treats anything else as the defaults', () => {
+  it('keeps all or distinct photo ids (or none) and treats anything else as the defaults', () => {
     const s = sanitizeSettings({
       backgrounds: { fajr: ['a', 'a', 'upload:x'], sunrise: 'all', dhuhr: 'auto', asr: [], isha: [1, 2], night: 'x' },
     });
     expect(s.backgrounds.fajr).toEqual(['a', 'upload:x']);
     expect(s.backgrounds.sunrise).toBe('all');
     expect(s.backgrounds.dhuhr).toBeNull();
-    expect(s.backgrounds.asr).toBeNull();
+    expect(s.backgrounds.asr).toEqual([]);
     expect(s.backgrounds.isha).toBeNull();
     expect(s.backgrounds.night).toBeNull();
     expect(sanitizeSettings('junk').backgrounds.maghrib).toBeNull();

@@ -64,7 +64,7 @@ export const BG_SLOT_NAMES: Record<BgSlot, string> = {
 /**
  * A slot's photos: chosen ids (bundled, or `upload:<id>`), 'all' for every
  * photo in the library including ones added later, or null for the
- * library's suggestions.
+ * library's suggestions. With no ids chosen the suggestions show.
  */
 export type PhotoChoice = string[] | 'all' | null;
 
@@ -203,11 +203,10 @@ function parsePlace(raw: unknown): Place | null {
   };
 }
 
-/** A slot's photos: 'all', distinct ids, or null (the defaults) for anything else, including an empty list. */
+/** A slot's photos: 'all', distinct ids, or null (the defaults) for anything else. */
 function parsePhotoChoice(raw: unknown): PhotoChoice {
   if (raw === 'all') return 'all';
-  if (!Array.isArray(raw) || !raw.length || !raw.every((v) => typeof v === 'string' && v.length > 0 && v.length <= 80))
-    return null;
+  if (!Array.isArray(raw) || !raw.every((v) => typeof v === 'string' && v.length > 0 && v.length <= 80)) return null;
   return [...new Set(raw as string[])].slice(0, 500);
 }
 

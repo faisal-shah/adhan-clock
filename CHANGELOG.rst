@@ -38,7 +38,8 @@ Added
   picker or from the photo viewer; uploaded photos join the library and the
   Gallery.
 - Background picker: *Select all* for every photo (including photos added
-  later), and *Select all* / *Clear* for each group. Parts of the day that
+  later), *Deselect all*, and both for each group; with nothing chosen the
+  suggested photos show. Parts of the day that
   share photos show different ones on the same day; Settings → Backgrounds
   lists each set from today's photo on.
 - Preview: jump to any athan sequence, part of the day, Jumu'ah, Ramadan or

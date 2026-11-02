@@ -197,16 +197,12 @@ test('backgrounds: choose any gallery photo for a prayer', async ({ page }) => {
   await picker.getByRole('button', { name: 'Sheikh Lotfollah Mosque', exact: true }).click();
   await picker.getByRole('button', { name: 'Ortaköy Mosque', exact: true }).click();
   await picker.getByRole('button', { name: 'Lakeside Mosque', exact: true }).click();
-  await expect(picker.getByText('Keep at least one photo')).toHaveCount(0);
   expect((await stored(page)).backgrounds.fajr).toEqual(['sheikh-lotfollah']);
-  // The last photo stays: a part of the day always has one.
-  await picker.getByRole('button', { name: 'Sheikh Lotfollah Mosque', exact: true }).click();
-  await expect(picker.getByText('Keep at least one photo')).toBeVisible();
 
   // Preview it full screen as the calligraphy theme lays it out.
   await picker.getByRole('button', { name: 'Preview Sheikh Lotfollah Mosque' }).click();
   await expect(page.locator('.viewer .ct .ph-cover')).toHaveAttribute('src', '/gallery/sheikh-lotfollah.webp');
-  await expect(page.locator('.viewer-use')).toHaveText('In the Fajr set');
+  await expect(page.locator('.viewer-use')).toHaveText('In the Fajr set · remove');
   await page.keyboard.press('Escape');
   await picker.getByRole('button', { name: 'Done' }).click();
   await page.getByRole('button', { name: 'Close settings' }).click();
@@ -255,8 +251,6 @@ test('backgrounds: select every photo, or a whole group', async ({ page }) => {
   await page.locator('.bg-slot').first().getByRole('button', { name: 'Choose photos' }).click();
   const picker = page.getByRole('dialog', { name: 'Fajr backgrounds' });
   const selectAll = picker.getByRole('button', { name: 'Select all', exact: true });
-  // The suggested pair is all there is, so it can't be cleared.
-  await expect(picker.getByRole('button', { name: 'Clear: Suggested for Fajr' })).toHaveCount(0);
 
   const total = await picker.locator('.pk-tile').count();
   await selectAll.click();
@@ -272,15 +266,28 @@ test('backgrounds: select every photo, or a whole group', async ({ page }) => {
   await expect(picker.locator('.pk-tile.on')).toHaveCount(total + 1);
   expect((await stored(page)).backgrounds.fajr).toBe('all');
 
-  // Clear one group, then select it again.
+  // Deselect one group, then select it again.
   const treasures = picker.locator('.pk-group', { hasText: 'Treasures of Islamic Civilization' });
   const inTreasures = await treasures.locator('.pk-tile').count();
-  await picker.getByRole('button', { name: 'Clear: Treasures of Islamic Civilization' }).click();
+  await picker.getByRole('button', { name: 'Deselect all: Treasures of Islamic Civilization' }).click();
   await expect(treasures.locator('.pk-tile.on')).toHaveCount(0);
   expect((await stored(page)).backgrounds.fajr).toHaveLength(total + 1 - inTreasures);
   await expect(selectAll).toBeVisible();
   await picker.getByRole('button', { name: 'Select all: Treasures of Islamic Civilization' }).click();
   expect((await stored(page)).backgrounds.fajr).toBe('all');
+
+  // Deselect everything, then choose just one: until then the suggested photos show.
+  await picker.getByRole('button', { name: 'Deselect all', exact: true }).click();
+  expect((await stored(page)).backgrounds.fajr).toEqual([]);
+  await expect(picker.locator('.pk-tile.on')).toHaveCount(0);
+  await expect(picker.locator('.picker-head p')).toHaveText('None chosen, so the suggested photos show');
+  await expect(picker.getByRole('button', { name: 'Deselect all', exact: true })).toHaveCount(0);
+  await picker.getByRole('button', { name: 'Done' }).click();
+  await expect(page.locator('.bg-slot').first().locator('.bg-slot-count')).toHaveText('2 photos · suggested');
+  await page.locator('.bg-slot').first().getByRole('button', { name: 'Choose photos' }).click();
+  await picker.getByRole('button', { name: 'Taksim Mosque', exact: true }).click();
+  expect((await stored(page)).backgrounds.fajr).toEqual(['taksim']);
+  await picker.getByRole('button', { name: 'Select all', exact: true }).click();
 
   await picker.getByRole('button', { name: 'Done' }).click();
   const fajr = page.locator('.bg-slot').first();

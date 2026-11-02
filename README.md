@@ -42,10 +42,11 @@ photos show different ones on the same day.
 
 - **Settings → Backgrounds** shows each part of the day's set, starting with
   today's photo and then the days after it. *Choose photos* opens the whole
-  library: tap photos to add or remove them, *Select all* or *Clear* a whole
-  group, open one full screen to see it behind that prayer's calligraphy, add
-  your own photos, or go back to the suggested pair. *Select all* at the top
-  takes every photo, including ones you add later.
+  library: tap photos to add or remove them, *Select all* or *Deselect all*
+  for the whole library or one group, open one full screen to see it behind
+  that prayer's calligraphy, add your own photos, or go back to the suggested
+  pair. *Select all* at the top takes every photo, including ones you add
+  later. With nothing chosen, the suggested photos show.
 - **Settings → Preview → Gallery** shows every photo, which prayers use it,
   and a *Your Photos* area for adding and deleting your own. Opening a photo
   shows chips for each part of the day, to make it a background there.

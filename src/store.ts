@@ -217,26 +217,29 @@ export function backgroundFor(slot: BgSlot, day: Date): Photo | null {
 /** The slot's rotation in the order it will show, starting with the day's photo. */
 export const upcomingBackgrounds = (slot: BgSlot, day: Date): Photo[] => upcoming(backgroundsFor(slot), day, slot);
 
-/**
- * Stores a slot's photos, keeping at least one. Every photo in the library
- * becomes 'all', so photos added later join the rotation too.
- */
+/** The photos chosen for a slot (its suggestions until the user chooses); none shows the suggestions. */
+export function chosenBackgrounds(slot: BgSlot): string[] {
+  const choice = settings.value.backgrounds[slot];
+  if (choice === 'all') return photos.value.map((p) => p.id);
+  return (choice ?? defaultBackgrounds(slot)).filter((id) => photoById.value.has(id));
+}
+
+/** Stores a slot's photos. Every photo in the library becomes 'all', so photos added later join too. */
 function chooseBackgrounds(slot: BgSlot, ids: string[]): void {
-  if (!ids.length) return;
   const chosen = new Set(ids);
-  const choice = photos.value.every((p) => chosen.has(p.id)) ? 'all' : ids;
+  const choice = ids.length && photos.value.every((p) => chosen.has(p.id)) ? 'all' : ids;
   updateSettings((s) => ({ backgrounds: { ...s.backgrounds, [slot]: choice } }));
 }
 
-/** Adds a photo to a slot's rotation, or takes it out. */
+/** Adds a photo to a slot's choice, or takes it out. */
 export function toggleBackground(slot: BgSlot, id: string): void {
-  const ids = backgroundsFor(slot).map((p) => p.id);
+  const ids = chosenBackgrounds(slot);
   chooseBackgrounds(slot, ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id]);
 }
 
-/** Adds a group of photos to a slot's rotation, or takes them all out. */
+/** Adds a group of photos to a slot's choice, or takes them all out. */
 export function setBackgrounds(slot: BgSlot, ids: string[], on: boolean): void {
-  const current = backgroundsFor(slot).map((p) => p.id);
+  const current = chosenBackgrounds(slot);
   const group = new Set(ids);
   chooseBackgrounds(slot, on ? [...new Set([...current, ...ids])] : current.filter((x) => !group.has(x)));
 }
@@ -284,9 +287,7 @@ export async function removeUpload(id: string): Promise<void> {
     const backgrounds = Object.fromEntries(
       BG_SLOTS.map((slot) => {
         const choice = x.backgrounds[slot];
-        if (!Array.isArray(choice)) return [slot, choice];
-        const ids = choice.filter((i) => i !== ref);
-        return [slot, ids.length ? ids : null];
+        return [slot, Array.isArray(choice) ? choice.filter((i) => i !== ref) : choice];
       }),
     ) as Settings['backgrounds'];
     return {

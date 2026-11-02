@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'preact/hooks';
 import type { Photo } from '../core/media';
 import { type ClockState, type PeriodKey } from '../core/schedule';
 import { BG_SLOTS, type BgSlot } from '../core/settings';
-import { backgroundsFor, clock, toggleBackground, viewer, type ViewItem } from '../store';
+import { chosenBackgrounds, clock, toggleBackground, viewer, type ViewItem } from '../store';
 import { slotShort } from './settings/Library';
 import { CalligraphyTheme } from './themes/CalligraphyTheme';
 import { GalleryTheme } from './themes/GalleryTheme';
@@ -46,12 +46,8 @@ function Content({ item, st }: { item: ViewItem; st: ClockState }) {
   }
 }
 
-/** Whether a photo is in a slot's rotation, and whether it is the only one there. */
-function membership(slot: BgSlot, photo: Photo): { on: boolean; last: boolean } {
-  const set = backgroundsFor(slot);
-  const on = set.some((p) => p.id === photo.id);
-  return { on, last: on && set.length === 1 };
-}
+/** Whether a photo is chosen for a slot. */
+const chosenFor = (slot: BgSlot, photo: Photo) => chosenBackgrounds(slot).includes(photo.id);
 
 const go = (d: number) => {
   const v = viewer.value!;
@@ -79,7 +75,7 @@ export function Viewer() {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  const bg = item.kind === 'background' ? membership(item.slot, item.photo) : null;
+  const inSet = item.kind === 'background' && chosenFor(item.slot, item.photo);
 
   return (
     <div
@@ -104,14 +100,9 @@ export function Viewer() {
             <span class="viewer-count">
               {v.index + 1} / {n}
             </span>
-            {item.kind === 'background' && bg && (
-              <button
-                class={`viewer-use ${bg.on ? 'on' : ''}`}
-                disabled={bg.last}
-                title={bg.last ? 'A part of the day keeps at least one photo' : undefined}
-                onClick={() => toggleBackground(item.slot, item.photo.id)}
-              >
-                {bg.on ? `In the ${slotShort(item.slot)} set${bg.last ? '' : ' · remove'}` : `Add to ${slotShort(item.slot)}`}
+            {item.kind === 'background' && (
+              <button class={`viewer-use ${inSet ? 'on' : ''}`} onClick={() => toggleBackground(item.slot, item.photo.id)}>
+                {inSet ? `In the ${slotShort(item.slot)} set · remove` : `Add to ${slotShort(item.slot)}`}
               </button>
             )}
             <button class="viewer-close" aria-label="Close preview" onClick={close}>
@@ -122,13 +113,11 @@ export function Viewer() {
             <div class="viewer-slots">
               <span>Background for</span>
               {BG_SLOTS.map((slot) => {
-                const m = membership(slot, item.photo);
+                const on = chosenFor(slot, item.photo);
                 return (
                   <button
-                    class={`chip ${m.on ? 'on' : ''}`}
-                    aria-pressed={m.on}
-                    disabled={m.last}
-                    title={m.last ? 'A part of the day keeps at least one photo' : undefined}
+                    class={`chip ${on ? 'on' : ''}`}
+                    aria-pressed={on}
                     onClick={() => toggleBackground(slot, item.photo.id)}
                   >
                     {slotShort(slot)}

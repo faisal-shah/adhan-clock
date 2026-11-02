@@ -950,10 +950,6 @@
   color: rgba(238, 230, 214, 0.68);
 }
 
-.picker-head p.warn {
-  color: #ffc9b0;
-}
-
 .picker-body {
   flex: 1;
   overflow-y: auto;

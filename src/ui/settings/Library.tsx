@@ -3,6 +3,7 @@ import type { Photo } from '../../core/media';
 import { BG_SLOT_NAMES, BG_SLOTS, GALLERY_CATEGORIES, type BgSlot, type GalleryCategory } from '../../core/settings';
 import {
   backgroundsFor,
+  chosenBackgrounds,
   defaultBackgrounds,
   photos,
   picking,
@@ -79,8 +80,7 @@ export function UploadTile({ onAdded }: { onAdded?: (ids: string[]) => void }) {
 /** Full-screen chooser for one part of the day: any photo in the library, or a new upload. */
 export function BackgroundPicker() {
   const slot = picking.value!;
-  const [hint, setHint] = useState('');
-  const chosen = new Set(backgroundsFor(slot).map((p) => p.id));
+  const chosen = new Set(chosenBackgrounds(slot));
   const choice = settings.value.backgrounds[slot];
   const suggested = new Set(defaultBackgrounds(slot));
   const all = photos.value;
@@ -93,37 +93,34 @@ export function BackgroundPicker() {
     })),
   ];
   const items: ViewItem[] = groups.flatMap((g) => g.photos.map((photo) => ({ kind: 'background' as const, photo, slot })));
-  const toggle = (p: Photo) => {
-    if (chosen.has(p.id) && chosen.size === 1) {
-      setHint('Keep at least one photo');
-      return;
-    }
-    setHint('');
-    toggleBackground(slot, p.id);
-  };
-  const choose = (ps: Photo[], on: boolean) => {
-    setHint('');
+  const choose = (ps: Photo[], on: boolean) =>
     setBackgrounds(
       slot,
       ps.map((p) => p.id),
       on,
     );
-  };
   const summary =
     choice === 'all'
       ? `All ${all.length} photos, a different one each day, and any you add later`
-      : `${chosen.size} ${chosen.size === 1 ? 'photo' : 'photos'} chosen${chosen.size > 1 ? ', a different one each day' : ''}`;
+      : chosen.size === 0
+        ? 'None chosen, so the suggested photos show'
+        : `${chosen.size} ${chosen.size === 1 ? 'photo' : 'photos'} chosen${chosen.size > 1 ? ', a different one each day' : ''}`;
   let index = 0;
   return (
     <div class="picker" role="dialog" aria-label={`${BG_SLOT_NAMES[slot]} backgrounds`}>
       <header class="picker-head">
         <div>
           <h2>{BG_SLOT_NAMES[slot]}</h2>
-          <p class={hint ? 'warn' : ''}>{hint || summary}</p>
+          <p>{summary}</p>
         </div>
         {choice !== 'all' && (
           <button class="btn" onClick={() => choose(all, true)}>
             Select all
+          </button>
+        )}
+        {chosen.size > 0 && (
+          <button class="btn" onClick={() => choose(all, false)}>
+            Deselect all
           </button>
         )}
         {choice !== null && (
@@ -138,24 +135,20 @@ export function BackgroundPicker() {
       <div class="picker-body">
         {groups.map((g) => {
           if (!g.photos.length && !g.uploads) return null;
-          const inGroup = g.photos.filter((p) => chosen.has(p.id)).length;
+          const allOn = g.photos.every((p) => chosen.has(p.id));
           return (
             <section class="pk-group">
               <div class="pk-group-head">
                 <div class="panel-sub">{g.title}</div>
-                {g.photos.length > 1 &&
-                  (inGroup < g.photos.length ? (
-                    <button class="pk-group-act" aria-label={`Select all: ${g.title}`} onClick={() => choose(g.photos, true)}>
-                      Select all
-                    </button>
-                  ) : (
-                    // Clearing the only chosen group would leave the slot empty.
-                    inGroup < chosen.size && (
-                      <button class="pk-group-act" aria-label={`Clear: ${g.title}`} onClick={() => choose(g.photos, false)}>
-                        Clear
-                      </button>
-                    )
-                  ))}
+                {g.photos.length > 1 && (
+                  <button
+                    class="pk-group-act"
+                    aria-label={`${allOn ? 'Deselect' : 'Select'} all: ${g.title}`}
+                    onClick={() => choose(g.photos, !allOn)}
+                  >
+                    {allOn ? 'Deselect all' : 'Select all'}
+                  </button>
+                )}
               </div>
               <div class="pk-grid">
                 {g.uploads && <UploadTile onAdded={(ids) => setBackgrounds(slot, ids, true)} />}
@@ -164,7 +157,7 @@ export function BackgroundPicker() {
                   const on = chosen.has(p.id);
                   return (
                     <div class={`pk-tile ${on ? 'on' : ''}`}>
-                      <button class="pk-pick" aria-pressed={on} aria-label={p.title} onClick={() => toggle(p)}>
+                      <button class="pk-pick" aria-pressed={on} aria-label={p.title} onClick={() => toggleBackground(slot, p.id)}>
                         <PhotoThumb photo={p} />
                         <span class="pk-check" aria-hidden="true" />
                       </button>
