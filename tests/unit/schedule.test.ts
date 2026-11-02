@@ -1,6 +1,15 @@
 import { describe, expect, it } from 'vitest';
-import { calligraphyWindowId, clockState, computeDays, phaseId, type AthanLength } from '../../src/core/schedule';
-import type { Settings } from '../../src/core/settings';
+import {
+  SLOT_PERIOD,
+  calligraphyWindowId,
+  clockState,
+  computeDays,
+  periodMoment,
+  phaseId,
+  type AthanLength,
+  type PeriodKey,
+} from '../../src/core/schedule';
+import { BG_SLOTS, type Settings } from '../../src/core/settings';
 import { CHICAGO } from './prayer.test';
 
 // Chicago 2026-10-29 (Thursday): Fajr 06:02, Sunrise 07:19, Dhuhr 12:35,
@@ -110,6 +119,15 @@ describe('clockState', () => {
     expect(state(at('12:30')).makruh?.kind).toBe('zawal');
     expect(state(at('03:30')).period.key).toBe('tahajjud');
     expect(state(at('23:00')).period.key).toBe('isha');
+  });
+
+  it('lands previews inside each part of the day and each background slot', () => {
+    const thu = state(at('12:00')).today;
+    const keys: PeriodKey[] = ['fajr', 'sunrise', 'duha', 'dhuhr', 'asr', 'maghrib', 'isha', 'tahajjud'];
+    for (const p of keys) expect(state(periodMoment(thu, p)).period.key).toBe(p);
+    for (const slot of BG_SLOTS) expect(state(periodMoment(thu, SLOT_PERIOD[slot])).period.bg).toBe(slot);
+    const fri = state(at('12:00', 30)).today;
+    expect(state(periodMoment(fri, 'dhuhr')).period.key).toBe('jumuah');
   });
 
   it("wraps across midnight: after Isha the next prayer is tomorrow's Fajr", () => {

@@ -17,12 +17,14 @@ import {
   type Photo,
   type Upload,
 } from './core/media';
-import { addDays, placeDay } from './core/prayer';
+import { addDays, placeDay, type DayTimes } from './core/prayer';
 import {
   calligraphyWindowId,
   clockState,
   computeDays,
   dayKey,
+  periodMoment,
+  SLOT_PERIOD,
   type AthanLength,
   type ClockState,
   type Days,
@@ -268,6 +270,13 @@ export const clock = computed<ClockState | null>(() => {
   if (!d) return null;
   return clockState(tick.value, d, settings.value, athanLength.value, dismissed.value);
 });
+
+/** The clock a little way into a slot's part of the day, as the calligraphy theme would show it then. */
+export function clockInSlot(slot: BgSlot, today: DayTimes): ClockState {
+  const s = settings.value;
+  const at = periodMoment(today, SLOT_PERIOD[slot]);
+  return clockState(at, computeDays(at, s), s, athanLength.value);
+}
 
 // --- Photo library and backgrounds -------------------------------------------
 

@@ -1,22 +1,12 @@
 import { useLayoutEffect, useRef, useState } from 'preact/hooks';
 import type { Photo } from '../core/media';
-import { type ClockState, type PeriodKey } from '../core/schedule';
+import type { ClockState } from '../core/schedule';
 import { BG_SLOTS, type BgSlot } from '../core/settings';
-import { chosenBackgrounds, clock, toggleBackground, viewer, type ViewItem } from '../store';
+import { chosenBackgrounds, clock, clockInSlot, toggleBackground, viewer, type ViewItem } from '../store';
 import { slotShort } from './settings/Library';
 import { CalligraphyTheme } from './themes/CalligraphyTheme';
 import { GalleryTheme } from './themes/GalleryTheme';
 import { Theme } from './themes/Theme';
-
-const SLOT_PERIOD: Record<BgSlot, PeriodKey> = {
-  fajr: 'fajr',
-  sunrise: 'sunrise',
-  dhuhr: 'dhuhr',
-  asr: 'asr',
-  maghrib: 'maghrib',
-  isha: 'isha',
-  night: 'tahajjud',
-};
 
 export function viewLabel(item: ViewItem): string {
   switch (item.kind) {
@@ -34,11 +24,9 @@ function Content({ item, st }: { item: ViewItem; st: ClockState }) {
   switch (item.kind) {
     case 'theme':
       return <Theme theme={item.theme} st={st} />;
-    case 'background': {
-      // Show the photo as the calligraphy theme would during its part of the day.
-      const shown = { ...st, period: { ...st.period, key: SLOT_PERIOD[item.slot], bg: item.slot } };
-      return <CalligraphyTheme st={shown} bg={item.photo} />;
-    }
+    case 'background':
+      // The photo as the calligraphy theme shows it during its part of today.
+      return <CalligraphyTheme st={clockInSlot(item.slot, st.today)} bg={item.photo} />;
     case 'photo':
       return <GalleryTheme st={st} piece={{ kind: 'photo', id: item.photo.id, photo: item.photo }} />;
     case 'art':

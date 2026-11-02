@@ -3,7 +3,7 @@ import { stopAthan } from '../../audio';
 import { nextHijriDate } from '../../core/calendar';
 import type { CalligraphyArt } from '../../core/media';
 import { addDays, computeDay, startOfDay } from '../../core/prayer';
-import { PERIOD_NAMES, type ClockState, type PeriodKey } from '../../core/schedule';
+import { PERIOD_NAMES, periodMoment, type ClockState, type PeriodKey } from '../../core/schedule';
 import { GALLERY_CATEGORIES, type ThemeKey } from '../../core/settings';
 import { calligraphyArt, photos, removeUpload, settings, settingsOpen, startPreview, viewer, type ViewItem } from '../../store';
 import { Phrase } from '../parts';
@@ -62,11 +62,12 @@ function moments(st: ClockState): { title: string; note: string; items: Moment[]
       title: 'Through the day',
       note: 'The calligraphy theme at each part of the day, then the night theme.',
       items: [
-        ...(['fajr', 'sunrise', 'duha', 'dhuhr', 'asr', 'maghrib', 'isha'] as PeriodKey[]).map((p) => {
-          const base = p === 'sunrise' ? plus(t.sunrise, 5) : p === 'duha' ? plus(t.sunrise, 90) : plus(t[p as 'fajr'], 10);
-          return { label: PERIOD_NAMES[p], at: base, theme: 'calligraphy' as const };
-        }),
-        { label: 'Last third of the night', at: plus(st.tahajjud, 5), theme: 'calligraphy' },
+        ...(['fajr', 'sunrise', 'duha', 'dhuhr', 'asr', 'maghrib', 'isha'] as PeriodKey[]).map((p) => ({
+          label: PERIOD_NAMES[p],
+          at: periodMoment(t, p),
+          theme: 'calligraphy' as const,
+        })),
+        { label: 'Last third of the night', at: periodMoment(t, 'tahajjud'), theme: 'calligraphy' },
         { label: 'Night theme', at: plus(t.isha, s.night.startAfterIsha + 5), theme: 'night' },
       ],
     },

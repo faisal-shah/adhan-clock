@@ -87,3 +87,6 @@ Fixed
   before it; places inside the polar circles get times on every day.
 - The daily verse, Gallery order and background rotation no longer repeat
   or skip a day at a clock change in zones on UTC+0 in winter.
+- A background opened full screen showed the current time's clock, prayer
+  dial and countdown under another prayer's name; it now shows its own
+  part of today (a Fajr photo at 5:16 AM, with the Fajr dial).

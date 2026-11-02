@@ -253,6 +253,11 @@ const stored = (page: Page) => page.evaluate(() => JSON.parse(localStorage.getIt
 test('backgrounds: choose any gallery photo for a prayer', async ({ page }) => {
   const errors = await open(page, '2026-10-29T06:30:00', { dayTheme: 'calligraphy' });
   await openSettings(page, 'Backgrounds');
+  // A background opens at its own part of the day: Isha's at 7:16 PM, ten minutes after the athan.
+  await page.locator('.bg-slot').nth(5).locator('.bg-thumb').first().click();
+  await expect(page.locator('.viewer .ct-headline .big')).toHaveText('ISHA');
+  await expect(page.locator('.viewer .ct-clock')).toHaveText(/^7:16/);
+  await page.keyboard.press('Escape');
   const fajr = page.locator('.bg-slot').first();
   await expect(fajr.locator('.bg-slot-count')).toHaveText('2 photos · suggested');
   await fajr.getByRole('button', { name: 'Choose photos' }).click();

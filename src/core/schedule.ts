@@ -40,6 +40,17 @@ const PERIOD_BG: Record<PeriodKey, BgSlot> = {
   tahajjud: 'night',
 };
 
+/** The part of the day each background slot is shown in, for previews of it. */
+export const SLOT_PERIOD: Record<BgSlot, PeriodKey> = {
+  fajr: 'fajr',
+  sunrise: 'sunrise',
+  dhuhr: 'dhuhr',
+  asr: 'asr',
+  maghrib: 'maghrib',
+  isha: 'isha',
+  night: 'tahajjud',
+};
+
 const MIN = 60_000;
 const SEC = 1000;
 /** Sunrise makruh window; Duha starts when it ends. */
@@ -180,6 +191,23 @@ function periodAt(now: Date, days: Days, slots: Slot[]): Period {
   ];
   const hit = bounds.find(([, a, b]) => now >= a && now < b) ?? bounds[bounds.length - 1];
   return { key: hit[0], start: hit[1], end: hit[2], bg: PERIOD_BG[hit[0]] };
+}
+
+/**
+ * A moment a little way into one of a day's parts, where previews of it land:
+ * ten minutes in (five into the 15-minute sunrise). Dhuhr on a Friday is
+ * Jumu'ah when that is on.
+ */
+export function periodMoment(t: DayTimes, p: PeriodKey): Date {
+  const start =
+    p === 'duha'
+      ? new Date(t.sunrise.getTime() + SUNRISE_MAKRUH)
+      : p === 'jumuah'
+        ? t.dhuhr
+        : p === 'tahajjud'
+          ? t.lastThird
+          : t[p];
+  return new Date(start.getTime() + (p === 'sunrise' ? 5 : 10) * MIN);
 }
 
 function makruhAt(now: Date, t: DayTimes): Makruh | null {

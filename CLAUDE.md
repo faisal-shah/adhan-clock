@@ -121,6 +121,9 @@ flowchart LR
   and go, categories mixed), not by the stored list. `photoForDay` offsets
   each slot by `n / 7` photos, so slots sharing a pool show different photos
   on the same day; `upcoming` gives the rotation from today on.
+- The viewer shows a background as the calligraphy theme would a little way
+  into its slot's part of today (`clockInSlot`, `periodMoment`); the
+  *Through the day* previews land on the same moments.
 
 ## Gotchas
 
@@ -138,5 +141,8 @@ flowchart LR
   `scripts/*/`; regenerate rather than hand-edit.
 - Leaving a preview returns to wall time, not to `?now=`: e2e tests that
   exit a preview fake the wall clock with `page.clock.install` instead.
+- Type-check with `npx tsc --noEmit` (as `npm run build` does). `tsc -b`
+  writes `.js` files beside the sources, and Vite resolves `.js` before
+  `.ts`, so the dev server then serves the stale copies; `git clean` them.
 - Run prettier on `src` and `tests` only: the manifests under `scripts/` are
   written by the scripts themselves (`--pin`) in Python's JSON layout.
